@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>color.uncle — 색칠도안 무료 다운로드</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root {
+  --ink:      #1a1714;
+  --ink-2:    #3d3830;
+  --ink-3:    #7a7269;
+  --canvas:   #ffffff;
+  --warm:     #faf7f3;
+  --warm-2:   #f3ede4;
+  --coral:    #c8442a;
+  --coral-lt: #f0ece8;
+  --border:   rgba(26,23,20,.1);
+  --border-2: rgba(26,23,20,.06);
+  --r:        6px;
+  --r-lg:     12px;
+  --r-xl:     20px;
+  --shadow:   0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.07);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.12);
+}
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--canvas);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;-webkit-user-drag:none;user-select:none}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* Image lock */
+.coloring-img{pointer-events:none;-webkit-user-select:none;user-select:none}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:.9}}
+
+.anim-1{animation:fadeUp .55s .05s both}
+.anim-2{animation:fadeUp .55s .15s both}
+.anim-3{animation:fadeUp .55s .25s both}
+.anim-4{animation:fadeUp .55s .35s both}
+.anim-5{animation:fadeUp .55s .45s both}
+
+/* ── LAYOUT ── */
+.container{max-width:1200px;margin:0 auto;padding:0 28px}
+@media(max-width:768px){.container{padding:0 18px}}
+
+/* ── NAV ── */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  height:60px;display:flex;align-items:center;
+}
+.nav-inner{
+  width:100%;max-width:1200px;margin:0 auto;padding:0 28px;
+  display:flex;align-items:center;gap:32px;
+}
+.nav-logo{
+  font-family:'Nanum Myeongjo',serif;
+  font-size:17px;font-weight:700;
+  display:flex;align-items:center;gap:2px;
+  flex-shrink:0;
+}
+.nav-logo .accent{color:var(--coral)}
+.nav-logo .dot{color:var(--ink-3);font-weight:400}
+
+.nav-search{
+  flex:1;max-width:480px;
+  height:38px;
+  background:var(--warm);
+  border:1px solid var(--border);
+  border-radius:100px;
+  display:flex;align-items:center;
+  padding:0 14px;gap:8px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.nav-search:focus-within{
+  border-color:var(--ink);
+  box-shadow:0 0 0 3px rgba(26,23,20,.07);
+}
+.nav-search input{
+  flex:1;border:none;background:none;
+  font-size:14px;color:var(--ink);outline:none;
+  font-family:'Noto Sans KR',sans-serif;
+}
+.nav-search input::placeholder{color:var(--ink-3)}
+.search-icon{width:16px;height:16px;opacity:.45;flex-shrink:0}
+
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:auto}
+.nav-link{
+  padding:7px 12px;border-radius:var(--r);
+  font-size:14px;font-weight:500;color:var(--ink-2);
+  transition:background .15s;white-space:nowrap;
+}
+.nav-link:hover{background:var(--warm)}
+.nav-link.active{color:var(--ink)}
+
+.nav-cta{
+  height:36px;padding:0 18px;
+  background:var(--ink);color:#fff;
+  border-radius:100px;font-size:14px;font-weight:600;
+  transition:background .15s,transform .1s;
+  white-space:nowrap;
+}
+.nav-cta:hover{background:var(--coral);transform:translateY(-1px)}
+
+.nav-burger{display:none;padding:8px;border-radius:var(--r)}
+@media(max-width:900px){
+  .nav-links .nav-link{display:none}
+  .nav-burger{display:flex;align-items:center;justify-content:center}
+}
+@media(max-width:600px){
+  .nav-cta{display:none}
+  .nav-search{max-width:none}
+}
+
+/* ── AD STRIP (top) ── */
+.ad-strip-top{
+  background:var(--warm);
+  border-bottom:1px solid var(--border-2);
+  padding:10px 0;
+  text-align:center;
+}
+.ad-unit{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;
+  background:var(--warm-2);
+  border:1px dashed rgba(200,68,42,.25);
+  border-radius:var(--r);
+  color:var(--ink-3);font-size:12px;
+  letter-spacing:.3px;
+}
+.ad-unit.leaderboard{width:min(728px,100%);height:90px}
+.ad-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--coral);opacity:.7;font-weight:600}
+
+/* ── HERO ── */
+.hero{
+  padding:72px 0 64px;
+  background:var(--canvas);
+  border-bottom:1px solid var(--border-2);
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:var(--coral);
+  margin-bottom:18px;
+}
+.hero-eyebrow::before{
+  content:'';width:18px;height:1px;
+  background:var(--coral);display:block;
+}
+
+.hero-h1{
+  font-family:'Nanum Myeongjo',serif;
+  font-size:clamp(36px,4.5vw,54px);
+  font-weight:800;
+  line-height:1.12;
+  letter-spacing:-.03em;
+  color:var(--ink);
+  margin-bottom:20px;
+}
+.hero-h1 em{
+  font-style:normal;
+  color:var(--coral);
+  position:relative;
+  display:inline-block;
+}
+.hero-h1 em::after{
+  content:'';
+  position:absolute;
+  left:0;right:0;bottom:2px;
+  height:6px;
+  background:var(--coral-lt);
+  z-index:-1;border-radius:3px;
+}
+
+.hero-sub{
+  font-size:17px;color:var(--ink-2);
+  line-height:1.7;max-width:420px;
+  margin-bottom:32px;font-weight:300;
+}
+
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px}
+.btn-primary{
+  height:48px;padding:0 28px;
+  background:var(--ink);color:#fff;
+  border-radius:100px;font-size:15px;font-weight:600;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:background .2s,transform .15s,box-shadow .2s;
+}
+.btn-primary:hover{background:var(--coral);transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,68,42,.3)}
+.btn-secondary{
+  height:48px;padding:0 22px;
+  background:var(--canvas);color:var(--ink);
+  border:1.5px solid var(--border);
+  border-radius:100px;font-size:15px;font-weight:500;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:border-color .2s,background .2s;
+}
+.btn-secondary:hover{border-color:var(--ink);background:var(--warm)}
+
+.hero-stats{
+  display:flex;gap:28px;
+  padding-top:28px;
+  border-top:1px solid var(--border-2);
+}
+.stat-val{
+  font-family:'Nanum Myeongjo',serif;
+  font-size:26px;font-weight:700;color:var(--ink);
+  line-height:1;margin-bottom:4px;
+}
+.stat-label{font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.5px}
+
+/* ── HERO RIGHT — card mosaic ── */
+.hero-mosaic{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:12px;
+}
+.mosaic-card{
+  background:var(--warm);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+  position:relative;
+}
+.mosaic-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:var(--shadow-lg)}
+.mosaic-card.featured{grid-column:1/-1}
+
+.card-img{
+  width:100%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--warm-2);
+  position:relative;overflow:hidden;
+}
+.card-img.ratio-wide{aspect-ratio:16/9}
+.card-img.ratio-tall{aspect-ratio:4/5}
+.card-img svg{width:65%;height:auto;opacity:.82}
+
+.card-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(26,23,20,.5) 0%,transparent 55%);
+  opacity:0;transition:opacity .25s;
+  display:flex;align-items:flex-end;padding:14px;
+}
+.mosaic-card:hover .card-overlay{opacity:1}
+.overlay-dl{
+  width:100%;height:36px;
+  background:rgba(255,255,255,.95);
+  color:var(--ink);border-radius:100px;
+  font-size:13px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:background .15s;
+}
+.overlay-dl:hover{background:#fff}
+
+.card-foot{padding:10px 12px 12px}
+.card-category{font-size:11px;color:var(--ink-3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.card-title{font-size:14px;font-weight:600;color:var(--ink);line-height:1.3}
+.card-meta{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.card-pages{font-size:12px;color:var(--ink-3)}
+.diff-dots{display:flex;gap:3px}
+.diff-dot{width:7px;height:7px;border-radius:50%;background:var(--border)}
+.diff-dot.on{background:var(--coral)}
+
+.heart-btn{
+  position:absolute;top:10px;right:10px;
+  width:32px;height:32px;
+  background:rgba(255,255,255,.85);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  transition:transform .2s,background .15s;
+  z-index:2;
+}
+.heart-btn:hover{transform:scale(1.2);background:#fff}
+
+/* ── SECTION COMMON ── */
+.section{padding:64px 0}
+.section+.section{border-top:1px solid var(--border-2)}
+.section-header{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;
+  margin-bottom:32px;gap:16px;
+}
+.section-title{
+  font-family:'Nanum Myeongjo',serif;
+  font-size:26px;font-weight:700;color:var(--ink);
+  line-height:1.2;
+}
+.section-sub{font-size:14px;color:var(--ink-3);margin-top:5px}
+.section-more{
+  font-size:14px;font-weight:600;color:var(--ink);
+  display:flex;align-items:center;gap:4px;
+  padding:8px 0;flex-shrink:0;
+  border-bottom:1.5px solid var(--ink);
+  transition:color .15s,border-color .15s;
+}
+.section-more:hover{color:var(--coral);border-color:var(--coral)}
+
+/* ── FILTER TABS ── */
+.filter-row{
+  display:flex;gap:8px;flex-wrap:nowrap;
+  overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  margin-bottom:28px;
+}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-tab{
+  height:36px;padding:0 16px;
+  border:1.5px solid var(--border);
+  border-radius:100px;
+  font-size:13px;font-weight:500;color:var(--ink-2);
+  white-space:nowrap;
+  transition:all .2s;
+}
+.filter-tab:hover{border-color:var(--ink);color:var(--ink)}
+.filter-tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* ── CARD GRID ── */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+@media(max-width:1000px){.card-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.card-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+
+.coloring-card{
+  background:var(--canvas);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+  position:relative;
+}
+.coloring-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+
+.coloring-card .card-img{aspect-ratio:3/4;background:var(--warm)}
+.coloring-card .card-img svg{width:72%;height:auto}
+
+.badge-top{
+  position:absolute;top:10px;left:10px;
+  font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:100px;
+  background:#fff;color:var(--ink);
+  box-shadow:0 1px 4px rgba(0,0,0,.12);
+  z-index:2;letter-spacing:.2px;
+}
+.badge-new{background:var(--coral);color:#fff}
+
+/* ── AD INFEED ── */
+.ad-infeed{
+  background:var(--warm);
+  border:1px dashed rgba(200,68,42,.2);
+  border-radius:var(--r-lg);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:4px;
+  min-height:200px;
+}
+
+/* ── SERIES SECTION ── */
+.series-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+@media(max-width:800px){.series-row{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.series-row{grid-template-columns:1fr}}
+
+.series-card{
+  border:1px solid var(--border);
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+  position:relative;
+}
+.series-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+
+.series-cover{
+  width:100%;aspect-ratio:4/3;
+  background:var(--warm-2);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.series-cover svg{width:60%;height:auto;opacity:.85}
+.series-count-badge{
+  position:absolute;bottom:10px;right:10px;
+  background:rgba(26,23,20,.72);color:#fff;
+  font-size:11px;font-weight:600;
+  padding:3px 10px;border-radius:100px;
+  letter-spacing:.3px;
+}
+.series-body{padding:14px 16px 16px}
+.series-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--coral);font-weight:600;margin-bottom:5px}
+.series-title{font-family:'Nanum Myeongjo',serif;font-size:18px;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:6px}
+.series-desc{font-size:13px;color:var(--ink-3);line-height:1.55;margin-bottom:12px}
+.series-dl-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  height:36px;padding:0 16px;
+  background:var(--ink);color:#fff;
+  border-radius:100px;font-size:13px;font-weight:600;
+  transition:background .2s;
+}
+.series-dl-btn:hover{background:var(--coral)}
+.series-strip{
+  display:flex;gap:5px;padding:0 16px 14px;
+  overflow:hidden;
+}
+.series-thumb{
+  flex-shrink:0;width:52px;height:52px;
+  border-radius:var(--r);
+  background:var(--warm);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .15s;
+}
+.series-thumb:hover{border-color:var(--coral)}
+.series-thumb svg{width:75%;height:auto;opacity:.75}
+.series-thumb.active{border:2px solid var(--coral)}
+
+/* ── DISCOVER BOX (Affiliate) ── */
+.discover-box{
+  background:var(--warm);
+  border:1px solid var(--border);
+  border-radius:var(--r-xl);
+  padding:20px;
+  margin-top:32px;
+}
+.discover-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.discover-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;border-bottom:1px solid var(--border-2);
+  cursor:pointer;
+  transition:opacity .15s;
+}
+.discover-item:last-child{border-bottom:none}
+.discover-item:hover{opacity:.7}
+.discover-icon{
+  width:38px;height:38px;background:var(--warm-2);
+  border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.discover-item-text strong{font-size:13px;font-weight:600;display:block;margin-bottom:1px}
+.discover-item-text span{font-size:12px;color:var(--ink-3)}
+.discover-arrow{margin-left:auto;color:var(--ink-3);font-size:14px}
+
+/* ── MAIN WITH SIDEBAR ── */
+.main-layout{
+  display:grid;
+  grid-template-columns:1fr 260px;
+  gap:48px;
+  align-items:start;
+}
+@media(max-width:960px){.main-layout{grid-template-columns:1fr}}
+.sidebar{position:sticky;top:80px}
+
+/* ── AD SIDEBAR ── */
+.sidebar-ad{
+  background:var(--warm);
+  border:1px dashed rgba(200,68,42,.2);
+  border-radius:var(--r-lg);
+  width:100%;height:280px;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:4px;
+  margin-bottom:20px;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);
+  color:rgba(255,255,255,.65);
+  padding:48px 0 32px;
+  margin-top:80px;
+}
+.footer-inner{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;
+}
+@media(max-width:800px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.footer-inner{grid-template-columns:1fr}}
+
+.footer-brand-name{
+  font-family:'Nanum Myeongjo',serif;
+  font-size:18px;font-weight:700;
+  color:#fff;margin-bottom:10px;
+}
+.footer-brand-name .accent{color:var(--coral)}
+.footer-desc{font-size:13px;line-height:1.7;color:rgba(255,255,255,.5);max-width:240px}
+.footer-col-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.9);margin-bottom:14px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.5);transition:color .15s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{
+  margin-top:40px;padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-legal{font-size:12px;color:rgba(255,255,255,.3)}
+
+/* ── DOWNLOAD MODAL ── */
+.modal-wrap{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(20,16,12,.75);
+  z-index:500;
+  align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-wrap.open{display:flex}
+.modal{
+  background:var(--canvas);
+  border-radius:var(--r-xl);
+  max-width:600px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  box-shadow:var(--shadow-lg);
+  animation:fadeUp .3s cubic-bezier(.34,1.56,.64,1);
+}
+.modal-header{
+  padding:20px 24px 16px;
+  border-bottom:1px solid var(--border-2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-title{font-family:'Nanum Myeongjo',serif;font-size:20px;font-weight:700}
+.modal-close{
+  width:34px;height:34px;background:var(--warm);
+  border-radius:50%;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-2);transition:background .15s;
+}
+.modal-close:hover{background:var(--warm-2)}
+.modal-body{padding:24px}
+
+.modal-artwork{
+  width:100%;aspect-ratio:3/4;
+  background:var(--warm);border-radius:var(--r-lg);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;border:1px solid var(--border);
+  overflow:hidden;position:relative;
+}
+.modal-artwork svg{width:72%;height:auto;opacity:.85}
+.modal-artwork .wm{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.88);
+  padding:8px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;font-weight:700;color:var(--ink-3);
+  letter-spacing:.3px;
+}
+
+/* page nav */
+.page-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.page-nav-btn{
+  width:40px;height:40px;
+  border:1.5px solid var(--border);border-radius:50%;
+  background:var(--canvas);color:var(--ink);
+  font-size:16px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.page-nav-btn:hover{border-color:var(--ink);background:var(--warm)}
+.page-dots{display:flex;gap:5px}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .25s}
+.pdot.active{background:var(--coral);width:20px;border-radius:4px}
+.pdot.done{background:var(--warm-2)}
+.story-text{
+  font-size:14px;color:var(--ink-2);line-height:1.75;
+  text-align:center;padding:0 8px;font-style:italic;margin-bottom:16px;
+}
+
+/* modal ad */
+.modal-ad{
+  background:var(--warm);border:1px dashed rgba(200,68,42,.2);
+  border-radius:var(--r);height:72px;
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;font-size:11px;color:var(--ink-3);
+  margin-bottom:14px;
+}
+
+.modal-dl-row{
+  background:var(--warm);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.modal-dl-info strong{font-size:15px;font-weight:700;display:block;margin-bottom:2px}
+.modal-dl-info span{font-size:12px;color:var(--ink-3)}
+.dl-btns{display:flex;gap:8px}
+.btn-dl{
+  height:42px;padding:0 18px;
+  border-radius:100px;font-size:13px;font-weight:700;
+  display:flex;align-items:center;gap:6px;
+  transition:background .2s,transform .1s;
+}
+.btn-dl:hover{transform:translateY(-1px)}
+.btn-dl.fill{background:var(--coral);color:#fff}
+.btn-dl.fill:hover{background:#b33a22}
+.btn-dl.outline{background:var(--canvas);color:var(--ink);border:1.5px solid var(--border)}
+.btn-dl.outline:hover{border-color:var(--ink);background:var(--warm)}
+
+/* ── INTERSTITIAL ── */
+.inter{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.9);
+  z-index:800;
+  align-items:center;justify-content:center;padding:20px;
+}
+.inter.open{display:flex}
+.inter-box{
+  background:var(--canvas);border-radius:var(--r-xl);
+  padding:24px;max-width:480px;width:100%;
+  text-align:center;
+  animation:fadeUp .35s cubic-bezier(.34,1.56,.64,1);
+}
+.inter-h{font-family:'Nanum Myeongjo',serif;font-size:20px;font-weight:700;margin-bottom:4px}
+.inter-sub{font-size:13px;color:var(--ink-3);margin-bottom:14px}
+.inter-ad{
+  background:var(--warm);border:1px dashed rgba(200,68,42,.22);
+  border-radius:var(--r-lg);height:250px;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:6px;
+  margin-bottom:14px;
+}
+.countdown-track{width:100%;height:5px;background:var(--warm-2);border-radius:3px;overflow:hidden;margin-bottom:5px}
+.countdown-fill{height:100%;background:var(--coral);border-radius:3px;animation:cdFill 5s linear forwards}
+@keyframes cdFill{from{width:100%}to{width:0%}}
+.countdown-label{font-size:12px;color:var(--ink-3);margin-bottom:14px}
+.btn-skip{
+  width:100%;height:48px;
+  background:var(--coral);color:#fff;
+  border-radius:100px;font-size:15px;font-weight:700;
+  transition:background .2s,opacity .3s;
+  opacity:.45;pointer-events:none;
+}
+.btn-skip.ready{opacity:1;pointer-events:auto}
+.btn-skip.ready:hover{background:#b33a22}
+
+/* ── MISC ── */
+.divider{height:1px;background:var(--border-2);margin:0}
+.font-ctrl{
+  display:none;align-items:center;gap:4px;
+  border:1px solid var(--border);border-radius:100px;
+  padding:4px 10px;
+}
+@media(max-width:900px){.font-ctrl{display:flex}}
+.font-ctrl-btn{
+  width:30px;height:30px;border-radius:50%;
+  background:none;font-size:13px;font-weight:700;color:var(--ink-2);
+  transition:background .15s;
+}
+.font-ctrl-btn:hover{background:var(--warm-2)}
+
+svg.coloring{
+  fill:#f9f7f4;
+  stroke:#1e1b18;
+  stroke-width:1.4px;
+  stroke-linejoin:round;
+  stroke-linecap:round;
+}
+svg.coloring .accent-s{stroke:#c8442a}
+svg.coloring .green-s{stroke:#3a6e2a}
+svg.coloring .light-s{stroke:#aaa;stroke-width:1px}
+svg.coloring .no-fill{fill:none}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <span class="accent">color</span><span class="dot">.</span>uncle
+    </a>
+    <div class="nav-search">
+      <svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="6"/><path d="m15 15 3 3"/></svg>
+      <input type="text" placeholder="토끼, 만다라, 동화...">
+    </div>
+    <nav class="nav-links">
+      <a class="nav-link active" href="#">홈</a>
+      <a class="nav-link" href="#">전체 도안</a>
+      <a class="nav-link" href="#">시리즈</a>
+      <a class="nav-link" href="#">어른용</a>
+    </nav>
+    <div class="font-ctrl">
+      <button class="font-ctrl-btn" onclick="changeFont(-1)">A-</button>
+      <button class="font-ctrl-btn" onclick="changeFont(1)">A+</button>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">무료 다운로드</button>
+    <button class="nav-burger" aria-label="메뉴">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4h14M2 9h14M2 14h14"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- TOP AD -->
+<div class="ad-strip-top">
+  <div class="ad-unit leaderboard">
+    <span class="ad-label">광고</span>
+    <span style="font-size:12px;color:var(--ink-3)">Google AdSense · 728×90 — 상단 배너</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- left -->
+      <div>
+        <div class="hero-eyebrow anim-1">매주 새 도안 · 완전 무료</div>
+        <h1 class="hero-h1 anim-2">
+          색칠하고 싶은<br>도안을 <em>바로</em><br>만나세요
+        </h1>
+        <p class="hero-sub anim-3">
+          AI로 만든 고품질 선화 도안.<br>
+          A4로 프린트해서 바로 색칠하세요.
+        </p>
+        <div class="hero-ctas anim-4">
+          <button class="btn-primary" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M4 7l4 4 4-4"/><path d="M2 13h12"/></svg>
+            도안 받기
+          </button>
+          <button class="btn-secondary" onclick="document.getElementById('series').scrollIntoView({behavior:'smooth'})">
+            시리즈 보기 →
+          </button>
+        </div>
+        <div class="hero-stats anim-5">
+          <div><div class="stat-val">2,400+</div><div class="stat-label">도안</div></div>
+          <div><div class="stat-val">무료</div><div class="stat-label">전체</div></div>
+          <div><div class="stat-val">A4</div><div class="stat-label">인쇄 최적화</div></div>
+          <div><div class="stat-val">매주</div><div class="stat-label">신규 업로드</div></div>
+        </div>
+      </div>
+
+      <!-- right mosaic -->
+      <div class="hero-mosaic anim-5">
+        <!-- featured -->
+        <div class="mosaic-card featured" onclick="openModal('rabbit')">
+          <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>
+          <span class="badge-top">⭐ 인기</span>
+          <div class="card-img ratio-wide">
+            <svg viewBox="0 0 300 170" class="coloring" xmlns="http://www.w3.org/2000/svg">
+              <!-- ground -->
+              <ellipse cx="90" cy="148" rx="70" ry="14" class="green-s no-fill"/>
+              <ellipse cx="210" cy="152" rx="65" ry="12" class="green-s no-fill"/>
+              <!-- grass -->
+              <path d="M30 148 Q32 138 34 148" class="green-s no-fill"/>
+              <path d="M50 145 Q54 132 58 145" class="green-s no-fill"/>
+              <!-- rabbit body -->
+              <ellipse cx="90" cy="120" rx="35" ry="38"/>
+              <!-- rabbit head -->
+              <circle cx="90" cy="78" r="28"/>
+              <!-- ears -->
+              <ellipse cx="76" cy="46" rx="9" ry="22" transform="rotate(-8 76 46)"/>
+              <ellipse cx="76" cy="46" rx="5" ry="15" class="accent-s" transform="rotate(-8 76 46)"/>
+              <ellipse cx="104" cy="44" rx="9" ry="22" transform="rotate(8 104 44)"/>
+              <ellipse cx="104" cy="44" rx="5" ry="15" class="accent-s" transform="rotate(8 104 44)"/>
+              <!-- eyes -->
+              <circle cx="81" cy="74" r="5"/>
+              <circle cx="83" cy="74" r="2.5" fill="#1e1b18" stroke="none"/>
+              <circle cx="99" cy="74" r="5"/>
+              <circle cx="101" cy="74" r="2.5" fill="#1e1b18" stroke="none"/>
+              <!-- nose mouth -->
+              <ellipse cx="90" cy="83" rx="4" ry="3" class="accent-s"/>
+              <path d="M87 87 Q90 91 93 87" class="no-fill"/>
+              <!-- paws -->
+              <ellipse cx="68" cy="140" rx="18" ry="11"/>
+              <ellipse cx="112" cy="140" rx="18" ry="11"/>
+              <!-- carrot -->
+              <path d="M124 125 L133 108 L129 125Z"/>
+              <path d="M130 108 Q130 100 132 94" class="green-s no-fill"/>
+              <!-- flower -->
+              <circle cx="57" cy="120" r="5" class="accent-s"/>
+              <path d="M54 115 Q57 110 60 115" class="green-s no-fill"/>
+              <!-- turtle -->
+              <ellipse cx="210" cy="140" rx="42" ry="24"/>
+              <ellipse cx="210" cy="138" rx="28" ry="16"/>
+              <!-- turtle head -->
+              <circle cx="247" cy="134" r="12"/>
+              <!-- turtle eye -->
+              <circle cx="251" cy="130" r="3"/>
+              <circle cx="252" cy="130" r="1.5" fill="#1e1b18" stroke="none"/>
+              <!-- shell pattern -->
+              <path d="M196 128 Q200 122 208 124" class="no-fill light-s"/>
+              <path d="M212 122 Q218 118 224 122" class="no-fill light-s"/>
+              <path d="M198 136 Q202 130 210 132" class="no-fill light-s"/>
+              <!-- turtle legs -->
+              <ellipse cx="176" cy="148" rx="12" ry="7" transform="rotate(-20 176 148)"/>
+              <ellipse cx="244" cy="148" rx="12" ry="7" transform="rotate(20 244 148)"/>
+            </svg>
+          </div>
+          <div class="card-foot">
+            <div class="card-category">동화 시리즈</div>
+            <div class="card-title">토끼와 거북이의 느린 하루</div>
+            <div class="card-meta">
+              <span class="card-pages">📄 10장 세트</span>
+              <div class="diff-dots">
+                <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-overlay">
+            <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 1v7M3 5l4 4 4-4"/><path d="M1 11h12"/></svg>
+              다운로드
+            </button>
+          </div>
+        </div>
+
+        <!-- small 1 -->
+        <div class="mosaic-card" onclick="openModal('mandala')">
+          <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>
+          <div class="card-img ratio-tall">
+            <svg viewBox="0 0 140 180" class="coloring" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="70" cy="90" r="60"/>
+              <circle cx="70" cy="90" r="40"/>
+              <circle cx="70" cy="90" r="20"/>
+              <circle cx="70" cy="90" r="6"/>
+              <path d="M70 30 v120 M10 90 h120" class="no-fill light-s"/>
+              <path d="M27 47 l86 86 M113 47 l-86 86" class="no-fill light-s"/>
+              <ellipse cx="70" cy="42" rx="8" ry="14"/>
+              <ellipse cx="70" cy="138" rx="8" ry="14"/>
+              <ellipse cx="22" cy="90" rx="14" ry="8"/>
+              <ellipse cx="118" cy="90" rx="14" ry="8"/>
+            </svg>
+          </div>
+          <div class="card-foot">
+            <div class="card-category">집중 · 어른용</div>
+            <div class="card-title">명상 만다라</div>
+            <div class="card-meta">
+              <span class="card-pages">📄 12장</span>
+              <div class="diff-dots">
+                <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-overlay">
+            <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
+          </div>
+        </div>
+
+        <!-- small 2 -->
+        <div class="mosaic-card" onclick="openModal('tree')">
+          <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>
+          <span class="badge-top badge-new">NEW</span>
+          <div class="card-img ratio-tall">
+            <svg viewBox="0 0 140 180" class="coloring" xmlns="http://www.w3.org/2000/svg">
+              <rect x="62" y="110" width="16" height="56" rx="3"/>
+              <ellipse cx="70" cy="90" rx="48" ry="42"/>
+              <ellipse cx="70" cy="64" rx="36" ry="32"/>
+              <ellipse cx="70" cy="42" rx="22" ry="22"/>
+              <circle cx="82" cy="75" r="5" class="accent-s"/>
+              <circle cx="58" cy="90" r="4" class="accent-s"/>
+              <circle cx="80" cy="100" r="3" class="accent-s"/>
+              <path d="M28 152 Q30 142 32 152" class="green-s no-fill"/>
+              <path d="M106 150 Q109 138 112 150" class="green-s no-fill"/>
+            </svg>
+          </div>
+          <div class="card-foot">
+            <div class="card-category">자연 · 계절</div>
+            <div class="card-title">봄날 벚꽃나무</div>
+            <div class="card-meta">
+              <span class="card-pages">📄 8장</span>
+              <div class="diff-dots">
+                <div class="diff-dot on"></div><div class="diff-dot"></div><div class="diff-dot"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-overlay">
+            <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY + SIDEBAR -->
+<div class="section" id="gallery">
+  <div class="container">
+    <div class="main-layout">
+      <main>
+        <div class="section-header">
+          <div>
+            <div class="section-title">인기 도안</div>
+            <div class="section-sub">가장 많이 다운로드된 도안들</div>
+          </div>
+          <a class="section-more" href="#">전체 보기 →</a>
+        </div>
+
+        <!-- filters -->
+        <div class="filter-row">
+          <button class="filter-tab active" onclick="setFilter(this)">🌟 전체</button>
+          <button class="filter-tab" onclick="setFilter(this)">🐰 동물</button>
+          <button class="filter-tab" onclick="setFilter(this)">🌸 자연</button>
+          <button class="filter-tab" onclick="setFilter(this)">🏡 마을</button>
+          <button class="filter-tab" onclick="setFilter(this)">⭐ 하늘</button>
+          <button class="filter-tab" onclick="setFilter(this)">🧚 판타지</button>
+          <button class="filter-tab" onclick="setFilter(this)">🔮 만다라</button>
+          <button class="filter-tab" onclick="setFilter(this)">🌊 바다</button>
+        </div>
+
+        <div class="card-grid">
+          <!-- card 1 -->
+          <div class="coloring-card" onclick="openModal('rabbit')">
+            <span class="badge-top">⭐ 인기</span>
+            <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)" style="top:38px">❤️</button>
+            <div class="card-img coloring-img">
+              <svg viewBox="0 0 140 185" class="coloring">
+                <ellipse cx="70" cy="165" rx="55" ry="14" class="green-s no-fill"/>
+                <ellipse cx="70" cy="118" rx="40" ry="44"/>
+                <circle cx="70" cy="72" r="30"/>
+                <ellipse cx="56" cy="38" rx="9" ry="22" transform="rotate(-8 56 38)"/>
+                <ellipse cx="56" cy="38" rx="5" ry="15" class="accent-s" transform="rotate(-8 56 38)"/>
+                <ellipse cx="84" cy="36" rx="9" ry="22" transform="rotate(8 84 36)"/>
+                <ellipse cx="84" cy="36" rx="5" ry="15" class="accent-s" transform="rotate(8 84 36)"/>
+                <circle cx="61" cy="68" r="5"/><circle cx="63" cy="68" r="2.5" fill="#1e1b18" stroke="none"/>
+                <circle cx="79" cy="68" r="5"/><circle cx="81" cy="68" r="2.5" fill="#1e1b18" stroke="none"/>
+                <ellipse cx="70" cy="78" rx="3.5" ry="2.5" class="accent-s"/>
+                <path d="M67 82 Q70 86 73 82" class="no-fill"/>
+                <ellipse cx="50" cy="144" rx="16" ry="10"/>
+                <ellipse cx="90" cy="144" rx="16" ry="10"/>
+              </svg>
+            </div>
+            <div class="card-foot">
+              <div class="card-category">동물</div>
+              <div class="card-title">꼬마 토끼</div>
+              <div class="card-meta">
+                <span class="card-pages">📄 10장</span>
+                <div class="diff-dots"><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div></div>
+              </div>
+            </div>
+            <div class="card-overlay">
+              <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
+            </div>
+          </div>
+
+          <!-- card 2 -->
+          <div class="coloring-card" onclick="openModal('whale')">
+            <span class="badge-top badge-new">NEW</span>
+            <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)" style="top:38px">🤍</button>
+            <div class="card-img coloring-img">
+              <svg viewBox="0 0 140 185" class="coloring">
+                <path d="M20 110 Q70 68 120 110 Q104 145 70 148 Q36 145 20 110Z"/>
+                <circle cx="50" cy="100" r="7"/>
+                <circle cx="52" cy="100" r="3.5" fill="#1e1b18" stroke="none"/>
+                <path d="M60 118 Q70 124 80 118" class="no-fill"/>
+                <path d="M110 106 L126 92 L118 112Z"/>
+                <path d="M20 110 L6 98 L14 116Z"/>
+                <path d="M70 72 Q66 58 70 48 Q74 58 70 72" class="no-fill"/>
+                <ellipse cx="70" cy="46" rx="7" ry="12" class="light-s"/>
+                <path d="M40 128 Q38 136 34 140" class="no-fill light-s"/>
+                <path d="M50 132 Q48 142 45 146" class="no-fill light-s"/>
+                <path d="M60 134 Q59 144 57 150" class="no-fill light-s"/>
+                <path d="M0 155 Q35 145 70 155 Q105 145 140 155" class="no-fill light-s"/>
+                <path d="M0 165 Q35 155 70 165 Q105 155 140 165" class="no-fill light-s"/>
+              </svg>
+            </div>
+            <div class="card-foot">
+              <div class="card-category">바다</div>
+              <div class="card-title">흰 고래 룰루</div>
+              <div class="card-meta">
+                <span class="card-pages">📄 10장</span>
+                <div class="diff-dots"><div class="diff-dot on"></div><div class="diff-dot"></div><div class="diff-dot"></div></div>
+              </div>
+            </div>
+            <div class="card-overlay">
+              <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
+            </div>
+          </div>
+
+          <!-- card 3 -->
+          <div class="coloring-card" onclick="openModal('house')">
+            <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)" style="top:10px">🤍</button>
+            <div class="card-img coloring-img">
+              <svg viewBox="0 0 140 185" class="coloring">
+                <rect x="30" y="102" width="80" height="68" rx="2"/>
+                <polygon points="18,106 70,62 122,106"/>
+                <rect x="56" y="136" width="28" height="34" rx="14"/>
+                <rect x="36" y="112" width="22" height="22" rx="3"/>
+                <line x1="47" y1="112" x2="47" y2="134" class="light-s"/>
+                <line x1="36" y1="123" x2="58" y2="123" class="light-s"/>
+                <rect x="82" y="112" width="22" height="22" rx="3"/>
+                <line x1="93" y1="112" x2="93" y2="134" class="light-s"/>
+                <line x1="82" y1="123" x2="104" y2="123" class="light-s"/>
+                <rect x="82" y="90" width="12" height="22" rx="2"/>
+                <path d="M88 90 Q84 78 88 68 Q92 78 88 90" class="light-s no-fill"/>
+                <circle cx="46" cy="158" r="5" class="accent-s"/>
+                <circle cx="94" cy="158" r="5" class="accent-s"/>
+                <ellipse cx="70" cy="175" rx="60" ry="10" class="green-s no-fill"/>
+              </svg>
+            </div>
+            <div class="card-foot">
+              <div class="card-category">마을</div>
+              <div class="card-title">작은 마을 빵집</div>
+              <div class="card-meta">
+                <span class="card-pages">📄 10장</span>
+                <div class="diff-dots"><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div></div>
+              </div>
+            </div>
+            <div class="card-overlay">
+              <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
+            </div>
+          </div>
+
+          <!-- ad infeed -->
+          <div class="ad-infeed">
+            <span class="ad-label">광고</span>
+            <span style="font-size:11px;color:var(--ink-3)">Google AdSense 인피드</span>
+          </div>
+
+          <!-- card 4 -->
+          <div class="coloring-card" onclick="openModal('fairy')">
+            <span class="badge-top">🧚 요정</span>
+            <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)" style="top:38px">❤️</button>
+            <div class="card-img coloring-img">
+              <svg viewBox="0 0 140 185" class="coloring">
+                <ellipse cx="50" cy="100" rx="38" ry="24" transform="rotate(-25 50 100)"/>
+                <ellipse cx="90" cy="100" rx="38" ry="24" transform="rotate(25 90 100)"/>
+                <path d="M58 120 Q70 126 82 120 L80 162 Q70 166 60 162Z"/>
+                <circle cx="70" cy="88" r="26"/>
+                <path d="M45 82 Q50 62 70 58 Q90 62 95 82" class="no-fill"/>
+                <path d="M45 76 Q38 84 42 96" class="no-fill"/>
+                <path d="M95 76 Q102 84 98 96" class="no-fill"/>
+                <circle cx="60" cy="86" r="4.5"/>
+                <circle cx="61" cy="86" r="2.2" fill="#1e1b18" stroke="none"/>
+                <circle cx="80" cy="86" r="4.5"/>
+                <circle cx="81" cy="86" r="2.2" fill="#1e1b18" stroke="none"/>
+                <path d="M66 95 Q70 99 74 95" class="no-fill"/>
+                <circle cx="60" cy="60" r="5" class="accent-s"/>
+                <circle cx="70" cy="55" r="5" class="accent-s"/>
+                <circle cx="80" cy="60" r="5" class="accent-s"/>
+                <line x1="90" y1="134" x2="116" y2="105"/>
+                <polygon points="116,99 122,107 110,108" class="accent-s"/>
+              </svg>
+            </div>
+            <div class="card-foot">
+              <div class="card-category">판타지</div>
+              <div class="card-title">꽃의 요정 릴리아</div>
+              <div class="card-meta">
+                <span class="card-pages">📄 10장</span>
+                <div class="diff-dots"><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div></div>
+              </div>
+            </div>
+            <div class="card-overlay">
+              <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
+            </div>
+          </div>
+
+          <!-- card 5 -->
+          <div class="coloring-card" onclick="openModal('mandala')">
+            <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)" style="top:10px">🤍</button>
+            <div class="card-img coloring-img">
+              <svg viewBox="0 0 140 185" class="coloring">
+                <circle cx="70" cy="92" r="60"/>
+                <circle cx="70" cy="92" r="42"/>
+                <circle cx="70" cy="92" r="24"/>
+                <circle cx="70" cy="92" r="7"/>
+                <path d="M70 32 v120 M10 92 h120" class="no-fill light-s"/>
+                <path d="M28 50 l84 84 M112 50 l-84 84" class="no-fill light-s"/>
+                <ellipse cx="70" cy="44" rx="8" ry="14"/>
+                <ellipse cx="70" cy="140" rx="8" ry="14"/>
+                <ellipse cx="22" cy="92" rx="14" ry="8"/>
+                <ellipse cx="118" cy="92" rx="14" ry="8"/>
+                <ellipse cx="37" cy="58" rx="6" ry="10" transform="rotate(45 37 58)"/>
+                <ellipse cx="103" cy="58" rx="6" ry="10" transform="rotate(-45 103 58)"/>
+                <ellipse cx="37" cy="126" rx="6" ry="10" transform="rotate(-45 37 126)"/>
+                <ellipse cx="103" cy="126" rx="6" ry="10" transform="rotate(45 103 126)"/>
+              </svg>
+            </div>
+            <div class="card-foot">
+              <div class="card-category">집중 · 어른용</div>
+              <div class="card-title">꽃잎 만다라</div>
+              <div class="card-meta">
+                <span class="card-pages">📄 12장</span>
+                <div class="diff-dots"><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div></div>
+              </div>
+            </div>
+            <div class="card-overlay">
+              <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
+            </div>
+          </div>
+
+          <!-- card 6 -->
+          <div class="coloring-card" onclick="openModal('star')">
+            <span class="badge-top badge-new">NEW</span>
+            <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)" style="top:38px">🤍</button>
+            <div class="card-img coloring-img">
+              <svg viewBox="0 0 140 185" class="coloring">
+                <circle cx="100" cy="38" r="28"/>
+                <circle cx="110" cy="30" r="22" fill="#f3ede4" stroke="none"/>
+                <path d="M22 38 L24 46 L26 38 L24 30Z" class="accent-s"/>
+                <path d="M52 20 L53 26 L55 20 L53 14Z" class="light-s"/>
+                <circle cx="70" cy="105" r="26"/>
+                <path d="M46 98 Q51 78 70 74 Q89 78 94 98" class="no-fill"/>
+                <path d="M46 92 Q40 100 44 112" class="no-fill"/>
+                <path d="M94 92 Q100 100 96 112" class="no-fill"/>
+                <path d="M60 103 Q65 100 70 103" class="no-fill"/>
+                <path d="M70 103 Q75 100 80 103" class="no-fill"/>
+                <path d="M63 111 Q70 116 77 111" class="no-fill"/>
+                <path d="M48 128 Q70 134 92 128 L90 164 Q70 170 50 164Z"/>
+                <path d="M50 140 Q26 126 12 104" class="no-fill"/>
+                <path d="M90 140 Q114 126 128 104" class="no-fill"/>
+                <path d="M8 100 L10 108 L12 100 L10 92Z" class="accent-s"/>
+                <path d="M128 100 L130 108 L132 100 L130 92Z" class="accent-s"/>
+                <ellipse cx="70" cy="168" rx="62" ry="10" class="light-s no-fill"/>
+              </svg>
+            </div>
+            <div class="card-foot">
+              <div class="card-category">하늘 · 동화</div>
+              <div class="card-title">별을 따는 아이</div>
+              <div class="card-meta">
+                <span class="card-pages">📄 10장</span>
+                <div class="diff-dots"><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div></div>
+              </div>
+            </div>
+            <div class="card-overlay">
+              <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-ad">
+          <span class="ad-label">광고</span>
+          <span style="font-size:11px;color:var(--ink-3)">AdSense 300×250</span>
+        </div>
+
+        <!-- Discover More (affiliate) -->
+        <div class="discover-box">
+          <div class="discover-title">이런 것도 어때요?</div>
+          <div class="discover-item" onclick="alert('쿠팡 파트너스 링크')">
+            <div class="discover-icon">🖍️</div>
+            <div class="discover-item-text">
+              <strong>색연필 세트 (48색)</strong>
+              <span>쿠팡 · 최저가 보기</span>
+            </div>
+            <span class="discover-arrow">›</span>
+          </div>
+          <div class="discover-item" onclick="alert('쿠팡 파트너스 링크')">
+            <div class="discover-icon">📚</div>
+            <div class="discover-item-text">
+              <strong>A4 고품질 용지 500매</strong>
+              <span>쿠팡 · 최저가 보기</span>
+            </div>
+            <span class="discover-arrow">›</span>
+          </div>
+          <div class="discover-item" onclick="alert('쿠팡 파트너스 링크')">
+            <div class="discover-icon">🎨</div>
+            <div class="discover-item-text">
+              <strong>수채화 물감 세트</strong>
+              <span>쿠팡 · 최저가 보기</span>
+            </div>
+            <span class="discover-arrow">›</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- SERIES SECTION -->
+<div class="section" id="series">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-title">이야기가 있는 시리즈</div>
+        <div class="section-sub">10장 세트로 이어지는 동화 색칠도안</div>
+      </div>
+      <a class="section-more" href="#">전체 시리즈 →</a>
+    </div>
+    <div class="series-row">
+
+      <div class="series-card" onclick="openModal('rabbit')">
+        <div class="series-cover">
+          <svg viewBox="0 0 200 150" class="coloring">
+            <ellipse cx="70" cy="125" rx="55" ry="14" class="green-s no-fill"/>
+            <ellipse cx="70" cy="98" rx="36" ry="40"/>
+            <circle cx="70" cy="60" r="28"/>
+            <ellipse cx="57" cy="30" rx="8" ry="20" transform="rotate(-8 57 30)"/>
+            <ellipse cx="57" cy="30" rx="4.5" ry="14" class="accent-s" transform="rotate(-8 57 30)"/>
+            <ellipse cx="83" cy="28" rx="8" ry="20" transform="rotate(8 83 28)"/>
+            <ellipse cx="83" cy="28" rx="4.5" ry="14" class="accent-s" transform="rotate(8 83 28)"/>
+            <circle cx="61" cy="57" r="5"/><circle cx="63" cy="57" r="2.5" fill="#1e1b18" stroke="none"/>
+            <circle cx="79" cy="57" r="5"/><circle cx="81" cy="57" r="2.5" fill="#1e1b18" stroke="none"/>
+            <ellipse cx="70" cy="66" rx="3.5" ry="2.5" class="accent-s"/>
+            <path d="M67 70 Q70 74 73 70" class="no-fill"/>
+            <ellipse cx="52" cy="118" rx="16" ry="10"/>
+            <ellipse cx="88" cy="118" rx="16" ry="10"/>
+            <ellipse cx="140" cy="118" rx="36" ry="20"/>
+            <path d="M118 100 Q140 80 162 100" class="no-fill"/>
+            <circle cx="156" cy="112" r="10"/>
+            <circle cx="158" cy="109" r="3" fill="#1e1b18" stroke="none"/>
+            <path d="M130 104 Q135 100 140 102" class="no-fill light-s"/>
+          </svg>
+          <span class="series-count-badge">10장 세트</span>
+        </div>
+        <div class="series-body">
+          <div class="series-kicker">전래동화</div>
+          <div class="series-title">토끼와 거북이의<br>느린 하루</div>
+          <div class="series-desc">느리게 걷는 거북이와 빠른 토끼가 함께하는 하루. 진짜 빠른 것이 무엇인지 알게 되는 이야기.</div>
+          <button class="series-dl-btn" onclick="event.stopPropagation();triggerDownload()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 1v7M3 5l3.5 4 3.5-4"/><path d="M1 10h11"/></svg>
+            전체 다운로드
+          </button>
+        </div>
+        <div class="series-strip">
+          <div class="series-thumb active">
+            <svg viewBox="0 0 40 54" class="coloring"><ellipse cx="20" cy="38" rx="14" ry="15"/><circle cx="20" cy="22" r="12"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><rect x="8" y="22" width="24" height="26" rx="2"/><polygon points="4,24 20,10 36,24"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><path d="M20 48 v-18"/><ellipse cx="20" cy="24" rx="16" ry="14"/><ellipse cx="20" cy="14" rx="11" ry="10"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><circle cx="20" cy="27" r="16"/><circle cx="20" cy="27" r="9"/><circle cx="20" cy="27" r="3"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><ellipse cx="20" cy="34" rx="16" ry="12"/><path d="M12 22 Q20 10 28 22" class="no-fill"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="series-card" onclick="openModal('mandala')">
+        <div class="series-cover" style="background:#f0ebe4">
+          <svg viewBox="0 0 200 150" class="coloring">
+            <circle cx="100" cy="75" r="60"/>
+            <circle cx="100" cy="75" r="42"/>
+            <circle cx="100" cy="75" r="24"/>
+            <circle cx="100" cy="75" r="7"/>
+            <path d="M100 15 v120 M40 75 h120" class="no-fill light-s"/>
+            <path d="M58 33 l84 84 M142 33 l-84 84" class="no-fill light-s"/>
+            <ellipse cx="100" cy="27" rx="8" ry="14"/>
+            <ellipse cx="100" cy="123" rx="8" ry="14"/>
+            <ellipse cx="52" cy="75" rx="14" ry="8"/>
+            <ellipse cx="148" cy="75" rx="14" ry="8"/>
+          </svg>
+          <span class="series-count-badge">12장 세트</span>
+        </div>
+        <div class="series-body">
+          <div class="series-kicker">집중 · 어른용</div>
+          <div class="series-title">명상 만다라<br>시리즈</div>
+          <div class="series-desc">복잡한 패턴을 하나씩 채워가다 보면 어느새 집중해 있는 자신을 발견하게 됩니다.</div>
+          <button class="series-dl-btn" onclick="event.stopPropagation();triggerDownload()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 1v7M3 5l3.5 4 3.5-4"/><path d="M1 10h11"/></svg>
+            전체 다운로드
+          </button>
+        </div>
+        <div class="series-strip">
+          <div class="series-thumb active">
+            <svg viewBox="0 0 40 54" class="coloring"><circle cx="20" cy="27" r="16"/><circle cx="20" cy="27" r="10"/><circle cx="20" cy="27" r="4"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><circle cx="20" cy="27" r="16"/><path d="M20 11 v32 M4 27 h32" class="no-fill light-s"/><circle cx="20" cy="27" r="6"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><circle cx="20" cy="27" r="16"/><circle cx="20" cy="27" r="9"/><ellipse cx="20" cy="13" rx="5" ry="8"/><ellipse cx="20" cy="41" rx="5" ry="8"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><circle cx="20" cy="27" r="14"/><path d="M20 13 v28 M6 27 h28 M10 17 l20 20 M30 17 l-20 20" class="no-fill light-s"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="series-card" onclick="openModal('cherry')">
+        <div class="series-cover" style="background:#fdf0ec">
+          <svg viewBox="0 0 200 150" class="coloring">
+            <ellipse cx="100" cy="132" rx="80" ry="14" class="green-s no-fill"/>
+            <rect x="88" y="80" width="24" height="52" rx="3"/>
+            <path d="M84 102 Q56 88 34 70" class="no-fill"/>
+            <path d="M116 98 Q144 84 166 68" class="no-fill"/>
+            <circle cx="30" cy="54" r="28"/>
+            <circle cx="60" cy="40" r="30"/>
+            <circle cx="100" cy="35" r="32"/>
+            <circle cx="140" cy="40" r="30"/>
+            <circle cx="170" cy="54" r="26"/>
+            <circle cx="60" cy="40" r="16" class="accent-s"/>
+            <circle cx="100" cy="35" r="18" class="accent-s"/>
+            <circle cx="140" cy="40" r="16" class="accent-s"/>
+            <ellipse cx="68" cy="118" rx="5" ry="8" transform="rotate(20 68 118)" class="accent-s"/>
+            <ellipse cx="100" cy="125" rx="4" ry="7" transform="rotate(-10 100 125)" class="accent-s"/>
+            <ellipse cx="132" cy="118" rx="5" ry="8" transform="rotate(-20 132 118)" class="accent-s"/>
+          </svg>
+          <span class="series-count-badge">8장 세트</span>
+        </div>
+        <div class="series-body">
+          <div class="series-kicker">계절 · 봄 특집</div>
+          <div class="series-title">봄날의 벚꽃<br>나무 아래</div>
+          <div class="series-desc">분홍빛 꽃잎이 흩날리는 봄날. 따뜻한 봄바람과 함께 색칠해 보세요.</div>
+          <button class="series-dl-btn" onclick="event.stopPropagation();triggerDownload()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 1v7M3 5l3.5 4 3.5-4"/><path d="M1 10h11"/></svg>
+            전체 다운로드
+          </button>
+        </div>
+        <div class="series-strip">
+          <div class="series-thumb active">
+            <svg viewBox="0 0 40 54" class="coloring"><circle cx="20" cy="20" r="14"/><circle cx="20" cy="20" r="8" class="accent-s"/><rect x="17" y="34" width="6" height="16" rx="2"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><ellipse cx="20" cy="18" rx="14" ry="12"/><ellipse cx="20" cy="12" rx="10" ry="8"/><rect x="17" y="30" width="6" height="20" rx="2"/></svg>
+          </div>
+          <div class="series-thumb">
+            <svg viewBox="0 0 40 54" class="coloring"><circle cx="20" cy="20" r="16"/><path d="M20 4 v32 M4 20 h32" class="no-fill light-s"/><circle cx="20" cy="20" r="6" class="accent-s"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM AD -->
+<div style="padding:32px 0;background:var(--warm);border-top:1px solid var(--border-2);text-align:center">
+  <div class="container">
+    <div class="ad-unit leaderboard" style="margin:0 auto">
+      <span class="ad-label">광고</span>
+      <span style="font-size:12px;color:var(--ink-3)">Google AdSense · 728×90 — 하단 배너</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name"><span class="accent">color</span>.uncle</div>
+        <div class="footer-desc">유아부터 어른까지 즐기는 AI 색칠도안 전문 사이트. 매주 새로운 도안이 업로드됩니다.</div>
+      </div>
+      <div>
+        <div class="footer-col-title">도안</div>
+        <ul class="footer-links">
+          <li><a href="#">전체 도안</a></li>
+          <li><a href="#">시리즈 목록</a></li>
+          <li><a href="#">어른용 도안</a></li>
+          <li><a href="#">만다라</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">정보</div>
+        <ul class="footer-links">
+          <li><a href="#">이용 방법</a></li>
+          <li><a href="#">인쇄 가이드</a></li>
+          <li><a href="#">도안 신청</a></li>
+          <li><a href="#">자주 묻는 질문</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">사이트</div>
+        <ul class="footer-links">
+          <li><a href="#">사이트 소개</a></li>
+          <li><a href="#">저작권 안내</a></li>
+          <li><a href="#">광고 문의</a></li>
+          <li><a href="#">개인정보처리방침</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-legal">© 2025 color.uncle (color.uncledison.com). 모든 도안 무단 복제 금지.</span>
+      <span class="footer-legal">접근성 높은 디자인 · WCAG AA 준수</span>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-wrap" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">도안 제목</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="page-nav">
+        <button class="page-nav-btn" onclick="changePage(-1)">◀</button>
+        <div class="page-dots" id="pageDots"></div>
+        <button class="page-nav-btn" onclick="changePage(1)">▶</button>
+      </div>
+      <div class="modal-artwork">
+        <div id="modalSvg"></div>
+        <div class="wm">
+          <span>© COLOR.UNCLE</span>
+          <span>color.uncledison.com</span>
+        </div>
+      </div>
+      <p class="story-text" id="storyText"></p>
+      <div class="modal-ad">
+        <span class="ad-label">광고</span>
+        <span style="font-size:11px;color:var(--ink-3)">AdSense 도안 하단 배너</span>
+      </div>
+      <div class="modal-dl-row">
+        <div class="modal-dl-info">
+          <strong id="dlTitle">📄 1번 도안 다운로드</strong>
+          <span>A4 인쇄 최적화 · 고해상도 PNG</span>
+        </div>
+        <div class="dl-btns">
+          <button class="btn-dl outline" onclick="triggerDownload()">🖨️ 인쇄</button>
+          <button class="btn-dl outline" onclick="triggerDownload()">PDF</button>
+          <button class="btn-dl fill" onclick="triggerDownload()">⬇ PNG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTERSTITIAL -->
+<div class="inter" id="inter">
+  <div class="inter-box">
+    <div class="inter-h">잠깐! 광고를 보면 다운로드가 시작돼요</div>
+    <div class="inter-sub">무료 도안을 계속 만들 수 있도록 도와주세요 😊</div>
+    <div class="inter-ad">
+      <span class="ad-label">전면 광고</span>
+      <span style="font-size:13px;color:var(--ink-3)">Google AdSense Interstitial</span>
+    </div>
+    <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
+    <div class="countdown-label" id="cdLabel">5초 후 다운로드 가능...</div>
+    <button class="btn-skip" id="skipBtn" onclick="execDownload()">✓ 다운로드 시작</button>
+  </div>
+</div>
+
+<script>
+/* protect */
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('dragstart',e=>{if(e.target.tagName==='IMG'||e.target.closest('.coloring-img'))e.preventDefault()});
+
+/* font */
+let fs=16;
+function changeFont(d){fs=Math.max(13,Math.min(22,fs+d*2));document.documentElement.style.fontSize=fs+'px'}
+
+/* filter */
+function setFilter(el){document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
+
+/* heart */
+function toggleHeart(b){const liked=b.classList.toggle('liked');b.textContent=liked?'❤️':'🤍';b.style.transform='scale(1.3)';setTimeout(()=>b.style.transform='',200)}
+
+/* stories */
+const stories={
+  rabbit:['토끼와 거북이가 처음 만난 날이에요. 토끼는 빠르고 거북이는 느렸어요.','"오늘은 느리게 가자." 토끼가 말했어요. 거북이는 방긋 웃었어요.','연못에서 오리 가족을 만났어요. 아기 오리가 손을 흔들었답니다.','숲 속 비밀 장소에는 딸기가 가득 있었어요. 🍓','함께 먹는 딸기는 더 달콤했어요. 둘은 친구가 되었어요.','해 질 무렵 하늘이 분홍빛으로 물들었어요. 🌅','별이 하나씩 나타나기 시작했어요. ⭐','집으로 가는 길에 둘은 오늘을 이야기했어요.','느리게 걸으니 더 많은 것이 보였어요. 🌿','그날 밤, 둘은 같은 꿈을 꾸었어요. 💤✨'],
+  mandala:['첫 번째 원에서 시작해요. 중심에서 바깥으로.','두 번째 링에 꽃잎이 피어났어요.','대각선 방향으로 새로운 패턴이 생겨요.','리듬을 따라 칠하다 보면 마음이 차분해져요.','절반쯤 왔어요. 잠시 숨을 고르세요.','색이 쌓일수록 작품이 완성되어 가요.','바깥 테두리가 점점 완성되고 있어요.','이제 거의 다 왔어요. 집중해 보세요.','마지막 획을 칠할 준비가 되셨나요?','완성! 당신만의 만다라가 탄생했어요. 🎨'],
+  cherry:['봄이 왔어요. 나무에 분홍 꽃봉오리가 맺혔어요.','바람이 불자 꽃잎이 눈처럼 흩날렸어요. 🌸','나비 한 마리가 꽃 위에 살며시 앉았어요.','나무 아래 친구들이 도시락을 먹고 있어요.','꿀벌이 꽃 속을 들여다봤어요. 꿀을 모으는 중이에요. 🐝','꽃잎이 냇물 위를 떠내려갔어요.','해가 지자 꽃이 더 환하게 빛났어요.','내년에도 꼭 다시 오자고 약속했어요. 🤝'],
+  tree:['씨앗이 땅 속에서 싹을 틔웠어요.','작은 줄기가 햇빛을 향해 자랐어요.','잎이 하나씩 펼쳐지기 시작했어요.','새들이 나뭇가지에 앉아 노래했어요.','벌레들이 나무 속에 집을 지었어요.','열매가 빨갛게 익어갔어요. 🍎','바람에 씨앗이 날아가 새로운 나무가 돼요.','오래된 나무는 모두의 쉼터가 되었어요.'],
+  fairy:['봄의 숲 깊은 곳, 요정 릴리아가 깨어났어요.','날개가 분홍빛으로 반짝였어요. ✨','지팡이를 휘두르자 꽃봉오리가 피었어요.','나비 친구가 날아와 함께 춤췄어요.','달콤한 꿀이슬을 마셨답니다.','바람이 릴리아의 머리카락을 날렸어요.','꽃들에게 잘 자라고 인사했어요.','별이 뜨자 꽃잎 침대가 나타났어요.','더 많은 꽃을 피울 꿈을 꾸었어요.','숲이 모두 잠든 조용한 밤이 되었어요.'],
+  whale:['파란 바다 깊은 곳에 흰 고래 룰루가 살았어요.','룰루는 노래 부르기를 좋아했어요. 바다가 울렸어요. 🎵','작은 물고기들이 룰루 곁에서 헤엄쳤어요.','산호초가 무지개처럼 알록달록했어요.','룰루가 점프하자 물방울이 반짝였어요. 💦','달빛이 파도 위에서 춤췄어요.','룰루는 바다의 노래를 잊지 않을 거예요.','오늘도 바다는 룰루의 집이에요. 🌊'],
+  star:['밤하늘에 별이 반짝이고 있었어요.','아이가 두 팔을 힘껏 뻗었어요.','따뜻한 별빛이 손끝에 닿았어요. ✨','별이 말했어요. "안녕, 잘 지내니?"','둘은 하늘을 함께 산책하기로 했어요.','구름 위에서 도시 불빛이 보였어요.','달님도 나와서 셋이 이야기를 나눴어요.','집에 돌아갈 시간이 됐어요.','작은 별빛을 베개 아래 놓았어요.','별빛 가득한 꿈을 꾸었어요. 💫'],
+  house:['작은 마을에 할아버지 빵집이 있었어요.','새벽 4시부터 빵 굽는 냄새가 퍼졌어요.','동그란 크림빵, 달콤한 단팥빵... 🍞','학교 가는 아이들이 빵을 사 갔어요.','고양이 한 마리가 빵집 앞에 앉아있었어요.','할아버지가 고양이에게 빵 조각을 줬어요. 💕','저녁 불빛이 따뜻하게 빛났어요.','오늘도 모든 빵이 팔렸어요. 할아버지가 웃었어요.','내일 메뉴를 생각하며 잠이 들었어요.','이 작은 마을의 빵집은 오늘도 행복했어요. 🏡']
+};
+
+let currentKey='rabbit',currentPage=0;
+
+function buildDots(n){
+  const c=document.getElementById('pageDots');c.innerHTML='';
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className='pdot';c.appendChild(d)}
+}
+
+function updateModal(){
+  const pages=stories[currentKey]||stories.rabbit;
+  document.getElementById('storyText').textContent=pages[currentPage]||'';
+  document.getElementById('dlTitle').textContent='📄 '+(currentPage+1)+'번 도안 다운로드';
+  const dots=document.querySelectorAll('.pdot');
+  dots.forEach((d,i)=>{d.className='pdot'+(i<currentPage?' done':i===currentPage?' active':'')});
+}
+
+function openModal(key){
+  currentKey=key||'rabbit';currentPage=0;
+  const titles={rabbit:'토끼와 거북이의 느린 하루',mandala:'명상 만다라 시리즈',cherry:'봄날의 벚꽃나무',tree:'봄날 벚꽃나무',fairy:'꽃의 요정 릴리아',whale:'흰 고래 룰루',star:'별을 따는 아이',house:'작은 마을 빵집'};
+  document.getElementById('modalTitle').textContent=titles[key]||'도안 보기';
+  const n=(stories[key]||stories.rabbit).length;
+  buildDots(n);updateModal();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
+function changePage(d){const n=(stories[currentKey]||stories.rabbit).length;currentPage=Math.max(0,Math.min(n-1,currentPage+d));updateModal()}
+
+/* interstitial */
+let cdTimer=null;
+function triggerDownload(){
+  const el=document.getElementById('inter');
+  el.classList.add('open');
+  document.body.style.overflow='hidden';
+  const skip=document.getElementById('skipBtn');
+  const lbl=document.getElementById('cdLabel');
+  skip.classList.remove('ready');
+  const fill=document.getElementById('cdFill');
+  fill.style.animation='none';fill.offsetHeight;
+  fill.style.animation='cdFill 5s linear forwards';
+  clearInterval(cdTimer);let s=5;
+  lbl.textContent=s+'초 후 다운로드 가능...';
+  cdTimer=setInterval(()=>{s--;if(s<=0){clearInterval(cdTimer);lbl.textContent='다운로드 준비 완료! ✓';skip.classList.add('ready')}else lbl.textContent=s+'초 후 다운로드 가능...'},1000);
+}
+
+function execDownload(){
+  document.getElementById('inter').classList.remove('open');
+  document.body.style.overflow='';
+  closeModal();
+  alert('✅ 다운로드 시작!\n(실제 서비스: /api/download/[id] 호출)');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeModal();document.getElementById('inter').classList.remove('open');document.body.style.overflow=''}
+  if(e.key==='ArrowLeft')changePage(-1);
+  if(e.key==='ArrowRight')changePage(1);
+});
+</script>
+</body>
+</html>
