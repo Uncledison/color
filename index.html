@@ -44,6 +44,11 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 /* Image lock */
 .coloring-img{pointer-events:none;-webkit-user-select:none;user-select:none}
 
+/* real coloring images (data-driven) */
+.coloring-card .card-img,.series-cover,.series-thumb,.modal-artwork{overflow:hidden}
+.card-img img,.series-cover img,.series-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.modal-artwork img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
+
 /* ── KEYFRAMES ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -932,7 +937,8 @@ svg.coloring .no-fill{fill:none}
           <button class="filter-tab" onclick="setFilter(this)">🌊 바다</button>
         </div>
 
-        <div class="card-grid">
+        <div class="card-grid" id="cardGrid">
+          <!-- 자바스크립트가 data.json을 읽어 채움 (아래는 폴백) -->
           <!-- card 1 -->
           <div class="coloring-card" onclick="openModal('rabbit')">
             <span class="badge-top">⭐ 인기</span>
@@ -1203,8 +1209,8 @@ svg.coloring .no-fill{fill:none}
       </div>
       <a class="section-more" href="#">전체 시리즈 →</a>
     </div>
-    <div class="series-row">
-
+    <div class="series-row" id="seriesRow">
+      <!-- 자바스크립트가 data.json의 시리즈를 읽어 채움 (아래는 폴백) -->
       <div class="series-card" onclick="openModal('rabbit')">
         <div class="series-cover">
           <svg viewBox="0 0 200 150" class="coloring">
@@ -1428,9 +1434,8 @@ svg.coloring .no-fill{fill:none}
           <span>A4 인쇄 최적화 · 고해상도 PNG</span>
         </div>
         <div class="dl-btns">
-          <button class="btn-dl outline" onclick="triggerDownload()">🖨️ 인쇄</button>
-          <button class="btn-dl outline" onclick="triggerDownload()">PDF</button>
-          <button class="btn-dl fill" onclick="triggerDownload()">⬇ PNG</button>
+          <button class="btn-dl outline" onclick="shareItem()">🔗 공유 복사</button>
+          <button class="btn-dl fill" onclick="triggerDownload()">⬇ 다운로드</button>
         </div>
       </div>
     </div>
@@ -1479,37 +1484,92 @@ const stories={
   house:['작은 마을에 할아버지 빵집이 있었어요.','새벽 4시부터 빵 굽는 냄새가 퍼졌어요.','동그란 크림빵, 달콤한 단팥빵... 🍞','학교 가는 아이들이 빵을 사 갔어요.','고양이 한 마리가 빵집 앞에 앉아있었어요.','할아버지가 고양이에게 빵 조각을 줬어요. 💕','저녁 불빛이 따뜻하게 빛났어요.','오늘도 모든 빵이 팔렸어요. 할아버지가 웃었어요.','내일 메뉴를 생각하며 잠이 들었어요.','이 작은 마을의 빵집은 오늘도 행복했어요. 🏡']
 };
 
-let currentKey='rabbit',currentPage=0;
+/* ── 카탈로그: data.json을 읽어 카드/시리즈 렌더 ── */
+let DATA=[], byId={}, current=null, currentPage=0;
 
+async function loadCatalog(){
+  try{
+    const res=await fetch('/data.json',{cache:'no-store'});
+    DATA=(await res.json()).items||[];
+  }catch(e){DATA=[]}
+  byId=Object.fromEntries(DATA.map(it=>[it.id,it]));
+  renderCatalog();
+  const h=decodeURIComponent(location.hash.slice(1));
+  if(h&&byId[h]) openModal(h);
+}
+
+function diffDots(n){let s='';for(let i=0;i<3;i++)s+='<div class="diff-dot'+(i<n?' on':'')+'"></div>';return s}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+
+function cardHTML(it){
+  const pages=it.type==='series'?('📄 '+it.pageCount+'장 세트'):'📄 1장';
+  return '<div class="coloring-card" onclick="openModal(\''+it.id+'\')">'
+    +'<button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>'
+    +'<div class="card-img coloring-img"><img src="'+it.thumb+'" alt="'+esc(it.title)+'" loading="lazy"></div>'
+    +'<div class="card-foot"><div class="card-category">'+esc(it.category)+'</div>'
+    +'<div class="card-title">'+esc(it.title)+'</div>'
+    +'<div class="card-meta"><span class="card-pages">'+pages+'</span>'
+    +'<div class="diff-dots">'+diffDots(it.difficulty)+'</div></div></div>'
+    +'<div class="card-overlay"><button class="overlay-dl" onclick="event.stopPropagation();openModal(\''+it.id+'\')">⬇ 다운로드</button></div></div>';
+}
+
+function seriesHTML(it){
+  const strip=it.pages.slice(0,5).map((p,i)=>'<div class="series-thumb'+(i===0?' active':'')+'"><img src="'+p.preview+'" alt=""></div>').join('');
+  return '<div class="series-card" onclick="openModal(\''+it.id+'\')">'
+    +'<div class="series-cover"><img src="'+it.thumb+'" alt="'+esc(it.title)+'" loading="lazy"><span class="series-count-badge">'+it.pageCount+'장 세트</span></div>'
+    +'<div class="series-body"><div class="series-kicker">'+esc(it.category)+'</div>'
+    +'<div class="series-title">'+esc(it.title)+'</div>'
+    +'<div class="series-desc">'+esc(it.desc)+'</div>'
+    +'<button class="series-dl-btn" onclick="event.stopPropagation();openModal(\''+it.id+'\')">전체 보기</button></div>'
+    +'<div class="series-strip">'+strip+'</div></div>';
+}
+
+function renderCatalog(){
+  const grid=document.getElementById('cardGrid');
+  const sr=document.getElementById('seriesRow');
+  if(grid) grid.innerHTML=DATA.length?DATA.map(cardHTML).join(''):'<p style="color:var(--ink-3);padding:20px">아직 공개된 도안이 없어요. Notion에서 "공개"를 켜보세요.</p>';
+  if(sr){const series=DATA.filter(it=>it.type==='series');sr.innerHTML=series.map(seriesHTML).join('')||'<p style="color:var(--ink-3);padding:20px">곧 시리즈가 올라옵니다.</p>';}
+}
+
+/* ── 모달 ── */
 function buildDots(n){
   const c=document.getElementById('pageDots');c.innerHTML='';
   for(let i=0;i<n;i++){const d=document.createElement('div');d.className='pdot';c.appendChild(d)}
 }
-
 function updateModal(){
-  const pages=stories[currentKey]||stories.rabbit;
-  document.getElementById('storyText').textContent=pages[currentPage]||'';
-  document.getElementById('dlTitle').textContent='📄 '+(currentPage+1)+'번 도안 다운로드';
-  const dots=document.querySelectorAll('.pdot');
-  dots.forEach((d,i)=>{d.className='pdot'+(i<currentPage?' done':i===currentPage?' active':'')});
+  if(!current)return;
+  const pg=current.pages[currentPage];
+  document.getElementById('modalSvg').innerHTML='<img src="'+pg.preview+'" alt="'+esc(current.title)+'">';
+  document.getElementById('storyText').textContent=pg.story||'';
+  document.getElementById('dlTitle').textContent=current.type==='series'?('📄 '+(currentPage+1)+'번 도안 다운로드'):'📄 도안 다운로드';
+  document.querySelectorAll('.pdot').forEach((d,i)=>{d.className='pdot'+(i<currentPage?' done':i===currentPage?' active':'')});
 }
-
-function openModal(key){
-  currentKey=key||'rabbit';currentPage=0;
-  const titles={rabbit:'토끼와 거북이의 느린 하루',mandala:'명상 만다라 시리즈',cherry:'봄날의 벚꽃나무',tree:'봄날 벚꽃나무',fairy:'꽃의 요정 릴리아',whale:'흰 고래 룰루',star:'별을 따는 아이',house:'작은 마을 빵집'};
-  document.getElementById('modalTitle').textContent=titles[key]||'도안 보기';
-  const n=(stories[key]||stories.rabbit).length;
-  buildDots(n);updateModal();
+function openModal(id){
+  current=byId[id]||DATA[0];
+  if(!current)return;
+  currentPage=0;
+  document.getElementById('modalTitle').textContent=current.title;
+  buildDots(current.pages.length);updateModal();
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow='hidden';
+  if(history.replaceState)history.replaceState(null,'','#'+current.id);
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';if(history.replaceState)history.replaceState(null,'',location.pathname)}
+function changePage(d){if(!current)return;const n=current.pages.length;currentPage=Math.max(0,Math.min(n-1,currentPage+d));updateModal()}
+
+/* ── 공유 (PC: 클립보드 복사) ── */
+async function shareItem(){
+  if(!current)return;
+  try{await navigator.clipboard.writeText(current.shareText);
+    alert('✅ 공유 문구가 복사됐어요!\n네이버 카페·블로그 글쓰기에 붙여넣으면 썸네일 카드가 자동으로 펼쳐집니다.');
+  }catch(e){window.prompt('아래 내용을 복사하세요:',current.shareText)}
 }
 
-function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
-function changePage(d){const n=(stories[currentKey]||stories.rabbit).length;currentPage=Math.max(0,Math.min(n-1,currentPage+d));updateModal()}
-
-/* interstitial */
-let cdTimer=null;
+/* ── 인터스티셜 → 실제 다운로드 ── */
+let cdTimer=null,pendingDl=null;
 function triggerDownload(){
+  if(!current)return;
+  pendingDl=current.pages[currentPage].download;
   const el=document.getElementById('inter');
   el.classList.add('open');
   document.body.style.overflow='hidden';
@@ -1523,13 +1583,14 @@ function triggerDownload(){
   lbl.textContent=s+'초 후 다운로드 가능...';
   cdTimer=setInterval(()=>{s--;if(s<=0){clearInterval(cdTimer);lbl.textContent='다운로드 준비 완료! ✓';skip.classList.add('ready')}else lbl.textContent=s+'초 후 다운로드 가능...'},1000);
 }
-
 function execDownload(){
   document.getElementById('inter').classList.remove('open');
   document.body.style.overflow='';
+  if(pendingDl){const a=document.createElement('a');a.href=pendingDl;a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
   closeModal();
-  alert('✅ 다운로드 시작!\n(실제 서비스: /api/download/[id] 호출)');
 }
+
+loadCatalog();
 
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeModal();document.getElementById('inter').classList.remove('open');document.body.style.overflow=''}

@@ -1,0 +1,74 @@
+{
+  "_comment": "Notion 미연결 시 로컬 미리보기용 폴백. 실제 운영은 Notion에서 생성됨.",
+  "items": [
+    {
+      "id": "hanbok-girl",
+      "type": "single",
+      "title": "한복 입은 소녀",
+      "category": "전통",
+      "tags": ["한복", "인물", "보통"],
+      "difficulty": 2,
+      "desc": "곱게 한복을 차려입은 소녀. 색동저고리를 자유롭게 칠해보세요.",
+      "pageCount": 1,
+      "cover": "https://res.cloudinary.com/dhfobwnfc/image/upload/v1782626800/uncledison/coloring/Korean_girl_in_hanbok_202606281504_exlznl.jpg",
+      "pages": [
+        { "n": 1, "publicId": "https://res.cloudinary.com/dhfobwnfc/image/upload/v1782626800/uncledison/coloring/Korean_girl_in_hanbok_202606281504_exlznl.jpg", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "rabbit-turtle",
+      "type": "series",
+      "title": "토끼와 거북이의 느린 하루",
+      "category": "동화",
+      "tags": ["전래동화", "동물", "쉬움"],
+      "difficulty": 1,
+      "desc": "느리게 걷는 거북이와 빠른 토끼가 함께하는 하루. 진짜 빠른 것이 무엇인지 알게 되는 이야기.",
+      "pageCount": 10,
+      "cover": "series/rabbit-turtle/01",
+      "pages": [
+        { "n": 1, "publicId": "series/rabbit-turtle/01", "story": "토끼와 거북이가 처음 만난 날이에요. 토끼는 빠르고 거북이는 느렸어요." },
+        { "n": 2, "publicId": "series/rabbit-turtle/02", "story": "\"오늘은 느리게 가자.\" 토끼가 말했어요. 거북이는 방긋 웃었어요." },
+        { "n": 3, "publicId": "series/rabbit-turtle/03", "story": "연못에서 오리 가족을 만났어요. 아기 오리가 손을 흔들었답니다." },
+        { "n": 4, "publicId": "series/rabbit-turtle/04", "story": "숲 속 비밀 장소에는 딸기가 가득 있었어요." },
+        { "n": 5, "publicId": "series/rabbit-turtle/05", "story": "함께 먹는 딸기는 더 달콤했어요. 둘은 친구가 되었어요." },
+        { "n": 6, "publicId": "series/rabbit-turtle/06", "story": "해 질 무렵 하늘이 분홍빛으로 물들었어요." },
+        { "n": 7, "publicId": "series/rabbit-turtle/07", "story": "별이 하나씩 나타나기 시작했어요." },
+        { "n": 8, "publicId": "series/rabbit-turtle/08", "story": "집으로 가는 길에 둘은 오늘을 이야기했어요." },
+        { "n": 9, "publicId": "series/rabbit-turtle/09", "story": "느리게 걸으니 더 많은 것이 보였어요." },
+        { "n": 10, "publicId": "series/rabbit-turtle/10", "story": "그날 밤, 둘은 같은 꿈을 꾸었어요." }
+      ],
+      "published": true
+    },
+    {
+      "id": "spring-tree",
+      "type": "single",
+      "title": "봄날의 벚꽃나무",
+      "category": "자연",
+      "tags": ["계절", "쉬움"],
+      "difficulty": 1,
+      "desc": "바람에 흩날리는 벚꽃잎과 나무 한 그루.",
+      "pageCount": 1,
+      "cover": "single/spring-tree",
+      "pages": [
+        { "n": 1, "publicId": "single/spring-tree", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "whale",
+      "type": "single",
+      "title": "흰 고래 룰루",
+      "category": "바다",
+      "tags": ["바다", "동물", "쉬움"],
+      "difficulty": 1,
+      "desc": "파란 바다 깊은 곳에 사는 노래하는 흰 고래.",
+      "pageCount": 1,
+      "cover": "single/whale",
+      "pages": [
+        { "n": 1, "publicId": "single/whale", "story": "" }
+      ],
+      "published": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# Notion에서 "공개"를 켜도 git push가 없으면 Vercel이 재빌드하지 않음.
+# → 30분마다 Vercel Deploy Hook을 호출해 최신 Notion 상태로 재배포.
+# 설정: Vercel 프로젝트 → Settings → Git → Deploy Hooks 에서 URL 생성 후
+#       GitHub 레포 Settings → Secrets → Actions 에 VERCEL_DEPLOY_HOOK 저장.
+name: Republish from Notion
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # 30분마다 (UTC)
+  workflow_dispatch:          # 수동 실행 버튼
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel rebuild
+        run: |
+          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK }}" ]; then
+            echo "VERCEL_DEPLOY_HOOK 미설정 — 건너뜀"; exit 0
+          fi
+          curl -fsSL -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"

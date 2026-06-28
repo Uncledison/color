@@ -1,0 +1,6 @@
+{
+  "buildCommand": "node pipeline/build.mjs",
+  "outputDirectory": "public",
+  "cleanUrls": true,
+  "trailingSlash": false
+}
