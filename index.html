@@ -571,7 +571,7 @@ footer{
 .modal-body{padding:24px}
 
 .modal-artwork{
-  width:100%;aspect-ratio:3/4;
+  width:100%;height:min(27vh,280px);
   background:var(--warm);border-radius:var(--r-lg);
   display:flex;align-items:center;justify-content:center;
   margin-bottom:16px;border:1px solid var(--border);
@@ -587,18 +587,20 @@ footer{
   letter-spacing:.3px;
 }
 
-/* page nav */
-.page-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.page-nav-btn{
-  width:40px;height:40px;
-  border:1.5px solid var(--border);border-radius:50%;
-  background:var(--canvas);color:var(--ink);
+/* page nav — 이미지 위에 오버레이 */
+.page-dots{display:flex;gap:5px;justify-content:center;margin-bottom:10px}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .25s}
+.modal-artwork .page-nav-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:40px;height:40px;z-index:2;
+  border:1px solid var(--border);border-radius:50%;
+  background:rgba(255,255,255,.85);color:var(--ink);
   font-size:16px;display:flex;align-items:center;justify-content:center;
   transition:all .2s;
 }
-.page-nav-btn:hover{border-color:var(--ink);background:var(--warm)}
-.page-dots{display:flex;gap:5px}
-.pdot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .25s}
+.modal-artwork .page-nav-btn:hover{border-color:var(--ink);background:#fff}
+.modal-artwork .nav-prev{left:10px}
+.modal-artwork .nav-next{right:10px}
 .pdot.active{background:var(--coral);width:20px;border-radius:4px}
 .pdot.done{background:var(--warm-2)}
 .story-text{
@@ -1411,13 +1413,11 @@ svg.coloring .no-fill{fill:none}
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="page-nav">
-        <button class="page-nav-btn" onclick="changePage(-1)">◀</button>
-        <div class="page-dots" id="pageDots"></div>
-        <button class="page-nav-btn" onclick="changePage(1)">▶</button>
-      </div>
+      <div class="page-dots" id="pageDots"></div>
       <div class="modal-artwork">
+        <button class="page-nav-btn nav-prev" onclick="event.stopPropagation();changePage(-1)">◀</button>
         <div id="modalSvg"></div>
+        <button class="page-nav-btn nav-next" onclick="event.stopPropagation();changePage(1)">▶</button>
         <div class="wm">
           <span>© COLOR.UNCLE</span>
           <span>color.uncledison.com</span>

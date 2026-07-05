@@ -50,12 +50,16 @@ export function ogImage(publicId, { cloud, title }) {
   ].join('/');
 }
 
-// ── 3) 다운로드용 원본 (워터마크만, 강제 다운로드) ──
+// ── 3) 다운로드용 원본 (우하단 워터마크 실제 픽셀에 각인, 강제 다운로드) ──
+// 워터마크는 고딕(NanumGothic)으로 고정 — 명조체(FONT)보다 작은 크기에서 더 또렷하게 읽힘.
+const WATERMARK_FONT = 'NanumGothic';
+const DOWNLOAD_WATERMARK = encText('무료도안: color.uncledison.com');
 export function download(publicId, { cloud, filename }) {
   const fn = filename ? `fl_attachment:${encodeURIComponent(filename)}` : 'fl_attachment';
   return [
     BASE(cloud),
     'f_auto,q_auto',
+    `l_text:${WATERMARK_FONT}_30_bold:${DOWNLOAD_WATERMARK},co_white,b_rgb:000000,g_south_east,x_20,y_20`,
     fn,
     publicId,
   ].join('/');
