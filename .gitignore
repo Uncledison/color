@@ -3,3 +3,5 @@ public/
 .env
 .vercel
 .DS_Store
+inbox/*
+!inbox/.gitkeep

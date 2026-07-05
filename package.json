@@ -4,9 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node pipeline/build.mjs"
+    "build": "node pipeline/build.mjs",
+    "split": "node pipeline/split-upload.mjs"
   },
   "dependencies": {
-    "@notionhq/client": "^2.2.15"
+    "@notionhq/client": "^2.2.15",
+    "cloudinary": "^2.10.0",
+    "sharp": "^0.35.3"
   }
 }

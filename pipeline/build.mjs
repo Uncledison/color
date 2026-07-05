@@ -44,7 +44,7 @@ function enrich(it) {
         preview: CL.preview(publicId, { cloud: CLOUD }),
         download: CL.download(publicId, {
           cloud: CLOUD,
-          filename: `${it.id}-${String(pg.n).padStart(2, '0')}.png`,
+          filename: `${it.id}-${String(pg.n).padStart(2, '0')}`,
         }),
       };
     }),
