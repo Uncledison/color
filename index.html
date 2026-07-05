@@ -47,7 +47,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 /* real coloring images (data-driven) */
 .coloring-card .card-img,.series-cover,.series-thumb,.modal-artwork{overflow:hidden}
 .card-img img,.series-cover img,.series-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.modal-artwork img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
+.modal-artwork img{max-width:100%;max-height:36vh;width:auto;height:auto;display:block;background:#fff;border-radius:var(--r);}
 
 /* ── KEYFRAMES ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
@@ -571,11 +571,13 @@ footer{
 .modal-body{padding:24px}
 
 .modal-artwork{
-  width:100%;height:min(27vh,280px);
+  width:100%;
   background:var(--warm);border-radius:var(--r-lg);
   display:flex;align-items:center;justify-content:center;
   margin-bottom:16px;border:1px solid var(--border);
   overflow:hidden;position:relative;
+  padding:8px;
+  touch-action:pan-y;
 }
 .modal-artwork svg{width:72%;height:auto;opacity:.85}
 .modal-artwork .wm{
@@ -1597,6 +1599,18 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft')changePage(-1);
   if(e.key==='ArrowRight')changePage(1);
 });
+
+/* ── 모바일 스와이프로 페이지 이동 ── */
+(function(){
+  const art=document.querySelector('.modal-artwork');
+  if(!art)return;
+  let sx=0,sy=0;
+  art.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+  art.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))changePage(dx<0?1:-1);
+  },{passive:true});
+})();
 </script>
 </body>
 </html>
