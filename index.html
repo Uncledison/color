@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>color.uncle — 색칠도안 무료 다운로드</title>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ── TOKENS ── */
 :root {
-  --ink:      #1a1714;
-  --ink-2:    #3d3830;
-  --ink-3:    #7a7269;
+  --ink:      #3d2b1f;
+  --ink-2:    #5c4a38;
+  --ink-3:    #8a7860;
   --canvas:   #ffffff;
-  --warm:     #faf7f3;
-  --warm-2:   #f3ede4;
-  --coral:    #c8442a;
-  --coral-lt: #f0ece8;
-  --border:   rgba(26,23,20,.1);
-  --border-2: rgba(26,23,20,.06);
+  --warm:     #fff7e6;
+  --warm-2:   #ffefc7;
+  --coral:    #f2a72e;
+  --coral-lt: #fdecc8;
+  --border:   rgba(61,43,31,.12);
+  --border-2: rgba(61,43,31,.07);
   --r:        6px;
   --r-lg:     12px;
   --r-xl:     20px;
@@ -78,7 +78,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   display:flex;align-items:center;gap:32px;
 }
 .nav-logo{
-  font-family:'Nanum Myeongjo',serif;
+  font-family:'Jua',sans-serif;
   font-size:17px;font-weight:700;
   display:flex;align-items:center;gap:2px;
   flex-shrink:0;
@@ -147,7 +147,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   display:inline-flex;align-items:center;justify-content:center;
   gap:8px;
   background:var(--warm-2);
-  border:1px dashed rgba(200,68,42,.25);
+  border:1px dashed rgba(242,167,46,.25);
   border-radius:var(--r);
   color:var(--ink-3);font-size:12px;
   letter-spacing:.3px;
@@ -162,12 +162,12 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   border-bottom:1px solid var(--border-2);
 }
 .hero-grid{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:60px;
-  align-items:center;
+  max-width:640px;
+  margin:0 auto;
+  text-align:center;
 }
-@media(max-width:860px){.hero-grid{grid-template-columns:minmax(0,1fr);gap:40px}}
+.hero-grid .hero-ctas{justify-content:center}
+.hero-grid .hero-stats{justify-content:center}
 
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:6px;
@@ -182,7 +182,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 }
 
 .hero-h1{
-  font-family:'Nanum Myeongjo',serif;
+  font-family:'Jua',sans-serif;
   font-size:clamp(36px,4.5vw,54px);
   font-weight:800;
   line-height:1.12;
@@ -219,7 +219,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   display:inline-flex;align-items:center;gap:8px;
   transition:background .2s,transform .15s,box-shadow .2s;
 }
-.btn-primary:hover{background:var(--coral);transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,68,42,.3)}
+.btn-primary:hover{background:var(--coral);transform:translateY(-2px);box-shadow:0 6px 20px rgba(242,167,46,.3)}
 .btn-secondary{
   height:48px;padding:0 22px;
   background:var(--canvas);color:var(--ink);
@@ -236,30 +236,11 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   border-top:1px solid var(--border-2);
 }
 .stat-val{
-  font-family:'Nanum Myeongjo',serif;
+  font-family:'Jua',sans-serif;
   font-size:26px;font-weight:700;color:var(--ink);
   line-height:1;margin-bottom:4px;
 }
 .stat-label{font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.5px}
-
-/* ── HERO RIGHT — card mosaic ── */
-.hero-mosaic{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  grid-template-rows:auto auto;
-  gap:12px;
-}
-.mosaic-card{
-  background:var(--warm);
-  border:1px solid var(--border);
-  border-radius:var(--r-lg);
-  overflow:hidden;
-  cursor:pointer;
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
-  position:relative;
-}
-.mosaic-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:var(--shadow-lg)}
-.mosaic-card.featured{grid-column:1/-1}
 
 .card-img{
   width:100%;
@@ -267,8 +248,6 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   background:var(--warm-2);
   position:relative;overflow:hidden;
 }
-.card-img.ratio-wide{aspect-ratio:16/9}
-.card-img.ratio-tall{aspect-ratio:4/5}
 .card-img svg{width:65%;height:auto;opacity:.82}
 
 .card-overlay{
@@ -277,7 +256,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   opacity:0;transition:opacity .25s;
   display:flex;align-items:flex-end;padding:14px;
 }
-.mosaic-card:hover .card-overlay{opacity:1}
+.coloring-card:hover .card-overlay{opacity:1}
 .overlay-dl{
   width:100%;height:36px;
   background:rgba(255,255,255,.95);
@@ -318,7 +297,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   margin-bottom:32px;gap:16px;
 }
 .section-title{
-  font-family:'Nanum Myeongjo',serif;
+  font-family:'Jua',sans-serif;
   font-size:26px;font-weight:700;color:var(--ink);
   line-height:1.2;
 }
@@ -388,7 +367,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 /* ── AD INFEED ── */
 .ad-infeed{
   background:var(--warm);
-  border:1px dashed rgba(200,68,42,.2);
+  border:1px dashed rgba(242,167,46,.2);
   border-radius:var(--r-lg);
   display:flex;align-items:center;justify-content:center;
   flex-direction:column;gap:4px;
@@ -415,7 +394,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .series-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
 
 .series-cover{
-  width:100%;aspect-ratio:4/3;
+  width:100%;aspect-ratio:3/4;
   background:var(--warm-2);
   display:flex;align-items:center;justify-content:center;
   position:relative;overflow:hidden;
@@ -430,7 +409,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 }
 .series-body{padding:14px 16px 16px}
 .series-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--coral);font-weight:600;margin-bottom:5px}
-.series-title{font-family:'Nanum Myeongjo',serif;font-size:18px;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:6px}
+.series-title{font-family:'Jua',sans-serif;font-size:18px;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:6px}
 .series-desc{font-size:13px;color:var(--ink-3);line-height:1.55;margin-bottom:12px}
 .series-dl-btn{
   display:inline-flex;align-items:center;gap:6px;
@@ -496,7 +475,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 /* ── AD SIDEBAR ── */
 .sidebar-ad{
   background:var(--warm);
-  border:1px dashed rgba(200,68,42,.2);
+  border:1px dashed rgba(242,167,46,.2);
   border-radius:var(--r-lg);
   width:100%;height:280px;
   display:flex;align-items:center;justify-content:center;
@@ -520,7 +499,7 @@ footer{
 @media(max-width:480px){.footer-inner{grid-template-columns:minmax(0,1fr)}}
 
 .footer-brand-name{
-  font-family:'Nanum Myeongjo',serif;
+  font-family:'Jua',sans-serif;
   font-size:18px;font-weight:700;
   color:#fff;margin-bottom:10px;
 }
@@ -561,7 +540,7 @@ footer{
   border-bottom:1px solid var(--border-2);
   display:flex;align-items:center;justify-content:space-between;
 }
-.modal-title{font-family:'Nanum Myeongjo',serif;font-size:20px;font-weight:700}
+.modal-title{font-family:'Jua',sans-serif;font-size:20px;font-weight:700}
 .modal-close{
   width:34px;height:34px;background:var(--warm);
   border-radius:50%;font-size:16px;
@@ -613,7 +592,7 @@ footer{
 
 /* modal ad */
 .modal-ad{
-  background:var(--warm);border:1px dashed rgba(200,68,42,.2);
+  background:var(--warm);border:1px dashed rgba(242,167,46,.2);
   border-radius:var(--r);height:72px;
   display:flex;align-items:center;justify-content:center;
   gap:8px;font-size:11px;color:var(--ink-3);
@@ -654,10 +633,10 @@ footer{
   text-align:center;
   animation:fadeUp .35s cubic-bezier(.34,1.56,.64,1);
 }
-.inter-h{font-family:'Nanum Myeongjo',serif;font-size:20px;font-weight:700;margin-bottom:4px}
+.inter-h{font-family:'Jua',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px}
 .inter-sub{font-size:13px;color:var(--ink-3);margin-bottom:14px}
 .inter-ad{
-  background:var(--warm);border:1px dashed rgba(200,68,42,.22);
+  background:var(--warm);border:1px dashed rgba(242,167,46,.22);
   border-radius:var(--r-lg);height:250px;
   display:flex;align-items:center;justify-content:center;
   flex-direction:column;gap:6px;
@@ -687,7 +666,7 @@ svg.coloring{
   stroke-linejoin:round;
   stroke-linecap:round;
 }
-svg.coloring .accent-s{stroke:#c8442a}
+svg.coloring .accent-s{stroke:#f2a72e}
 svg.coloring .green-s{stroke:#3a6e2a}
 svg.coloring .light-s{stroke:#aaa;stroke-width:1px}
 svg.coloring .no-fill{fill:none}
@@ -738,7 +717,7 @@ svg.coloring .no-fill{fill:none}
           색칠하고 싶은<br>도안을 <em>바로</em><br>만나세요
         </h1>
         <p class="hero-sub anim-3">
-          AI로 만든 고품질 선화 도안.<br>
+          고품질 선화 색칠도안.<br>
           A4로 프린트해서 바로 색칠하세요.
         </p>
         <div class="hero-ctas anim-4">
@@ -755,146 +734,6 @@ svg.coloring .no-fill{fill:none}
           <div><div class="stat-val">무료</div><div class="stat-label">전체</div></div>
           <div><div class="stat-val">A4</div><div class="stat-label">인쇄 최적화</div></div>
           <div><div class="stat-val">매주</div><div class="stat-label">신규 업로드</div></div>
-        </div>
-      </div>
-
-      <!-- right mosaic -->
-      <div class="hero-mosaic anim-5">
-        <!-- featured -->
-        <div class="mosaic-card featured" onclick="openModal('rabbit')">
-          <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>
-          <span class="badge-top">⭐ 인기</span>
-          <div class="card-img ratio-wide">
-            <svg viewBox="0 0 300 170" class="coloring" xmlns="http://www.w3.org/2000/svg">
-              <!-- ground -->
-              <ellipse cx="90" cy="148" rx="70" ry="14" class="green-s no-fill"/>
-              <ellipse cx="210" cy="152" rx="65" ry="12" class="green-s no-fill"/>
-              <!-- grass -->
-              <path d="M30 148 Q32 138 34 148" class="green-s no-fill"/>
-              <path d="M50 145 Q54 132 58 145" class="green-s no-fill"/>
-              <!-- rabbit body -->
-              <ellipse cx="90" cy="120" rx="35" ry="38"/>
-              <!-- rabbit head -->
-              <circle cx="90" cy="78" r="28"/>
-              <!-- ears -->
-              <ellipse cx="76" cy="46" rx="9" ry="22" transform="rotate(-8 76 46)"/>
-              <ellipse cx="76" cy="46" rx="5" ry="15" class="accent-s" transform="rotate(-8 76 46)"/>
-              <ellipse cx="104" cy="44" rx="9" ry="22" transform="rotate(8 104 44)"/>
-              <ellipse cx="104" cy="44" rx="5" ry="15" class="accent-s" transform="rotate(8 104 44)"/>
-              <!-- eyes -->
-              <circle cx="81" cy="74" r="5"/>
-              <circle cx="83" cy="74" r="2.5" fill="#1e1b18" stroke="none"/>
-              <circle cx="99" cy="74" r="5"/>
-              <circle cx="101" cy="74" r="2.5" fill="#1e1b18" stroke="none"/>
-              <!-- nose mouth -->
-              <ellipse cx="90" cy="83" rx="4" ry="3" class="accent-s"/>
-              <path d="M87 87 Q90 91 93 87" class="no-fill"/>
-              <!-- paws -->
-              <ellipse cx="68" cy="140" rx="18" ry="11"/>
-              <ellipse cx="112" cy="140" rx="18" ry="11"/>
-              <!-- carrot -->
-              <path d="M124 125 L133 108 L129 125Z"/>
-              <path d="M130 108 Q130 100 132 94" class="green-s no-fill"/>
-              <!-- flower -->
-              <circle cx="57" cy="120" r="5" class="accent-s"/>
-              <path d="M54 115 Q57 110 60 115" class="green-s no-fill"/>
-              <!-- turtle -->
-              <ellipse cx="210" cy="140" rx="42" ry="24"/>
-              <ellipse cx="210" cy="138" rx="28" ry="16"/>
-              <!-- turtle head -->
-              <circle cx="247" cy="134" r="12"/>
-              <!-- turtle eye -->
-              <circle cx="251" cy="130" r="3"/>
-              <circle cx="252" cy="130" r="1.5" fill="#1e1b18" stroke="none"/>
-              <!-- shell pattern -->
-              <path d="M196 128 Q200 122 208 124" class="no-fill light-s"/>
-              <path d="M212 122 Q218 118 224 122" class="no-fill light-s"/>
-              <path d="M198 136 Q202 130 210 132" class="no-fill light-s"/>
-              <!-- turtle legs -->
-              <ellipse cx="176" cy="148" rx="12" ry="7" transform="rotate(-20 176 148)"/>
-              <ellipse cx="244" cy="148" rx="12" ry="7" transform="rotate(20 244 148)"/>
-            </svg>
-          </div>
-          <div class="card-foot">
-            <div class="card-category">동화 시리즈</div>
-            <div class="card-title">토끼와 거북이의 느린 하루</div>
-            <div class="card-meta">
-              <span class="card-pages">📄 10장 세트</span>
-              <div class="diff-dots">
-                <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 1v7M3 5l4 4 4-4"/><path d="M1 11h12"/></svg>
-              다운로드
-            </button>
-          </div>
-        </div>
-
-        <!-- small 1 -->
-        <div class="mosaic-card" onclick="openModal('mandala')">
-          <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>
-          <div class="card-img ratio-tall">
-            <svg viewBox="0 0 140 180" class="coloring" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="70" cy="90" r="60"/>
-              <circle cx="70" cy="90" r="40"/>
-              <circle cx="70" cy="90" r="20"/>
-              <circle cx="70" cy="90" r="6"/>
-              <path d="M70 30 v120 M10 90 h120" class="no-fill light-s"/>
-              <path d="M27 47 l86 86 M113 47 l-86 86" class="no-fill light-s"/>
-              <ellipse cx="70" cy="42" rx="8" ry="14"/>
-              <ellipse cx="70" cy="138" rx="8" ry="14"/>
-              <ellipse cx="22" cy="90" rx="14" ry="8"/>
-              <ellipse cx="118" cy="90" rx="14" ry="8"/>
-            </svg>
-          </div>
-          <div class="card-foot">
-            <div class="card-category">집중 · 어른용</div>
-            <div class="card-title">명상 만다라</div>
-            <div class="card-meta">
-              <span class="card-pages">📄 12장</span>
-              <div class="diff-dots">
-                <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
-          </div>
-        </div>
-
-        <!-- small 2 -->
-        <div class="mosaic-card" onclick="openModal('tree')">
-          <button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>
-          <span class="badge-top badge-new">NEW</span>
-          <div class="card-img ratio-tall">
-            <svg viewBox="0 0 140 180" class="coloring" xmlns="http://www.w3.org/2000/svg">
-              <rect x="62" y="110" width="16" height="56" rx="3"/>
-              <ellipse cx="70" cy="90" rx="48" ry="42"/>
-              <ellipse cx="70" cy="64" rx="36" ry="32"/>
-              <ellipse cx="70" cy="42" rx="22" ry="22"/>
-              <circle cx="82" cy="75" r="5" class="accent-s"/>
-              <circle cx="58" cy="90" r="4" class="accent-s"/>
-              <circle cx="80" cy="100" r="3" class="accent-s"/>
-              <path d="M28 152 Q30 142 32 152" class="green-s no-fill"/>
-              <path d="M106 150 Q109 138 112 150" class="green-s no-fill"/>
-            </svg>
-          </div>
-          <div class="card-foot">
-            <div class="card-category">자연 · 계절</div>
-            <div class="card-title">봄날 벚꽃나무</div>
-            <div class="card-meta">
-              <span class="card-pages">📄 8장</span>
-              <div class="diff-dots">
-                <div class="diff-dot on"></div><div class="diff-dot"></div><div class="diff-dot"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-overlay">
-            <button class="overlay-dl" onclick="event.stopPropagation();triggerDownload()">⬇ 다운로드</button>
-          </div>
         </div>
       </div>
     </div>
@@ -1355,7 +1194,7 @@ svg.coloring .no-fill{fill:none}
     <div class="footer-inner">
       <div>
         <div class="footer-brand-name"><span class="accent">color</span>.uncle</div>
-        <div class="footer-desc">유아부터 어른까지 즐기는 AI 색칠도안 전문 사이트. 매주 새로운 도안이 업로드됩니다.</div>
+        <div class="footer-desc">유아부터 어른까지 즐기는 색칠도안 전문 사이트. 매주 새로운 도안이 업로드됩니다.</div>
       </div>
       <div>
         <div class="footer-col-title">도안</div>
