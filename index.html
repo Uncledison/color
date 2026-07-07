@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="gafyxybm6dpWY1dRDbk02J00e05KAD5QRgg34khfozM" />
 <meta name="naver-site-verification" content="0eb43c68eef0cfcdf16c60344a319bd20a1a4673" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2751064253088315" crossorigin="anonymous"></script>
 <title>color.uncle — 색칠도안 무료 다운로드</title>
 <meta name="description" content="매주 새로 올라오는 무료 색칠도안. 한 장씩 넘기면 이야기가 되는 시리즈 도안부터 단일 도안까지, A4로 바로 출력해서 색칠하세요.">
 <link rel="canonical" href="https://color.uncledison.com/">
@@ -649,10 +650,8 @@ footer{
 .inter-h{font-family:'Jua',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px}
 .inter-sub{font-size:13px;color:var(--ink-3);margin-bottom:14px}
 .inter-ad{
-  background:var(--warm);border:1px dashed rgba(242,167,46,.22);
-  border-radius:var(--r-lg);height:250px;
+  border-radius:var(--r-lg);height:250px;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:6px;
   margin-bottom:14px;
 }
 .countdown-track{width:100%;height:5px;background:var(--warm-2);border-radius:3px;overflow:hidden;margin-bottom:5px}
@@ -1287,8 +1286,10 @@ svg.coloring .no-fill{fill:none}
     <div class="inter-h">잠깐! 광고를 보면 다운로드가 시작돼요</div>
     <div class="inter-sub">무료 도안을 계속 만들 수 있도록 도와주세요 😊</div>
     <div class="inter-ad">
-      <span class="ad-label">전면 광고</span>
-      <span style="font-size:13px;color:var(--ink-3)">Google AdSense Interstitial</span>
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:300px;height:250px"
+           data-ad-client="ca-pub-2751064253088315"
+           data-ad-slot="4045731379"></ins>
     </div>
     <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
     <div class="countdown-label" id="cdLabel">5초 후 다운로드 가능...</div>
@@ -1402,13 +1403,17 @@ async function shareItem(){
 }
 
 /* ── 인터스티셜 → 실제 다운로드 ── */
-let cdTimer=null,pendingDl=null;
+let cdTimer=null,pendingDl=null,interAdLoaded=false;
 function triggerDownload(){
   if(!current)return;
   pendingDl=current.pages[currentPage].download;
   const el=document.getElementById('inter');
   el.classList.add('open');
   document.body.style.overflow='hidden';
+  if(!interAdLoaded){
+    interAdLoaded=true;
+    try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
+  }
   const skip=document.getElementById('skipBtn');
   const lbl=document.getElementById('cdLabel');
   skip.classList.remove('ready');
