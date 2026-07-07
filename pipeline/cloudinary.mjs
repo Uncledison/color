@@ -58,7 +58,7 @@ export function download(publicId, { cloud, filename }) {
   const fn = filename ? `fl_attachment:${encodeURIComponent(filename)}` : 'fl_attachment';
   return [
     BASE(cloud),
-    'f_auto,q_auto',
+    'f_png,q_auto',
     `l_text:${WATERMARK_FONT}_30_bold:${DOWNLOAD_WATERMARK},co_white,b_rgb:000000,g_south_east,x_20,y_20`,
     fn,
     publicId,

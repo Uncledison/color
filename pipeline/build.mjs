@@ -114,8 +114,10 @@ async function main() {
     JSON.stringify({ generatedAt: new Date().toISOString(), cloud: CLOUD, site: SITE, items }, null, 2)
   );
 
-  // index.html 복사 (소스는 레포 루트, 출력은 public/)
+  // index.html 및 정적 페이지 복사 (소스는 레포 루트, 출력은 public/)
   await fs.copyFile(path.join(ROOT, 'index.html'), path.join(OUT, 'index.html'));
+  await fs.copyFile(path.join(ROOT, 'copyright.html'), path.join(OUT, 'copyright.html'));
+  await fs.copyFile(path.join(ROOT, 'privacy.html'), path.join(OUT, 'privacy.html'));
 
   // OG 페이지
   for (const it of items) {
