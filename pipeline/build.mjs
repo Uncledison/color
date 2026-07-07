@@ -87,6 +87,22 @@ setTimeout(function(){location.replace('/#${esc(it.id)}')}, 1200);</script>
 </body></html>`;
 }
 
+// 검색엔진 등록·크롤링용 sitemap.xml / robots.txt
+function sitemapXml(items) {
+  const urls = [
+    { loc: `${SITE}/`, priority: '1.0' },
+    ...items.map((it) => ({ loc: it.url, priority: '0.8' })),
+  ];
+  const body = urls
+    .map((u) => `  <url><loc>${esc(u.loc)}</loc><priority>${u.priority}</priority></url>`)
+    .join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+function robotsTxt() {
+  return `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`;
+}
+
 async function main() {
   const items = (await loadItems()).map(enrich);
 
@@ -105,6 +121,10 @@ async function main() {
   for (const it of items) {
     await fs.writeFile(path.join(OUT, 'p', `${it.id}.html`), ogPage(it));
   }
+
+  // sitemap.xml / robots.txt
+  await fs.writeFile(path.join(OUT, 'sitemap.xml'), sitemapXml(items));
+  await fs.writeFile(path.join(OUT, 'robots.txt'), robotsTxt());
 
   console.log(`[build] ${items.length}개 도안 · cloud=${CLOUD} · site=${SITE}`);
 }
