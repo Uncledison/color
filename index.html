@@ -379,14 +379,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .badge-new{background:var(--coral);color:#fff}
 
 /* ── AD INFEED ── */
-.ad-infeed{
-  background:var(--warm);
-  border:1px dashed rgba(242,167,46,.2);
-  border-radius:var(--r-lg);
-  display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:4px;
-  min-height:200px;
-}
+.ad-infeed{grid-column:1/-1}
 
 /* ── SERIES SECTION ── */
 .series-row{
@@ -882,12 +875,6 @@ svg.coloring .no-fill{fill:none}
             </div>
           </div>
 
-          <!-- ad infeed -->
-          <div class="ad-infeed">
-            <span class="ad-label">광고</span>
-            <span style="font-size:11px;color:var(--ink-3)">Google AdSense 인피드</span>
-          </div>
-
           <!-- card 4 -->
           <div class="coloring-card" onclick="openModal('fairy')">
             <span class="badge-top">🧚 요정</span>
@@ -1372,10 +1359,20 @@ function seriesHTML(it){
     +'<div class="series-strip">'+strip+'</div></div>';
 }
 
+const INFEED_AD_HTML='<div class="ad-infeed"><ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-6t+ed+2i-1n-4w" data-ad-client="ca-pub-2751064253088315" data-ad-slot="5652280918"></ins></div>';
 function renderCatalog(){
   const grid=document.getElementById('cardGrid');
   const sr=document.getElementById('seriesRow');
-  if(grid) grid.innerHTML=DATA.length?DATA.map(cardHTML).join(''):'<p style="color:var(--ink-3);padding:20px">아직 공개된 도안이 없어요. Notion에서 "공개"를 켜보세요.</p>';
+  if(grid){
+    if(DATA.length){
+      const cards=DATA.map(cardHTML);
+      if(cards.length>3)cards.splice(3,0,INFEED_AD_HTML);
+      grid.innerHTML=cards.join('');
+      try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
+    }else{
+      grid.innerHTML='<p style="color:var(--ink-3);padding:20px">아직 공개된 도안이 없어요. Notion에서 "공개"를 켜보세요.</p>';
+    }
+  }
   if(sr){const series=DATA.filter(it=>it.type==='series');sr.innerHTML=series.map(seriesHTML).join('')||'<p style="color:var(--ink-3);padding:20px">곧 시리즈가 올라옵니다.</p>';}
 }
 
