@@ -101,6 +101,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .nav-logo .dot{color:var(--ink-3);font-weight:400}
 
 .nav-search{
+  position:relative;
   flex:1;max-width:480px;min-width:0;
   height:38px;
   background:var(--canvas);
@@ -110,6 +111,24 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   padding:0 14px;gap:8px;
   transition:border-color .2s,box-shadow .2s;
 }
+.search-results{
+  display:none;
+  position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:var(--canvas);border:1px solid var(--border);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-lg);
+  max-height:400px;overflow-y:auto;
+  z-index:110;
+}
+.search-results.open{display:block}
+.search-result-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;cursor:pointer;text-align:left;
+}
+.search-result-item:hover{background:var(--warm)}
+.search-result-item img{width:34px;height:46px;object-fit:cover;border-radius:4px;flex-shrink:0;background:var(--warm-2)}
+.search-result-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.search-result-desc{font-size:11.5px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search-empty{padding:18px 14px;text-align:center;font-size:13px;color:var(--ink-3)}
 .nav-search:focus-within{
   border-color:var(--ink);
   box-shadow:0 0 0 3px rgba(26,23,20,.07);
@@ -600,13 +619,19 @@ footer{
 
 /* modal ad */
 .modal-ad{
-  border-radius:var(--r);min-height:72px;overflow:hidden;
+  border-radius:var(--r);min-height:60px;overflow:hidden;
   width:100%;text-align:center;
   margin-bottom:14px;
 }
+.modal-ad-desktop{display:inline-block}
+.modal-ad-mobile{display:none}
+@media(max-width:600px){
+  .modal-ad-desktop{display:none}
+  .modal-ad-mobile{display:inline-block}
+}
 
 .modal-dl-row{
-  background:var(--warm);border:1px solid var(--border);
+  background:var(--canvas);border:1px solid var(--border);
   border-radius:var(--r-lg);padding:14px 16px;
   display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
 }
@@ -626,8 +651,8 @@ footer{
 .btn-dl:hover{transform:translateY(-1px)}
 .btn-dl.fill{background:var(--coral);color:#fff}
 .btn-dl.fill:hover{background:#b33a22}
-.btn-dl.outline{background:var(--canvas);color:var(--ink);border:1.5px solid var(--border)}
-.btn-dl.outline:hover{border-color:var(--ink);background:var(--warm)}
+.btn-dl.outline{background:var(--warm);color:var(--ink);border:1.5px solid transparent}
+.btn-dl.outline:hover{background:var(--warm-2)}
 
 /* ── INTERSTITIAL ── */
 .inter{
@@ -690,7 +715,8 @@ svg.coloring .no-fill{fill:none}
     </a>
     <div class="nav-search">
       <svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="6"/><path d="m15 15 3 3"/></svg>
-      <input type="text" placeholder="토끼, 만다라, 동화...">
+      <input type="text" id="searchInput" placeholder="토끼, 만다라, 동화..." autocomplete="off" oninput="handleSearchInput(this.value)" onfocus="handleSearchInput(this.value)">
+      <div class="search-results" id="searchResults"></div>
     </div>
     <nav class="nav-links">
       <a class="nav-link active" href="#">홈</a>
@@ -1262,12 +1288,14 @@ svg.coloring .no-fill{fill:none}
       </div>
       <p class="story-text" id="storyText"></p>
       <div class="modal-ad">
-        <ins class="adsbygoogle" id="modalAdIns"
-             style="display:block"
+        <ins class="adsbygoogle modal-ad-desktop" id="modalAdInsDesktop"
+             style="width:468px;height:60px"
              data-ad-client="ca-pub-2751064253088315"
-             data-ad-slot="2830676455"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+             data-ad-slot="4021183204"></ins>
+        <ins class="adsbygoogle modal-ad-mobile" id="modalAdInsMobile"
+             style="width:320px;height:50px"
+             data-ad-client="ca-pub-2751064253088315"
+             data-ad-slot="3998920912"></ins>
       </div>
       <div class="modal-dl-row">
         <div class="modal-dl-info">
@@ -1381,6 +1409,38 @@ function renderCatalog(){
   if(sr){const series=DATA.filter(it=>it.type==='series');sr.innerHTML=series.map(seriesHTML).join('')||'<p style="color:var(--ink-3);padding:20px">곧 시리즈가 올라옵니다.</p>';}
 }
 
+/* ── 검색 ── */
+function searchResultHTML(it){
+  return '<div class="search-result-item" onclick="selectSearchResult(\''+it.id+'\')">'
+    +'<img src="'+it.thumb+'" alt="" loading="lazy">'
+    +'<div><div class="search-result-title">'+esc(it.title)+'</div>'
+    +'<div class="search-result-desc">'+esc(it.desc)+'</div></div></div>';
+}
+function handleSearchInput(q){
+  const panel=document.getElementById('searchResults');
+  const kw=q.trim().toLowerCase();
+  if(!kw){panel.classList.remove('open');panel.innerHTML='';return}
+  const matches=DATA.filter(it=>{
+    const hay=[it.title,it.desc,it.category,...(it.tags||[])].join(' ').toLowerCase();
+    return hay.includes(kw);
+  }).slice(0,8);
+  panel.innerHTML=matches.length
+    ?matches.map(searchResultHTML).join('')
+    :'<div class="search-empty">"'+esc(q)+'"에 맞는 도안을 못 찾았어요</div>';
+  panel.classList.add('open');
+}
+function selectSearchResult(id){
+  document.getElementById('searchResults').classList.remove('open');
+  document.getElementById('searchInput').value='';
+  openModal(id);
+}
+document.addEventListener('click',(e)=>{
+  if(!e.target.closest('.nav-search'))document.getElementById('searchResults').classList.remove('open');
+});
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape')document.getElementById('searchResults').classList.remove('open');
+});
+
 /* ── 모달 ── */
 function buildDots(n){
   const c=document.getElementById('pageDots');c.innerHTML='';
@@ -1402,7 +1462,10 @@ function openModal(id){
   buildDots(current.pages.length);updateModal();
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow='hidden';
-  if(document.querySelector('#modalAdIns').getAttribute('data-adsbygoogle-status')!=='done'){
+  const modalAdIns=window.matchMedia('(max-width:600px)').matches
+    ?document.getElementById('modalAdInsMobile')
+    :document.getElementById('modalAdInsDesktop');
+  if(modalAdIns.getAttribute('data-adsbygoogle-status')!=='done'){
     requestAnimationFrame(()=>requestAnimationFrame(()=>{
       try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
     }));
