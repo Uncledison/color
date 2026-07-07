@@ -1389,7 +1389,6 @@ function updateModal(){
   document.getElementById('dlTitle').textContent=current.type==='series'?('📄 '+(currentPage+1)+'번 도안 다운로드'):'📄 도안 다운로드';
   document.querySelectorAll('.pdot').forEach((d,i)=>{d.className='pdot'+(i<currentPage?' done':i===currentPage?' active':'')});
 }
-let modalAdLoaded=false;
 function openModal(id){
   current=byId[id]||DATA[0];
   if(!current)return;
@@ -1398,8 +1397,7 @@ function openModal(id){
   buildDots(current.pages.length);updateModal();
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow='hidden';
-  if(!modalAdLoaded){
-    modalAdLoaded=true;
+  if(document.querySelector('#modalAdIns').getAttribute('data-adsbygoogle-status')!=='done'){
     requestAnimationFrame(()=>requestAnimationFrame(()=>{
       try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
     }));
