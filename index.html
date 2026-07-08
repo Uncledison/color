@@ -640,11 +640,20 @@ footer{
 }
 .inter.open{display:flex}
 .inter-box{
+  position:relative;
   background:var(--canvas);border-radius:var(--r-xl);
   padding:24px;max-width:480px;width:100%;
   text-align:center;
   animation:fadeUp .35s cubic-bezier(.34,1.56,.64,1);
 }
+.inter-close{
+  position:absolute;top:14px;right:14px;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--warm);color:var(--ink-3);
+  font-size:16px;transition:background .15s,color .15s;
+}
+.inter-close:hover{background:var(--warm-2);color:var(--ink)}
 .inter-h{font-family:'Jua',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px}
 .inter-sub{font-size:13px;color:var(--ink-3);margin-bottom:14px}
 .inter-ad{
@@ -665,6 +674,29 @@ footer{
 }
 .btn-skip.ready{opacity:1;pointer-events:auto}
 .btn-skip.ready:hover{background:#b33a22}
+
+.inter-coffee{margin-top:18px;padding-top:18px;border-top:1px solid var(--border-2)}
+.coffee-cup-wrap{position:relative;width:140px;height:140px;margin:0 auto 10px}
+.coffee-cup-img{width:100%;height:100%;object-fit:contain;border-radius:var(--r-lg)}
+.steam-wisp{
+  position:absolute;bottom:40%;
+  width:10px;height:24px;
+  background:rgba(255,255,255,.6);
+  border-radius:50%;filter:blur(4px);
+  opacity:0;
+  animation:steamRise 3.2s ease-in infinite;
+}
+.steam-wisp.w1{left:36%;animation-delay:0s}
+.steam-wisp.w2{left:48%;animation-delay:1.1s}
+.steam-wisp.w3{left:58%;animation-delay:2.1s}
+@keyframes steamRise{
+  0%{opacity:0;transform:translateY(0) scale(.6) rotate(0deg)}
+  15%{opacity:.6}
+  50%{transform:translateY(-30px) scale(1) rotate(6deg)}
+  85%{opacity:0}
+  100%{opacity:0;transform:translateY(-55px) scale(1.3) rotate(-4deg)}
+}
+.coffee-msg{font-family:'Jua',sans-serif;font-size:15px;color:var(--ink);line-height:1.5}
 
 /* ── MISC ── */
 .divider{height:1px;background:var(--border-2);margin:0}
@@ -1273,8 +1305,9 @@ svg.coloring .no-fill{fill:none}
 <!-- INTERSTITIAL -->
 <div class="inter" id="inter">
   <div class="inter-box">
-    <div class="inter-h">잠깐! 광고를 보면 다운로드가 시작돼요</div>
-    <div class="inter-sub">무료 도안을 계속 만들 수 있도록 도와주세요 😊</div>
+    <button class="inter-close" onclick="closeInter()" aria-label="닫기">✕</button>
+    <div class="inter-h">고화질 이미지를 준비하고 있어요</div>
+    <div class="inter-sub">조금만 기다려주세요 😊</div>
     <div class="inter-ad">
       <ins class="adsbygoogle"
            style="display:inline-block;width:300px;height:250px"
@@ -1284,6 +1317,16 @@ svg.coloring .no-fill{fill:none}
     <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
     <div class="countdown-label" id="cdLabel">5초 후 다운로드 가능...</div>
     <button class="btn-skip" id="skipBtn" onclick="execDownload()">✓ 다운로드 시작</button>
+
+    <div class="inter-coffee">
+      <div class="coffee-cup-wrap">
+        <img class="coffee-cup-img" src="/coffee-support.jpg" alt="커피 후원 QR">
+        <span class="steam-wisp w1"></span>
+        <span class="steam-wisp w2"></span>
+        <span class="steam-wisp w3"></span>
+      </div>
+      <div class="coffee-msg" id="coffeeMsg"></div>
+    </div>
   </div>
 </div>
 
@@ -1450,6 +1493,44 @@ async function shareItem(){
   }catch(e){window.prompt('아래 내용을 복사하세요:',current.shareText)}
 }
 
+/* ── 커피 후원 문구 (셔플백: 20개 소진 전까지 절대 안 겹침) ── */
+const COFFEE_MSGS=[
+  '무료로 받아가주셔서 감사해요 ☕',
+  '오늘도 함께해주셔서 고마워요',
+  '많은 분들이 다운받아주셔서 힘이 나요',
+  '여기까지 와주셔서 감사합니다',
+  '이 사이트, 저 혼자 만들고 있어요 ☕',
+  '매주 새 도안, 혼자 그리고 있어요',
+  '작은 사이트지만 정성껏 운영하고 있어요',
+  '혼자 기획하고 그리고 올리고 있어요',
+  '커피값이라도... 🙏 (안 주셔도 괜찮아요!)',
+  '카페인이 도안을 그리는 원동력이에요 ☕',
+  '오늘 커피 한 잔 값, 저한테 나눠주실래요?',
+  '제 커피값은 늘 부족해요 😄',
+  '무료로 계속 운영하고 싶어서요',
+  '광고 수익만으론 운영이 빠듯해요',
+  '여러분의 작은 응원이 사이트를 계속 살게 해요',
+  '후원은 다음 도안을 그리는 데 쓰일게요',
+  '도움이 되셨다면 커피 한 잔으로 응원해주세요',
+  '마음이 생기시면 커피 한 잔 부탁드려요',
+  '부담 없이, 마음 가는 만큼만요 ☕',
+  '작은 응원 하나가 큰 힘이 됩니다'
+];
+let coffeeDeck=[],lastCoffeeMsg=null;
+function nextCoffeeMsg(){
+  if(coffeeDeck.length===0){
+    coffeeDeck=[...COFFEE_MSGS];
+    for(let i=coffeeDeck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[coffeeDeck[i],coffeeDeck[j]]=[coffeeDeck[j],coffeeDeck[i]]}
+    if(coffeeDeck[coffeeDeck.length-1]===lastCoffeeMsg){
+      const swapIdx=Math.floor(Math.random()*(coffeeDeck.length-1));
+      [coffeeDeck[coffeeDeck.length-1],coffeeDeck[swapIdx]]=[coffeeDeck[swapIdx],coffeeDeck[coffeeDeck.length-1]];
+    }
+  }
+  const msg=coffeeDeck.pop();
+  lastCoffeeMsg=msg;
+  return msg;
+}
+
 /* ── 인터스티셜 → 실제 다운로드 ── */
 let cdTimer=null,pendingDl=null,interAdLoaded=false;
 function triggerDownload(){
@@ -1458,6 +1539,7 @@ function triggerDownload(){
   const el=document.getElementById('inter');
   el.classList.add('open');
   document.body.style.overflow='hidden';
+  document.getElementById('coffeeMsg').textContent=nextCoffeeMsg();
   if(!interAdLoaded){
     interAdLoaded=true;
     requestAnimationFrame(()=>requestAnimationFrame(()=>{
@@ -1474,6 +1556,11 @@ function triggerDownload(){
   lbl.textContent=s+'초 후 다운로드 가능...';
   cdTimer=setInterval(()=>{s--;if(s<=0){clearInterval(cdTimer);lbl.textContent='다운로드 준비 완료! ✓';skip.classList.add('ready')}else lbl.textContent=s+'초 후 다운로드 가능...'},1000);
 }
+function closeInter(){
+  document.getElementById('inter').classList.remove('open');
+  clearInterval(cdTimer);
+  pendingDl=null;
+}
 function execDownload(){
   document.getElementById('inter').classList.remove('open');
   document.body.style.overflow='';
@@ -1484,7 +1571,7 @@ function execDownload(){
 loadCatalog();
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeModal();document.getElementById('inter').classList.remove('open');document.body.style.overflow=''}
+  if(e.key==='Escape'){document.getElementById('inter').classList.contains('open')?closeInter():closeModal()}
   if(e.key==='ArrowLeft')changePage(-1);
   if(e.key==='ArrowRight')changePage(1);
 });

@@ -119,6 +119,7 @@ async function main() {
   await fs.copyFile(path.join(ROOT, 'copyright.html'), path.join(OUT, 'copyright.html'));
   await fs.copyFile(path.join(ROOT, 'privacy.html'), path.join(OUT, 'privacy.html'));
   await fs.copyFile(path.join(ROOT, 'bgm.mp3'), path.join(OUT, 'bgm.mp3'));
+  await fs.copyFile(path.join(ROOT, 'coffee-support.jpg'), path.join(OUT, 'coffee-support.jpg'));
 
   // OG 페이지
   for (const it of items) {
