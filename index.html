@@ -447,31 +447,21 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
 /* ── DISCOVER BOX (Affiliate) ── */
 .discover-box{
-  background:var(--warm);
+  background:var(--canvas);
   border:1px solid var(--border);
   border-radius:var(--r-xl);
   padding:20px;
   margin-top:32px;
 }
+.coupang-widget-item{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 0;border-bottom:1px solid var(--border-2);
+}
+.coupang-widget-item:last-child{border-bottom:none}
+.coupang-widget-caption{font-size:13px;font-weight:600;color:var(--ink);transition:color .15s}
+.coupang-widget-caption:hover{color:var(--coral)}
 .discover-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
 .discover-disclosure{font-size:11px;color:var(--ink-3);line-height:1.5;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border-2)}
-.discover-item{
-  display:flex;align-items:center;gap:12px;
-  padding:10px 0;border-bottom:1px solid var(--border-2);
-  cursor:pointer;
-  transition:opacity .15s;
-}
-.discover-item:last-child{border-bottom:none}
-.discover-item:hover{opacity:.7}
-.discover-icon{
-  width:38px;height:38px;background:var(--warm-2);
-  border-radius:var(--r);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;
-}
-.discover-item-text strong{font-size:13px;font-weight:600;display:block;margin-bottom:1px}
-.discover-item-text span{font-size:12px;color:var(--ink-3)}
-.discover-arrow{margin-left:auto;color:var(--ink-3);font-size:14px}
 
 /* ── MAIN WITH SIDEBAR ── */
 .main-layout{
@@ -1009,33 +999,18 @@ svg.coloring .no-fill{fill:none}
         <div class="discover-box">
           <div class="discover-title">이런 것도 어때요?</div>
           <div class="discover-disclosure">이 페이지는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
-          <div style="display:flex;justify-content:center;margin-bottom:14px">
-            <iframe src="https://coupa.ng/cnT19m" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics title="쿠팡 파트너스 배너"></iframe>
+          <div class="coupang-widget-item">
+            <a class="coupang-widget-caption" href="https://link.coupang.com/a/fc1y4EoDtc" target="_blank" rel="noopener sponsored">🖍️ 색연필 24색</a>
+            <iframe src="https://coupa.ng/cnUe0R" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics title="색연필 24색 - 쿠팡 파트너스"></iframe>
           </div>
-          <a class="discover-item" href="https://link.coupang.com/a/fcUKEjMN88" target="_blank" rel="noopener sponsored">
-            <div class="discover-icon">🖍️</div>
-            <div class="discover-item-text">
-              <strong>스테들러 색연필 24색</strong>
-              <span>9,570원 · 쿠팡에서 보기</span>
-            </div>
-            <span class="discover-arrow">›</span>
-          </a>
-          <a class="discover-item" href="https://link.coupang.com/a/fcXHLp1obI" target="_blank" rel="noopener sponsored">
-            <div class="discover-icon">🖊️</div>
-            <div class="discover-item-text">
-              <strong>문교 안마르는 사인펜 12종</strong>
-              <span>쿠팡에서 보기</span>
-            </div>
-            <span class="discover-arrow">›</span>
-          </a>
-          <a class="discover-item" href="https://link.coupang.com/a/fcV7QF3o8i" target="_blank" rel="noopener sponsored">
-            <div class="discover-icon">📄</div>
-            <div class="discover-item-text">
-              <strong>페이퍼원 A4 용지 500매</strong>
-              <span>4,990원 · 쿠팡에서 보기</span>
-            </div>
-            <span class="discover-arrow">›</span>
-          </a>
+          <div class="coupang-widget-item">
+            <a class="coupang-widget-caption" href="https://link.coupang.com/a/fc1NpzfEpE" target="_blank" rel="noopener sponsored">🖊️ 수성 싸인펜 12색</a>
+            <iframe src="https://coupa.ng/cnUfLZ" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics title="수성 싸인펜 12색 - 쿠팡 파트너스"></iframe>
+          </div>
+          <div class="coupang-widget-item">
+            <a class="coupang-widget-caption" href="https://link.coupang.com/a/fc1RTCtW7U" target="_blank" rel="noopener sponsored">📄 A4 용지 500매</a>
+            <iframe src="https://coupa.ng/cnUf1E" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics title="A4 용지 500매 - 쿠팡 파트너스"></iframe>
+          </div>
         </div>
       </aside>
     </div>
