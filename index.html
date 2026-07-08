@@ -656,11 +656,6 @@ footer{
 .inter-close:hover{background:var(--warm-2);color:var(--ink)}
 .inter-h{font-family:'Jua',sans-serif;font-size:20px;font-weight:700;margin-bottom:4px}
 .inter-sub{font-size:13px;color:var(--ink-3);margin-bottom:14px}
-.inter-ad{
-  border-radius:var(--r-lg);height:250px;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:14px;
-}
 .countdown-track{width:100%;height:5px;background:var(--warm-2);border-radius:3px;overflow:hidden;margin-bottom:5px}
 .countdown-fill{height:100%;background:var(--coral);border-radius:3px;animation:cdFill 5s linear forwards}
 @keyframes cdFill{from{width:100%}to{width:0%}}
@@ -675,8 +670,8 @@ footer{
 .btn-skip.ready{opacity:1;pointer-events:auto}
 .btn-skip.ready:hover{background:#b33a22}
 
-.inter-coffee{margin-top:18px;padding-top:18px;border-top:1px solid var(--border-2)}
-.coffee-cup-wrap{position:relative;width:140px;height:140px;margin:0 auto 10px}
+.inter-coffee{margin-bottom:18px}
+.coffee-cup-wrap{position:relative;width:220px;height:220px;margin:0 auto 12px}
 .coffee-cup-img{width:100%;height:100%;object-fit:contain;border-radius:var(--r-lg)}
 .steam-wisp{
   position:absolute;bottom:40%;
@@ -1308,25 +1303,20 @@ svg.coloring .no-fill{fill:none}
     <button class="inter-close" onclick="closeInter()" aria-label="닫기">✕</button>
     <div class="inter-h">고화질 이미지를 준비하고 있어요</div>
     <div class="inter-sub">조금만 기다려주세요 😊</div>
-    <div class="inter-ad">
-      <ins class="adsbygoogle"
-           style="display:inline-block;width:300px;height:250px"
-           data-ad-client="ca-pub-2751064253088315"
-           data-ad-slot="4045731379"></ins>
-    </div>
-    <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
-    <div class="countdown-label" id="cdLabel">5초 후 다운로드 가능...</div>
-    <button class="btn-skip" id="skipBtn" onclick="execDownload()">✓ 다운로드 시작</button>
 
     <div class="inter-coffee">
       <div class="coffee-cup-wrap">
-        <img class="coffee-cup-img" src="/coffee-support.jpg" alt="커피 후원 QR">
+        <img class="coffee-cup-img" src="/coffee-support.png" alt="커피 후원 QR">
         <span class="steam-wisp w1"></span>
         <span class="steam-wisp w2"></span>
         <span class="steam-wisp w3"></span>
       </div>
       <div class="coffee-msg" id="coffeeMsg"></div>
     </div>
+
+    <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
+    <div class="countdown-label" id="cdLabel">5초 후 다운로드 가능...</div>
+    <button class="btn-skip" id="skipBtn" onclick="execDownload()">✓ 다운로드 시작</button>
   </div>
 </div>
 
@@ -1532,7 +1522,7 @@ function nextCoffeeMsg(){
 }
 
 /* ── 인터스티셜 → 실제 다운로드 ── */
-let cdTimer=null,pendingDl=null,interAdLoaded=false;
+let cdTimer=null,pendingDl=null;
 function triggerDownload(){
   if(!current)return;
   pendingDl=current.pages[currentPage].download;
@@ -1540,12 +1530,6 @@ function triggerDownload(){
   el.classList.add('open');
   document.body.style.overflow='hidden';
   document.getElementById('coffeeMsg').textContent=nextCoffeeMsg();
-  if(!interAdLoaded){
-    interAdLoaded=true;
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
-    }));
-  }
   const skip=document.getElementById('skipBtn');
   const lbl=document.getElementById('cdLabel');
   skip.classList.remove('ready');
