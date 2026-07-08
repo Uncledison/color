@@ -670,28 +670,31 @@ footer{
 .btn-skip.ready{opacity:1;pointer-events:auto}
 .btn-skip.ready:hover{background:#b33a22}
 
-.inter-coffee{margin-bottom:18px}
-.coffee-cup-wrap{position:relative;width:220px;height:220px;margin:0 auto 12px}
-.coffee-cup-img{width:100%;height:100%;object-fit:contain;border-radius:var(--r-lg)}
+.inter-coffee{display:block;margin-bottom:18px;transition:opacity .15s}
+.inter-coffee:hover{opacity:.85}
+.coffee-title{font-family:'Jua',sans-serif;font-size:16px;font-weight:700;color:var(--coral);margin-bottom:10px}
+.coffee-cup-wrap{position:relative;width:100%;max-width:340px;aspect-ratio:900/381;margin:0 auto 12px}
+.coffee-cup-img{width:100%;height:100%;object-fit:contain}
 .steam-wisp{
-  position:absolute;bottom:40%;
-  width:10px;height:24px;
-  background:rgba(255,255,255,.6);
-  border-radius:50%;filter:blur(4px);
+  position:absolute;top:16%;
+  width:8px;height:20px;
+  background:rgba(255,255,255,.65);
+  border-radius:50%;filter:blur(3px);
   opacity:0;
   animation:steamRise 3.2s ease-in infinite;
 }
-.steam-wisp.w1{left:36%;animation-delay:0s}
-.steam-wisp.w2{left:48%;animation-delay:1.1s}
-.steam-wisp.w3{left:58%;animation-delay:2.1s}
+.steam-wisp.w1{left:20%;animation-delay:0s}
+.steam-wisp.w2{left:25%;animation-delay:1.1s}
+.steam-wisp.w3{left:30%;animation-delay:2.1s}
 @keyframes steamRise{
   0%{opacity:0;transform:translateY(0) scale(.6) rotate(0deg)}
   15%{opacity:.6}
-  50%{transform:translateY(-30px) scale(1) rotate(6deg)}
+  50%{transform:translateY(-24px) scale(1) rotate(6deg)}
   85%{opacity:0}
-  100%{opacity:0;transform:translateY(-55px) scale(1.3) rotate(-4deg)}
+  100%{opacity:0;transform:translateY(-44px) scale(1.3) rotate(-4deg)}
 }
 .coffee-msg{font-family:'Jua',sans-serif;font-size:15px;color:var(--ink);line-height:1.5}
+.coffee-cta{font-size:12px;color:var(--ink-3);margin-top:6px}
 
 /* ── MISC ── */
 .divider{height:1px;background:var(--border-2);margin:0}
@@ -1304,15 +1307,17 @@ svg.coloring .no-fill{fill:none}
     <div class="inter-h">고화질 이미지를 준비하고 있어요</div>
     <div class="inter-sub">조금만 기다려주세요 😊</div>
 
-    <div class="inter-coffee">
+    <a class="inter-coffee" href="https://qr.kakaopay.com/FX9MSRl4N9c402668" target="_blank" rel="noopener">
+      <div class="coffee-title">☕ 커피 후원</div>
       <div class="coffee-cup-wrap">
-        <img class="coffee-cup-img" src="/coffee-support.png" alt="커피 후원 QR">
+        <img class="coffee-cup-img" src="/coffee-support.png" alt="커피 후원 QR - 눌러서 카카오페이로 이동">
         <span class="steam-wisp w1"></span>
         <span class="steam-wisp w2"></span>
         <span class="steam-wisp w3"></span>
       </div>
       <div class="coffee-msg" id="coffeeMsg"></div>
-    </div>
+      <div class="coffee-cta">눌러서 응원하기 →</div>
+    </a>
 
     <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
     <div class="countdown-label" id="cdLabel">5초 후 다운로드 가능...</div>
