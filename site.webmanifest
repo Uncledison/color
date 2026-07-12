@@ -1,0 +1,14 @@
+{
+  "name": "color.uncle — 무료 색칠도안",
+  "short_name": "color.uncle",
+  "description": "매주 새로 올라오는 무료 색칠도안. A4로 바로 출력해서 색칠하세요.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff7e6",
+  "theme_color": "#f2a72e",
+  "lang": "ko",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -195,6 +195,13 @@ async function main() {
   await fs.copyFile(path.join(ROOT, 'bgm.mp3'), path.join(OUT, 'bgm.mp3'));
   await fs.copyFile(path.join(ROOT, 'coffee-cup.png'), path.join(OUT, 'coffee-cup.png'));
   await fs.copyFile(path.join(ROOT, 'coffee-qr.png'), path.join(OUT, 'coffee-qr.png'));
+  await fs.copyFile(path.join(ROOT, 'favicon-16x16.png'), path.join(OUT, 'favicon-16x16.png'));
+  await fs.copyFile(path.join(ROOT, 'favicon-32x32.png'), path.join(OUT, 'favicon-32x32.png'));
+  await fs.copyFile(path.join(ROOT, 'apple-touch-icon.png'), path.join(OUT, 'apple-touch-icon.png'));
+  await fs.copyFile(path.join(ROOT, 'icon-192.png'), path.join(OUT, 'icon-192.png'));
+  await fs.copyFile(path.join(ROOT, 'icon-512.png'), path.join(OUT, 'icon-512.png'));
+  await fs.copyFile(path.join(ROOT, 'site.webmanifest'), path.join(OUT, 'site.webmanifest'));
+  await fs.copyFile(path.join(ROOT, 'sw.js'), path.join(OUT, 'sw.js'));
 
   // OG 페이지 + 블로그/카페 복사용 페이지
   await fs.mkdir(path.join(OUT, 'blog'), { recursive: true });
