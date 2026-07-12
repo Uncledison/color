@@ -1,9 +1,16 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 cd /d "%~dp0"
 chcp 65001 >nul
 
 if "%~1"=="" goto usage
+
+:: 드래그된 인자 중 실제 존재하는 파일이 2개 이상이면 배치 모드
+set "FILECOUNT=0"
+for %%A in (%*) do (
+  if exist "%%~A" set /a FILECOUNT+=1
+)
+if %FILECOUNT% GTR 1 goto batchMode
 
 set "IMG=%~1"
 set "SLUG=%~2"
@@ -39,10 +46,22 @@ echo.
 pause
 exit /b 0
 
+:: ── 배치 모드: 이미지 여러 장을 한 번에 드래그. 짝이 되는 .meta.txt 없는 파일은 건너뜀 ──
+:batchMode
+echo Batch mode: %FILECOUNT% files
+echo.
+for %%A in (%*) do (
+  node pipeline\split-upload.mjs "%%~A" --skip-if-no-meta
+  echo.
+)
+goto done
+
 :usage
 echo Usage: split-upload.bat image_path [slug] [margin]
 echo   or drag-and-drop an image file onto this bat file.
 echo   If image.meta.txt sits next to the image, slug/Notion row are automatic.
+echo   Drag multiple images at once for batch mode - images without a matching
+echo   .meta.txt are skipped automatically instead of stopping the batch.
 echo.
 pause
 exit /b 1

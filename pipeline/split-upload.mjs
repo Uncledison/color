@@ -15,15 +15,26 @@
 //   (사이드카 메타파일의 ID로 기존 행을 찾아 제목/유형/카테고리/태그/난이도/소개/스토리만 갱신.
 //    이미지/공개 값은 건드리지 않음. 이미 있는 이미지는 그대로 두고 텍스트만 고칠 때 사용)
 //
+// 사용법 D - 배치 모드(split-upload.bat에 여러 이미지를 한 번에 드래그):
+//   node pipeline/split-upload.mjs <이미지경로> --skip-if-no-meta
+//   (사이드카 .meta.txt가 없으면 에러 없이 건너뜀. bat이 각 파일마다 이 옵션으로 호출)
+//
+// 사이드카 메타파일 이름 매칭: "tiger.jpg"→"tiger.meta.txt" 뿐 아니라
+// "tiger.meta.jpg"→"tiger.meta.txt" 도 동일하게 인식됨(이미지 파일명 자체에 .meta를 붙여도 무방).
+//
 // 원본마다 그리드 칸의 실제 크기/위치가 조금씩 달라서 칸마다 테두리를 자동 인식하는 대신,
 // 칸을 5x2로 균등 분할한 뒤 안쪽으로 --margin 픽셀만큼 통일된 두께로 인셋 크롭해서
 // 검은 테두리 선이 결과물에 남지 않게 한다. 그리드 편차가 크면 --margin 값을 올려서 재실행.
+//
+// 10칸 원본 이미지 자체도 Cloudinary에 올려두고, 네이버 블로그/카페 홍보용으로
+// 축소(가로 600px)+워터마크된 URL을 출력한다(원본 그대로 유출되지 않도록).
 
 import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { v2 as cloudinary } from 'cloudinary';
 import { Client as NotionClient } from '@notionhq/client';
+import * as CL from './cloudinary.mjs';
 
 process.loadEnvFile(new URL('../.env', import.meta.url));
 
@@ -81,7 +92,8 @@ function loadMeta(metaPath) {
 
 function sidecarMetaPath(imagePath) {
   const dir = path.dirname(imagePath);
-  const base = path.basename(imagePath, path.extname(imagePath));
+  let base = path.basename(imagePath, path.extname(imagePath));
+  base = base.replace(/\.meta$/i, ''); // tiger.meta.jpg 도 tiger.jpg 와 동일하게 tiger.meta.txt 를 찾음
   const p = path.join(dir, `${base}.meta.txt`);
   return fs.existsSync(p) ? p : null;
 }
@@ -97,10 +109,12 @@ function parseArgs(argv) {
   let metaPath = null;
   let slug = null;
   let updateOnly = false;
+  let skipIfNoMeta = false;
 
   const flagArgs = [maybeSlug, ...rest].filter(Boolean);
   for (const a of flagArgs) {
     if (a === '--update') { updateOnly = true; continue; }
+    if (a === '--skip-if-no-meta') { skipIfNoMeta = true; continue; }
     const marginM = a.match(/^--margin=(\d+)$/);
     if (marginM) { margin = Number(marginM[1]); continue; }
     const metaM = a.match(/^--meta=(.+)$/);
@@ -114,6 +128,11 @@ function parseArgs(argv) {
   if (metaPath) {
     meta = loadMeta(metaPath);
     slug = meta['ID']; // 메타가 있으면 항상 메타의 ID를 슬러그로 사용
+  }
+
+  if (!meta && !slug && skipIfNoMeta) {
+    console.log(`[skip] ${imagePath} — 매칭되는 .meta.txt 없음`);
+    process.exit(0);
   }
 
   if (updateOnly && !meta) {
@@ -163,6 +182,21 @@ function uploadOne(buffer, publicId) {
     );
     stream.end(buffer);
   });
+}
+
+// 원본 10칸 그리드 이미지를 그대로 Cloudinary에 올려두고,
+// 홍보용(네이버 블로그/카페)으로는 축소+워터마크된 URL을 돌려준다(원본 크기 유출 방지).
+async function uploadGridPromo(imagePath, slug) {
+  const publicId = `uncledison/coloring/${slug}/${slug}-grid`;
+  const result = await cloudinary.uploader.upload(imagePath, {
+    public_id: publicId,
+    overwrite: true,
+    resource_type: 'image',
+  });
+  const promoUrl = CL.socialShare(CL.toPublicId(result.public_id), {
+    cloud: process.env.CLOUDINARY_CLOUD || 'dhfobwnfc',
+  });
+  return promoUrl;
 }
 
 function metaToProperties(meta) {
@@ -243,6 +277,11 @@ async function main() {
     console.log('완료');
     urls.push(result.secure_url);
   }
+
+  process.stdout.write('[upload] 홍보용 원본(축소+워터마크) ... ');
+  const promoUrl = await uploadGridPromo(imagePath, slug);
+  console.log('완료');
+  console.log(`네이버 블로그/카페 홍보용 이미지: ${promoUrl}`);
 
   if (meta) {
     process.stdout.write('[notion] 미공개 행 생성 중 ... ');
