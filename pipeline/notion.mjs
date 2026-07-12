@@ -21,6 +21,7 @@ const P = {
   published: '공개',    // Checkbox
   pinterest: '핀터레스트', // Checkbox: 핀터레스트 자동 업로드 완료 여부
   blogText: '블로그글', // Text: 네이버 블로그 복사용 페이지의 본문 소스
+  cafeText: '카페글',   // Text: 네이버 카페 복사용 페이지의 본문 소스
 };
 
 const txt = (prop) =>
@@ -74,6 +75,7 @@ export async function fetchPublishedItems() {
       published: check(p[P.published]),
       pinterestDone: check(p[P.pinterest]),
       blogText: txt(p[P.blogText]),
+      cafeText: txt(p[P.cafeText]),
     };
   }).filter((it) => it.id && it.title && it.pages.length);
 }

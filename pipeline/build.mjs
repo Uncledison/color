@@ -65,8 +65,8 @@ function esc(s = '') {
 // 이미지(실제 <img>)와 문단 서식이 그대로 살아서 붙여넣기 된다.
 // 다운로드 링크는 일부러 밋밋한 텍스트 링크로 둬서, 버튼 대신 "그냥 URL"처럼
 // 보이게 해 네이버가 별도로 링크 미리보기 카드를 만들 여지를 준다.
-function blogPage(it) {
-  const paragraphs = (it.blogText || '')
+function promoCopyPage(it, { text, label }) {
+  const paragraphs = (text || '')
     .split(/\n\s*\n/)
     .map((p) => p.trim())
     .filter((p) => p && !/^https?:\/\/\S+$/.test(p));
@@ -77,7 +77,7 @@ function blogPage(it) {
 
   return `<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(it.title)} — 블로그 복사용</title>
+<title>${esc(it.title)} — ${label} 복사용</title>
 <meta name="robots" content="noindex">
 <style>
   :root{--paper:#fff;--ink:#3d2b1f;--ink-2:#6b5c4d;--coral:#c8442a;--border:#e5e5e5}
@@ -114,6 +114,9 @@ function blogPage(it) {
 </div>
 </body></html>`;
 }
+
+const blogPage = (it) => promoCopyPage(it, { text: it.blogText, label: '블로그' });
+const cafePage = (it) => promoCopyPage(it, { text: it.cafeText, label: '카페' });
 
 // 크롤러가 읽는 정적 OG 페이지 + 사람에겐 도안으로 진입시키는 가벼운 랜딩
 function ogPage(it) {
@@ -195,11 +198,13 @@ async function main() {
   await fs.copyFile(path.join(ROOT, 'coffee-cup.png'), path.join(OUT, 'coffee-cup.png'));
   await fs.copyFile(path.join(ROOT, 'coffee-qr.png'), path.join(OUT, 'coffee-qr.png'));
 
-  // OG 페이지 + 블로그 복사용 페이지
+  // OG 페이지 + 블로그/카페 복사용 페이지
   await fs.mkdir(path.join(OUT, 'blog'), { recursive: true });
+  await fs.mkdir(path.join(OUT, 'cafe'), { recursive: true });
   for (const it of items) {
     await fs.writeFile(path.join(OUT, 'p', `${it.id}.html`), ogPage(it));
     await fs.writeFile(path.join(OUT, 'blog', `${it.id}.html`), blogPage(it));
+    await fs.writeFile(path.join(OUT, 'cafe', `${it.id}.html`), cafePage(it));
   }
 
   // sitemap.xml / robots.txt
