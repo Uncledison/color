@@ -20,6 +20,7 @@ const P = {
   story: '스토리',      // Text: 줄바꿈으로 페이지별 1줄(이미지 순서와 동일)
   published: '공개',    // Checkbox
   pinterest: '핀터레스트', // Checkbox: 핀터레스트 자동 업로드 완료 여부
+  blogText: '블로그글', // Text: 네이버 블로그 복사용 페이지의 본문 소스
 };
 
 const txt = (prop) =>
@@ -72,6 +73,7 @@ export async function fetchPublishedItems() {
       pages,
       published: check(p[P.published]),
       pinterestDone: check(p[P.pinterest]),
+      blogText: txt(p[P.blogText]),
     };
   }).filter((it) => it.id && it.title && it.pages.length);
 }

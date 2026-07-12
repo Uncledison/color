@@ -36,6 +36,7 @@ function enrich(it) {
     url: `${SITE}/p/${it.id}`,
     thumb: CL.thumb(cover, o),
     og: CL.ogImage(cover, o),
+    promo: CL.socialShare(`uncledison/coloring/${it.id}/${it.id}-grid`, { cloud: CLOUD }),
     pages: it.pages.map((pg) => {
       const publicId = CL.toPublicId(pg.publicId);
       return {
@@ -58,6 +59,60 @@ function enrich(it) {
 
 function esc(s = '') {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// 네이버 블로그/카페 붙여넣기용 정적 페이지. 본문 영역을 드래그+복사하면
+// 이미지(실제 <img>)와 문단 서식이 그대로 살아서 붙여넣기 된다.
+// 다운로드 링크는 일부러 밋밋한 텍스트 링크로 둬서, 버튼 대신 "그냥 URL"처럼
+// 보이게 해 네이버가 별도로 링크 미리보기 카드를 만들 여지를 준다.
+function blogPage(it) {
+  const paragraphs = (it.blogText || '')
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter((p) => p && !/^https?:\/\/\S+$/.test(p));
+
+  const bodyHtml = paragraphs
+    .map((p) => `<p>${esc(p)}</p>`)
+    .join('\n    <p class="spacer">&nbsp;</p>\n    <p class="spacer">&nbsp;</p>\n\n    ');
+
+  return `<!DOCTYPE html><html lang="ko"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(it.title)} — 블로그 복사용</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{--paper:#fff;--ink:#3d2b1f;--ink-2:#6b5c4d;--coral:#c8442a;--border:#e5e5e5}
+  @media (prefers-color-scheme: dark){
+    :root{--paper:#1c1917;--ink:#f2e9dd;--ink-2:#c9baa8;--coral:#e8734f;--border:#3a3532}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .toolbar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px dashed var(--border);padding:14px 20px;font-size:13px;color:var(--ink-2);user-select:none}
+  .toolbar b{color:var(--coral);font-weight:700}
+  .wrap{max-width:640px;margin:0 auto;padding:48px 24px 80px;background:var(--paper)}
+  .kicker{font-size:12px;letter-spacing:.08em;color:var(--coral);font-weight:700;margin-bottom:10px}
+  h1{font-family:'Nanum Myeongjo','Batang',serif;font-size:clamp(28px,5vw,38px);line-height:1.3;margin:0 0 28px}
+  .cover{width:100%;border-radius:14px;border:1px solid var(--border);display:block;margin-bottom:28px}
+  .body p{font-size:17px;color:var(--ink);margin:0;max-width:60ch}
+  .spacer{height:1px}
+  .cta{margin-top:14px;padding-top:28px;border-top:1px solid var(--border)}
+  .cta p{font-size:17px;margin:0 0 8px}
+  .cta a{color:var(--coral);text-decoration:underline}
+</style>
+</head><body>
+<div class="toolbar">📋 아래 글 영역(제목부터 링크까지)만 드래그해서 선택 → <b>Ctrl+C</b> 복사 → 네이버 에디터에 붙여넣으세요. (이 안내문은 선택돼도 복사되지 않아요)</div>
+<div class="wrap">
+  <div class="kicker">${esc(it.category || '무료 색칠도안')}</div>
+  <h1>${esc(it.title)}</h1>
+  <img class="cover" alt="${esc(it.title)} 색칠도안 미리보기" src="${esc(it.promo)}">
+  <div class="body">
+    ${bodyHtml}
+  </div>
+  <div class="cta">
+    <p>👉 색칠도안 ${it.pageCount}장 무료로 받으러 가기</p>
+    <p><a href="${esc(it.url)}">${esc(it.url)}</a></p>
+  </div>
+</div>
+</body></html>`;
 }
 
 // 크롤러가 읽는 정적 OG 페이지 + 사람에겐 도안으로 진입시키는 가벼운 랜딩
@@ -140,9 +195,11 @@ async function main() {
   await fs.copyFile(path.join(ROOT, 'coffee-cup.png'), path.join(OUT, 'coffee-cup.png'));
   await fs.copyFile(path.join(ROOT, 'coffee-qr.png'), path.join(OUT, 'coffee-qr.png'));
 
-  // OG 페이지
+  // OG 페이지 + 블로그 복사용 페이지
+  await fs.mkdir(path.join(OUT, 'blog'), { recursive: true });
   for (const it of items) {
     await fs.writeFile(path.join(OUT, 'p', `${it.id}.html`), ogPage(it));
+    await fs.writeFile(path.join(OUT, 'blog', `${it.id}.html`), blogPage(it));
   }
 
   // sitemap.xml / robots.txt
