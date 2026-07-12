@@ -8,13 +8,15 @@
 process.loadEnvFile(new URL('../.env', import.meta.url));
 process.env.NOTION_DB_ID = process.env.NOTION_DB_ID || '99d2f23293f64c85857ba7e884dd05aa';
 
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { fetchPublishedItems } from './notion.mjs';
 import * as CL from './cloudinary.mjs';
 
 const CLOUD = process.env.CLOUDINARY_CLOUD || 'dhfobwnfc';
 const SITE = (process.env.SITE_URL || 'https://color.uncledison.com').replace(/\/$/, '');
 
-function buildBlogText(it, url, promoUrl) {
+export function buildBlogText(it, url, promoUrl) {
   const storyLines = it.pages.map((p, i) => `${i + 1}. ${p.story}`).join('\n');
   const allTags = [...new Set([...(it.tags || []), '무료색칠도안', '전래동화', '색칠공부'])];
   const tagLine = allTags.map((t) => `#${t}`).join(' ');
@@ -37,7 +39,7 @@ ${storyLines}
 ${tagLine}`;
 }
 
-function buildCafeText(it, url, promoUrl) {
+export function buildCafeText(it, url, promoUrl) {
   return `🎨 ${it.title} (색칠도안 ${it.pageCount}장)
 
 ${it.desc}
@@ -76,7 +78,10 @@ async function main() {
   console.log(buildCafeText(it, url, promoUrl));
 }
 
-main().catch((e) => {
-  console.error('[error]', e.message);
-  process.exit(1);
-});
+const isDirectRun = fileURLToPath(import.meta.url) === path.resolve(process.argv[1] || '');
+if (isDirectRun) {
+  main().catch((e) => {
+    console.error('[error]', e.message);
+    process.exit(1);
+  });
+}

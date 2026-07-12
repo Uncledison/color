@@ -1,6 +1,8 @@
 // pipeline/split-upload.mjs
 // 시리즈 원본 시안(5열×2행=10칸 그리드) 1장 → 칸별 테두리 제거 크롭 → Cloudinary 업로드
 // → (메타파일이 있으면) Notion에 미공개 행까지 자동 생성.
+// 이때 노션 행의 "블로그글"/"카페글" 칸에 네이버 블로그/카페용 초안 텍스트까지
+// 자동으로 채워져서, 별도 명령어 없이 노션에서 바로 복사해 쓸 수 있다.
 //
 // 사용법 A - 메타 없이 크롭/업로드만:
 //   node pipeline/split-upload.mjs <이미지경로> <슬러그> [--margin=40]
@@ -45,6 +47,7 @@ import sharp from 'sharp';
 import { v2 as cloudinary } from 'cloudinary';
 import { Client as NotionClient } from '@notionhq/client';
 import * as CL from './cloudinary.mjs';
+import { buildBlogText, buildCafeText } from './promo-text.mjs';
 
 process.loadEnvFile(new URL('../.env', import.meta.url));
 
@@ -53,6 +56,7 @@ const ROWS = 2;
 const SOURCE_DPI_DEFAULT = 72;
 const TARGET_DPI_DEFAULT = 150;
 const NOTION_DB_ID = process.env.NOTION_DB_ID || '99d2f23293f64c85857ba7e884dd05aa';
+const SITE = (process.env.SITE_URL || 'https://color.uncledison.com').replace(/\/$/, '');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD || 'dhfobwnfc',
@@ -250,6 +254,29 @@ function metaToProperties(meta) {
   return properties;
 }
 
+// Notion rich_text 한 덩어리는 2000자 제한이 있어, 긴 글은 여러 text 조각으로 나눠 담는다.
+function toRichText(str, chunkSize = 1900) {
+  const s = String(str || '');
+  const chunks = [];
+  for (let i = 0; i < s.length; i += chunkSize) chunks.push(s.slice(i, i + chunkSize));
+  return (chunks.length ? chunks : ['']).map((c) => ({ text: { content: c } }));
+}
+
+// meta + 업로드된 페이지 URL을 promo-text.mjs의 buildBlogText/buildCafeText가 쓰는 형태로 변환.
+function metaToPromoItem(meta, slug) {
+  const tags = (meta['태그'] || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const stories = meta['스토리'] || [];
+  return {
+    id: slug,
+    title: meta['제목'],
+    category: meta['카테고리'] || '',
+    tags,
+    desc: meta['소개'] || '',
+    pageCount: stories.length,
+    pages: stories.map((story, i) => ({ n: i + 1, story })),
+  };
+}
+
 async function updateNotionRow(meta) {
   if (!process.env.NOTION_TOKEN) {
     throw new Error('NOTION_TOKEN이 없어 Notion 업데이트를 할 수 없습니다. .env에 NOTION_TOKEN을 추가하세요.');
@@ -270,15 +297,19 @@ async function updateNotionRow(meta) {
   return res.url;
 }
 
-async function createNotionRow(meta, imageUrls) {
+async function createNotionRow(meta, imageUrls, promoUrl) {
   if (!process.env.NOTION_TOKEN) {
     console.warn('[notion] NOTION_TOKEN이 없어 Notion 행 생성을 건너뜁니다. .env에 NOTION_TOKEN을 추가하세요.');
     return null;
   }
   const notion = new NotionClient({ auth: process.env.NOTION_TOKEN });
+  const promoItem = metaToPromoItem(meta, meta['ID']);
+  const pageUrl = `${SITE}/p/${meta['ID']}`;
   const properties = {
     ...metaToProperties(meta),
     '이미지': { rich_text: [{ text: { content: imageUrls.join('\n') } }] },
+    '블로그글': { rich_text: toRichText(buildBlogText(promoItem, pageUrl, promoUrl)) },
+    '카페글': { rich_text: toRichText(buildCafeText(promoItem, pageUrl, promoUrl)) },
     '공개': { checkbox: false },
   };
 
@@ -330,8 +361,8 @@ async function main() {
   console.log(`네이버 블로그/카페 홍보용 이미지: ${promoUrl}`);
 
   if (meta) {
-    process.stdout.write('[notion] 미공개 행 생성 중 ... ');
-    const pageUrl = await createNotionRow(meta, urls);
+    process.stdout.write('[notion] 미공개 행 생성 중 (블로그글/카페글 포함) ... ');
+    const pageUrl = await createNotionRow(meta, urls, promoUrl);
     if (pageUrl) {
       console.log('완료');
       console.log(`\nNotion 행: ${pageUrl}`);
