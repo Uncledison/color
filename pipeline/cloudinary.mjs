@@ -74,3 +74,14 @@ export function preview(publicId, { cloud }) {
     publicId,
   ].join('/');
 }
+
+// ── 5) SNS(핀터레스트 등) 공유용 — 작게 + 워터마크 (원본 유출/스크랩 방지) ──
+export function socialShare(publicId, { cloud }) {
+  return [
+    BASE(cloud),
+    'f_auto,q_auto',
+    'w_600,c_limit',
+    `l_text:${WATERMARK_FONT}_22_bold:${DOWNLOAD_WATERMARK},co_white,b_rgb:000000,g_south_east,x_14,y_14`,
+    publicId,
+  ].join('/');
+}

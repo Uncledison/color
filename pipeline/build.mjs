@@ -42,6 +42,7 @@ function enrich(it) {
         ...pg,
         publicId,
         preview: CL.preview(publicId, { cloud: CLOUD }),
+        social: CL.socialShare(publicId, { cloud: CLOUD }),
         download: CL.download(publicId, {
           cloud: CLOUD,
           filename: `${it.id}-${String(pg.n).padStart(2, '0')}`,

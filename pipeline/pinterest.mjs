@@ -74,7 +74,7 @@ export async function publishItemToPinterest(item) {
         title: `${item.title} - 무료 색칠도안`,
         description: `${item.desc || item.title}\n무료로 다운받아 색칠해보세요! color.uncle`,
         link: item.url,
-        imageUrl: pg.preview,
+        imageUrl: pg.social,
       });
       results.push({ ok: true, page: pg.n, pinId: pin.id });
     } catch (e) {
