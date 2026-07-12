@@ -28,6 +28,11 @@
 //
 // 10칸 원본 이미지 자체도 Cloudinary에 올려두고, 네이버 블로그/카페 홍보용으로
 // 축소(가로 600px)+워터마크된 URL을 출력한다(원본 그대로 유출되지 않도록).
+//
+// DPI 자동 확대: 원본이 저해상도(기본 72dpi 가정)면 물리 크기(인치)를 유지한 채
+// 목표 dpi(기본 150)로 리샘플 확대한 뒤 자르고 업로드한다(포토샵 수동 작업 대체).
+// 파일에 이미 더 높은 density가 박혀있으면 자동으로 생략됨.
+// 배율 조정: --source-dpi=72 --target-dpi=150 (기본값과 같으면 생략 가능)
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -40,6 +45,8 @@ process.loadEnvFile(new URL('../.env', import.meta.url));
 
 const COLS = 5;
 const ROWS = 2;
+const SOURCE_DPI_DEFAULT = 72;
+const TARGET_DPI_DEFAULT = 150;
 const NOTION_DB_ID = process.env.NOTION_DB_ID || '99d2f23293f64c85857ba7e884dd05aa';
 
 cloudinary.config({
@@ -110,6 +117,8 @@ function parseArgs(argv) {
   let slug = null;
   let updateOnly = false;
   let skipIfNoMeta = false;
+  let sourceDpi = SOURCE_DPI_DEFAULT;
+  let targetDpi = TARGET_DPI_DEFAULT;
 
   const flagArgs = [maybeSlug, ...rest].filter(Boolean);
   for (const a of flagArgs) {
@@ -119,6 +128,10 @@ function parseArgs(argv) {
     if (marginM) { margin = Number(marginM[1]); continue; }
     const metaM = a.match(/^--meta=(.+)$/);
     if (metaM) { metaPath = metaM[1]; continue; }
+    const srcDpiM = a.match(/^--source-dpi=(\d+)$/);
+    if (srcDpiM) { sourceDpi = Number(srcDpiM[1]); continue; }
+    const tgtDpiM = a.match(/^--target-dpi=(\d+)$/);
+    if (tgtDpiM) { targetDpi = Number(tgtDpiM[1]); continue; }
     if (!a.startsWith('--')) slug = a; // 위치 인자 = 슬러그
   }
 
@@ -145,11 +158,30 @@ function parseArgs(argv) {
     process.exit(1);
   }
 
-  return { imagePath, slug, margin, meta, updateOnly };
+  return { imagePath, slug, margin, meta, updateOnly, sourceDpi, targetDpi };
 }
 
-async function splitCells(imagePath, margin) {
-  const img = sharp(imagePath);
+// 원본이 저해상도(72dpi 등)면 물리 크기(인치)를 유지한 채 targetDpi로 리샘플 확대.
+// 이미 targetDpi 이상이면(임베드된 density로 판단) 그대로 둔다.
+async function upscaleToDpi(imagePath, sourceDpi, targetDpi) {
+  const meta = await sharp(imagePath).metadata();
+  const currentDpi = meta.density || sourceDpi;
+  if (currentDpi >= targetDpi) {
+    console.log(`[dpi] 이미 ${currentDpi}dpi ≥ 목표 ${targetDpi}dpi → 확대 생략`);
+    return fs.readFileSync(imagePath);
+  }
+  const scale = targetDpi / currentDpi;
+  const newWidth = Math.round(meta.width * scale);
+  const newHeight = Math.round(meta.height * scale);
+  console.log(`[dpi] ${currentDpi}dpi(${meta.width}x${meta.height}) → ${targetDpi}dpi(${newWidth}x${newHeight}) 확대 중 ...`);
+  return sharp(imagePath)
+    .resize(newWidth, newHeight, { kernel: sharp.kernel.lanczos3 })
+    .withMetadata({ density: targetDpi })
+    .toBuffer();
+}
+
+async function splitCells(imageInput, margin, targetDpi) {
+  const img = sharp(imageInput);
   const { width, height } = await img.metadata();
   const cellW = Math.floor(width / COLS);
   const cellH = Math.floor(height / ROWS);
@@ -165,8 +197,9 @@ async function splitCells(imagePath, margin) {
       const top = row * cellH + margin;
       const cropW = cellW - margin * 2;
       const cropH = cellH - margin * 2;
-      const buf = await sharp(imagePath)
+      const buf = await sharp(imageInput)
         .extract({ left, top, width: cropW, height: cropH })
+        .withMetadata({ density: targetDpi })
         .toBuffer();
       buffers.push(buf);
     }
@@ -184,15 +217,11 @@ function uploadOne(buffer, publicId) {
   });
 }
 
-// 원본 10칸 그리드 이미지를 그대로 Cloudinary에 올려두고,
+// (확대 처리된) 10칸 그리드 이미지를 그대로 Cloudinary에 올려두고,
 // 홍보용(네이버 블로그/카페)으로는 축소+워터마크된 URL을 돌려준다(원본 크기 유출 방지).
-async function uploadGridPromo(imagePath, slug) {
+async function uploadGridPromo(imageBuffer, slug) {
   const publicId = `uncledison/coloring/${slug}/${slug}-grid`;
-  const result = await cloudinary.uploader.upload(imagePath, {
-    public_id: publicId,
-    overwrite: true,
-    resource_type: 'image',
-  });
+  const result = await uploadOne(imageBuffer, publicId);
   const promoUrl = CL.socialShare(CL.toPublicId(result.public_id), {
     cloud: process.env.CLOUDINARY_CLOUD || 'dhfobwnfc',
   });
@@ -254,7 +283,7 @@ async function createNotionRow(meta, imageUrls) {
 }
 
 async function main() {
-  const { imagePath, slug, margin, meta, updateOnly } = parseArgs(process.argv.slice(2));
+  const { imagePath, slug, margin, meta, updateOnly, sourceDpi, targetDpi } = parseArgs(process.argv.slice(2));
 
   if (updateOnly) {
     process.stdout.write(`[notion] ID="${slug}" 행의 메타데이터만 갱신 중 ... `);
@@ -265,8 +294,10 @@ async function main() {
     return;
   }
 
+  const upscaled = await upscaleToDpi(imagePath, sourceDpi, targetDpi);
+
   console.log(`[split] ${imagePath} → ${COLS}x${ROWS}칸, margin=${margin}px, 슬러그=${slug}`);
-  const cells = await splitCells(imagePath, margin);
+  const cells = await splitCells(upscaled, margin, targetDpi);
 
   const urls = [];
   for (let i = 0; i < cells.length; i++) {
@@ -279,7 +310,7 @@ async function main() {
   }
 
   process.stdout.write('[upload] 홍보용 원본(축소+워터마크) ... ');
-  const promoUrl = await uploadGridPromo(imagePath, slug);
+  const promoUrl = await uploadGridPromo(upscaled, slug);
   console.log('완료');
   console.log(`네이버 블로그/카페 홍보용 이미지: ${promoUrl}`);
 
