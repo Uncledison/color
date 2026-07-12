@@ -21,7 +21,10 @@ if not "%SLUG%"=="" goto runWithSlug
 
 for %%F in ("%IMG%") do set "IMGDIR=%%~dpF"
 for %%F in ("%IMG%") do set "IMGBASE=%%~nF"
-if exist "%IMGDIR%%IMGBASE%.meta.txt" goto runNoSlug
+rem "tiger.meta.jpg" should match "tiger.meta.txt" too, same as the node script.
+set "IMGBASE_NOMETA=%IMGBASE%"
+if /I "%IMGBASE:~-5%"==".meta" set "IMGBASE_NOMETA=%IMGBASE:~0,-5%"
+if exist "%IMGDIR%%IMGBASE_NOMETA%.meta.txt" goto runNoSlug
 
 set /p SLUG=Enter series slug - English, numbers, hyphen only, e.g. konggi:
 goto runWithSlug
