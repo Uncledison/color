@@ -66,8 +66,11 @@ cloudinary.config({
 
 // ── 메타파일 파싱 ──
 // 형식: "키: 값" 줄들 + 마지막 "스토리:" 다음부터는 줄바꿈으로 여러 줄(페이지 순서와 동일)
-const META_KEYS = ['제목', 'ID', '유형', '카테고리', '태그', '난이도', '소개', '스토리'];
+const META_KEYS = ['제목', 'ID', '유형', '카테고리', '태그', '난이도', '소개', '스토리', '블로그글', '카페글'];
 const KEY_LINE = new RegExp(`^(${META_KEYS.join('|')})\\s*:\\s*(.*)$`);
+// 스토리는 줄마다 캡션 1개(빈 줄 제거, 배열로 저장).
+// 블로그글/카페글은 문단 형식 자유 글(빈 줄=문단 구분을 그대로 보존, 문자열로 저장).
+const MULTILINE_KEYS = ['스토리', '블로그글', '카페글'];
 
 function parseMeta(text) {
   const lines = text.replace(/\r\n/g, '\n').split('\n');
@@ -77,16 +80,22 @@ function parseMeta(text) {
     const m = lines[i].match(KEY_LINE);
     if (!m) { i++; continue; }
     const [, key, rest] = m;
-    if (key === '스토리') {
-      const storyLines = [];
-      if (rest.trim()) storyLines.push(rest.trim());
+    if (MULTILINE_KEYS.includes(key)) {
+      const buf = [];
+      if (rest.trim()) buf.push(rest);
       i++;
       while (i < lines.length) {
         if (lines[i].match(KEY_LINE)) break;
-        if (lines[i].trim()) storyLines.push(lines[i].trim());
+        buf.push(lines[i]);
         i++;
       }
-      meta['스토리'] = storyLines;
+      if (key === '스토리') {
+        meta[key] = buf.map((l) => l.trim()).filter(Boolean);
+      } else {
+        while (buf.length && !buf[0].trim()) buf.shift();
+        while (buf.length && !buf[buf.length - 1].trim()) buf.pop();
+        meta[key] = buf.join('\n');
+      }
       continue;
     }
     meta[key] = rest.trim();
@@ -290,11 +299,32 @@ async function updateNotionRow(meta) {
     throw new Error(`ID="${meta['ID']}"인 기존 Notion 행을 못 찾았습니다. --update 없이 실행하면 새로 생성됩니다.`);
   }
   const page = found.results[0];
+  const promoItem = metaToPromoItem(meta, meta['ID']);
+  const pageUrl = `${SITE}/p/${meta['ID']}`;
+  const promoUrl = CL.socialShare(`uncledison/coloring/${meta['ID']}/${meta['ID']}-grid`, {
+    cloud: process.env.CLOUDINARY_CLOUD || 'dhfobwnfc',
+  });
+  const properties = {
+    ...metaToProperties(meta), // 이미지·공개 값은 건드리지 않음
+    '블로그글': { rich_text: toRichText(resolvePromoText(meta['블로그글'], buildBlogText, promoItem, pageUrl, promoUrl)) },
+    '카페글': { rich_text: toRichText(resolvePromoText(meta['카페글'], buildCafeText, promoItem, pageUrl, promoUrl)) },
+  };
   const res = await notion.pages.update({
     page_id: page.id,
-    properties: metaToProperties(meta), // 이미지·공개 값은 건드리지 않음
+    properties,
   });
   return res.url;
+}
+
+// 제미나이 Gems가 {{대표이미지}}/{{다운로드링크}} 자리표시자로 써준 글이 있으면
+// 실제 URL로 치환해서 그대로 쓰고, 없으면(구버전 메타파일 등) 자동생성으로 대체.
+function resolvePromoText(rawText, fallbackFn, promoItem, pageUrl, promoUrl) {
+  if (rawText && rawText.trim()) {
+    return rawText
+      .replaceAll('{{대표이미지}}', promoUrl)
+      .replaceAll('{{다운로드링크}}', pageUrl);
+  }
+  return fallbackFn(promoItem, pageUrl, promoUrl);
 }
 
 async function createNotionRow(meta, imageUrls, promoUrl) {
@@ -305,11 +335,13 @@ async function createNotionRow(meta, imageUrls, promoUrl) {
   const notion = new NotionClient({ auth: process.env.NOTION_TOKEN });
   const promoItem = metaToPromoItem(meta, meta['ID']);
   const pageUrl = `${SITE}/p/${meta['ID']}`;
+  const blogText = resolvePromoText(meta['블로그글'], buildBlogText, promoItem, pageUrl, promoUrl);
+  const cafeText = resolvePromoText(meta['카페글'], buildCafeText, promoItem, pageUrl, promoUrl);
   const properties = {
     ...metaToProperties(meta),
     '이미지': { rich_text: [{ text: { content: imageUrls.join('\n') } }] },
-    '블로그글': { rich_text: toRichText(buildBlogText(promoItem, pageUrl, promoUrl)) },
-    '카페글': { rich_text: toRichText(buildCafeText(promoItem, pageUrl, promoUrl)) },
+    '블로그글': { rich_text: toRichText(blogText) },
+    '카페글': { rich_text: toRichText(cafeText) },
     '공개': { checkbox: false },
   };
 
