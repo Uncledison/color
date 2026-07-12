@@ -141,8 +141,6 @@ function ogPage(it) {
   <p style="color:#7a7269;margin:0 0 24px">${esc(desc)}</p>
   <a href="/#${esc(it.id)}" style="display:inline-block;background:#c8442a;color:#fff;padding:14px 28px;border-radius:8px;font-weight:600;text-decoration:none">색칠도안 보러가기 →</a>
 </div>
-<script>/* 사람이 직접 들어오면 앱으로 자동 이동(크롤러는 JS 미실행이라 OG 유지) */
-setTimeout(function(){location.replace('/#${esc(it.id)}')}, 1200);</script>
 </body></html>`;
 }
 
