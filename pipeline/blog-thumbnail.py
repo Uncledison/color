@@ -53,13 +53,13 @@ def make_thumbnail(slug, title):
     bar_x0, bar_y0, bar_x1, bar_y1 = BAR
     bar_w, bar_h = bar_x1 - bar_x0, bar_y1 - bar_y0
 
-    size = 26
+    size = 44  # 기존 26px 대비 약 2/3 키운 값
     font = ImageFont.truetype(FONT_PATH, size)
-    while size > 10:
+    while size > 16:
         font = ImageFont.truetype(FONT_PATH, size)
         bbox = draw.textbbox((0, 0), title, font=font)
-        tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-        if tw <= bar_w - 12 and th <= bar_h + 6:
+        tw = bbox[2] - bbox[0]
+        if tw <= bar_w - 12:
             break
         size -= 1
 
