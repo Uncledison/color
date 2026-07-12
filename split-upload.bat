@@ -5,7 +5,8 @@ chcp 65001 >nul
 
 if "%~1"=="" goto usage
 
-:: 드래그된 인자 중 실제 존재하는 파일이 2개 이상이면 배치 모드
+rem Count how many dragged arguments are actual existing files.
+rem If 2 or more, treat this as a batch (multi-image) run.
 set "FILECOUNT=0"
 for %%A in (%*) do (
   if exist "%%~A" set /a FILECOUNT+=1
@@ -46,13 +47,16 @@ echo.
 pause
 exit /b 0
 
-:: ── 배치 모드: 이미지 여러 장을 한 번에 드래그. 짝이 되는 .meta.txt 없는 파일은 건너뜀 ──
+rem Batch mode: multiple images dragged at once.
+rem Images without a matching .meta.txt sidecar are skipped, not fatal.
 :batchMode
 echo Batch mode: %FILECOUNT% files
 echo.
 for %%A in (%*) do (
-  node pipeline\split-upload.mjs "%%~A" --skip-if-no-meta
-  echo.
+  if exist "%%~A" (
+    node pipeline\split-upload.mjs "%%~A" --skip-if-no-meta
+    echo.
+  )
 )
 goto done
 
