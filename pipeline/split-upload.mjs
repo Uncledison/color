@@ -3,6 +3,8 @@
 // → (메타파일이 있으면) Notion에 미공개 행까지 자동 생성.
 // 이때 노션 행의 "블로그글"/"카페글" 칸에 네이버 블로그/카페용 초안 텍스트까지
 // 자동으로 채워져서, 별도 명령어 없이 노션에서 바로 복사해 쓸 수 있다.
+// 네이버 블로그 목록용 대표 이미지(썸네일)도 blog-thumbnail.py로 자동 합성해서
+// out/blog-thumbnails/<슬러그>.png 에 저장한다(파이썬 필요, 실패해도 나머지는 진행됨).
 //
 // 사용법 A - 메타 없이 크롭/업로드만:
 //   node pipeline/split-upload.mjs <이미지경로> <슬러그> [--margin=40]
@@ -43,6 +45,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import sharp from 'sharp';
 import { v2 as cloudinary } from 'cloudinary';
 import { Client as NotionClient } from '@notionhq/client';
@@ -50,6 +54,8 @@ import * as CL from './cloudinary.mjs';
 import { buildBlogText, buildCafeText } from './promo-text.mjs';
 
 process.loadEnvFile(new URL('../.env', import.meta.url));
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const COLS = 5;
 const ROWS = 2;
@@ -327,6 +333,17 @@ function resolvePromoText(rawText, fallbackFn, promoItem, pageUrl, promoUrl) {
   return fallbackFn(promoItem, pageUrl, promoUrl);
 }
 
+// 네이버 블로그 목록용 대표 이미지(썸네일)를 자동 합성. 실패해도 업로드 전체를 막지 않음
+// (파이썬/폰트가 없는 환경일 수 있어 관대하게 처리).
+function generateBlogThumbnail(slug, title) {
+  const script = path.join(__dirname, 'blog-thumbnail.py');
+  try {
+    execFileSync('python', [script, slug, title], { stdio: 'inherit' });
+  } catch (e) {
+    console.warn(`[thumbnail] ${slug} 썸네일 생성 실패(건너뜀): ${e.message}`);
+  }
+}
+
 async function createNotionRow(meta, imageUrls, promoUrl) {
   if (!process.env.NOTION_TOKEN) {
     console.warn('[notion] NOTION_TOKEN이 없어 Notion 행 생성을 건너뜁니다. .env에 NOTION_TOKEN을 추가하세요.');
@@ -399,6 +416,8 @@ async function main() {
       console.log('완료');
       console.log(`\nNotion 행: ${pageUrl}`);
       console.log('내용 확인 후 "공개" 체크하면 사이트에 발행됩니다.');
+      console.log('[thumbnail] 블로그 대표 이미지 생성 중 ...');
+      generateBlogThumbnail(slug, meta['제목']);
     } else {
       console.log('건너뜀');
     }
