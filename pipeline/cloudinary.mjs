@@ -38,14 +38,14 @@ export function thumb(publicId, { cloud }) {
   ].join('/');
 }
 
-// ── 2) 공유 카드 og:image (1200×630 가로, 세로원본을 warm 배경에 패딩 + 제목 띠) ──
-export function ogImage(publicId, { cloud, title }) {
-  const t = encText(title);
+// ── 2) 공유 카드 og:image (1200×630 가로, 세로원본을 warm 배경에 패딩) ──
+// 제목 텍스트 띠는 넣지 않음 — 카카오톡/네이버 등이 카드를 각자 비율로 잘라서 보여줄 때
+// 가운데 정렬된 텍스트가 잘려 보이는 문제가 있어, 그림만 깨끗하게 노출되도록 함.
+export function ogImage(publicId, { cloud }) {
   return [
     BASE(cloud),
     'f_auto,q_auto',
     'w_1200,h_630,c_pad,b_rgb:faf7f3',            // 세로 도안을 가로 카드에 여백 채움
-    `l_text:${FONT}_52_bold:${t},co_white,b_rgb:c8442a,g_south,x_0,y_0,w_1100,c_fit`,
     publicId,
   ].join('/');
 }
