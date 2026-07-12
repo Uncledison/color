@@ -19,6 +19,11 @@
 //   node pipeline/split-upload.mjs <이미지경로> --skip-if-no-meta
 //   (사이드카 .meta.txt가 없으면 에러 없이 건너뜀. bat이 각 파일마다 이 옵션으로 호출)
 //
+// 사용법 E - 이미 업로드된 기존 시리즈에 홍보용 그리드 이미지만 추가로 올리기:
+//   node pipeline/split-upload.mjs <이미지경로> <슬러그> --grid-only
+//   (10칸 크롭/Notion 작업 없이, 원본을 확대해 홍보용(축소+워터마크) 이미지만 Cloudinary에 업로드.
+//    그리드 홍보 이미지 기능이 생기기 전에 이미 올린 시리즈를 나중에 채울 때 사용)
+//
 // 사이드카 메타파일 이름 매칭: "tiger.jpg"→"tiger.meta.txt" 뿐 아니라
 // "tiger.meta.jpg"→"tiger.meta.txt" 도 동일하게 인식됨(이미지 파일명 자체에 .meta를 붙여도 무방).
 //
@@ -117,6 +122,7 @@ function parseArgs(argv) {
   let slug = null;
   let updateOnly = false;
   let skipIfNoMeta = false;
+  let gridOnly = false;
   let sourceDpi = SOURCE_DPI_DEFAULT;
   let targetDpi = TARGET_DPI_DEFAULT;
 
@@ -124,6 +130,7 @@ function parseArgs(argv) {
   for (const a of flagArgs) {
     if (a === '--update') { updateOnly = true; continue; }
     if (a === '--skip-if-no-meta') { skipIfNoMeta = true; continue; }
+    if (a === '--grid-only') { gridOnly = true; continue; }
     const marginM = a.match(/^--margin=(\d+)$/);
     if (marginM) { margin = Number(marginM[1]); continue; }
     const metaM = a.match(/^--meta=(.+)$/);
@@ -158,7 +165,7 @@ function parseArgs(argv) {
     process.exit(1);
   }
 
-  return { imagePath, slug, margin, meta, updateOnly, sourceDpi, targetDpi };
+  return { imagePath, slug, margin, meta, updateOnly, gridOnly, sourceDpi, targetDpi };
 }
 
 // 원본이 저해상도(72dpi 등)면 물리 크기(인치)를 유지한 채 targetDpi로 리샘플 확대.
@@ -283,7 +290,7 @@ async function createNotionRow(meta, imageUrls) {
 }
 
 async function main() {
-  const { imagePath, slug, margin, meta, updateOnly, sourceDpi, targetDpi } = parseArgs(process.argv.slice(2));
+  const { imagePath, slug, margin, meta, updateOnly, gridOnly, sourceDpi, targetDpi } = parseArgs(process.argv.slice(2));
 
   if (updateOnly) {
     process.stdout.write(`[notion] ID="${slug}" 행의 메타데이터만 갱신 중 ... `);
@@ -295,6 +302,14 @@ async function main() {
   }
 
   const upscaled = await upscaleToDpi(imagePath, sourceDpi, targetDpi);
+
+  if (gridOnly) {
+    process.stdout.write(`[upload] 홍보용 원본(축소+워터마크, 슬러그=${slug}) ... `);
+    const promoUrl = await uploadGridPromo(upscaled, slug);
+    console.log('완료');
+    console.log(`네이버 블로그/카페 홍보용 이미지: ${promoUrl}`);
+    return;
+  }
 
   console.log(`[split] ${imagePath} → ${COLS}x${ROWS}칸, margin=${margin}px, 슬러그=${slug}`);
   const cells = await splitCells(upscaled, margin, targetDpi);
