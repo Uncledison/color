@@ -35,7 +35,7 @@ function enrich(it) {
     cover,
     url: `${SITE}/p/${it.id}`,
     thumb: CL.thumb(cover, o),
-    og: CL.ogImage(cover, o),
+    og: CL.ogImage(`uncledison/coloring/${it.id}/${it.id}-grid`, o),
     promo: CL.socialShare(`uncledison/coloring/${it.id}/${it.id}-grid`, { cloud: CLOUD }),
     pages: it.pages.map((pg) => {
       const publicId = CL.toPublicId(pg.publicId);
