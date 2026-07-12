@@ -103,8 +103,25 @@ function robotsTxt() {
   return `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`;
 }
 
+// 노션에서 새로 공개된(아직 핀터레스트 미업로드) 항목만 골라 자동으로 핀 생성
+async function publishNewItemsToPinterest(items) {
+  if (!process.env.PINTEREST_ACCESS_TOKEN) return;
+  const { publishItemToPinterest } = await import('./pinterest.mjs');
+  const { markPinterestDone } = await import('./notion.mjs');
+
+  const targets = items.filter((it) => it.pageId && !it.pinterestDone);
+  for (const it of targets) {
+    const results = await publishItemToPinterest(it);
+    const ok = results.filter((r) => r.ok).length;
+    console.log(`[pinterest] ${it.id}: ${ok}/${results.length}장 업로드`);
+    if (ok > 0) await markPinterestDone(it.pageId);
+  }
+}
+
 async function main() {
   const items = (await loadItems()).map(enrich);
+
+  await publishNewItemsToPinterest(items);
 
   await fs.mkdir(path.join(OUT, 'p'), { recursive: true });
 

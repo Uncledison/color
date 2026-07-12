@@ -19,6 +19,7 @@ const P = {
   image: '이미지',      // Text: Cloudinary URL/public_id, 시리즈는 줄바꿈으로 여러 개
   story: '스토리',      // Text: 줄바꿈으로 페이지별 1줄(이미지 순서와 동일)
   published: '공개',    // Checkbox
+  pinterest: '핀터레스트', // Checkbox: 핀터레스트 자동 업로드 완료 여부
 };
 
 const txt = (prop) =>
@@ -59,6 +60,7 @@ export async function fetchPublishedItems() {
 
     return {
       id,
+      pageId: row.id,
       type,
       title: txt(p[P.title]).trim(),
       category: sel(p[P.category]),
@@ -69,6 +71,15 @@ export async function fetchPublishedItems() {
       cover: pages[0]?.publicId || '',
       pages,
       published: check(p[P.published]),
+      pinterestDone: check(p[P.pinterest]),
     };
   }).filter((it) => it.id && it.title && it.pages.length);
+}
+
+// 핀터레스트 업로드 완료 후 노션 행에 체크 표시(다음 빌드에서 중복 업로드 방지)
+export async function markPinterestDone(pageId) {
+  await notion.pages.update({
+    page_id: pageId,
+    properties: { [P.pinterest]: { checkbox: true } },
+  });
 }
