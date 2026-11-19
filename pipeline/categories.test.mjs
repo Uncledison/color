@@ -1,7 +1,8 @@
 // pipeline/categories.test.mjs
 // 실행: npm test  (node --test pipeline/)
-// 3대분류 매핑이 기존 21개 색칠도안 행을 그대로 '색칠도안'으로 두는지, 대분류 값이
-// 비어 있어도 카테고리로 유추되는지를 확인한다. 의존성 없이 node:test 만 사용.
+// 3대분류 매핑이 기존 색칠도안 행을 그대로 '색칠도안'으로 두는지, 대분류 값이
+// 비어 있어도 카테고리로 유추되는지, 옛 이름 '생활·학습판'이 '스티커판'으로
+// 호환 매핑되는지를 확인한다. 의존성 없이 node:test 만 사용.
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -22,11 +23,20 @@ test('기존 색칠도안 행(대분류 값 없음)은 모두 색칠도안으로
 test('대분류 값 정규화(표기 흔들림 허용)', () => {
   assert.equal(normalizeMain('색칠도안', ''), MAIN.COLOR);
   assert.equal(normalizeMain('두뇌놀이', ''), MAIN.BRAIN);
+  assert.equal(normalizeMain('스티커판', ''), MAIN.LIFE);
+  assert.equal(normalizeMain('스티커', ''), MAIN.LIFE);
+  assert.equal(normalizeMain('sticker', ''), MAIN.LIFE);
+  assert.equal(normalizeMain('두뇌 놀이', ''), MAIN.BRAIN);
+  assert.equal(normalizeMain(undefined, undefined), MAIN.COLOR);
+});
+
+test("옛 이름 '생활·학습판'은 '스티커판'으로 호환 매핑", () => {
+  assert.equal(MAIN.LIFE, '스티커판');
   assert.equal(normalizeMain('생활·학습판', ''), MAIN.LIFE);
   assert.equal(normalizeMain('생활학습판', ''), MAIN.LIFE);   // 가운뎃점 없이 입력
   assert.equal(normalizeMain('생활 · 학습판', ''), MAIN.LIFE); // 공백
-  assert.equal(normalizeMain('두뇌 놀이', ''), MAIN.BRAIN);
-  assert.equal(normalizeMain(undefined, undefined), MAIN.COLOR);
+  assert.equal(normalizeMain('생활', ''), MAIN.LIFE);
+  assert.equal(normalizeMain('학습판', ''), MAIN.LIFE);
 });
 
 test('카테고리만으로 대분류 유추', () => {
@@ -65,13 +75,13 @@ test('공유문구 — 색칠도안은 기존 문구 그대로', () => {
   );
 });
 
-test('공유문구 — 두뇌놀이·생활학습판은 대분류 문구로 분기', () => {
+test('공유문구 — 두뇌놀이·스티커판은 대분류 문구로 분기', () => {
   assert.equal(
     buildShareText({ id: 'c', title: '숫자 미로찾기', desc: 'D', mainCategory: MAIN.BRAIN, category: '미로찾기', audience: '어르신 인지용' }, SITE),
     `🧩 숫자 미로찾기 — 어르신 인지용\n\nD\n무료로 프린트해서 놀아보세요!\n\n👉 ${SITE}/p/c`
   );
   assert.equal(
     buildShareText({ id: 'd', title: '할 일 체크표', desc: 'D', mainCategory: MAIN.LIFE, category: '체크표' }, SITE),
-    `⭐ 할 일 체크표 (생활·학습판)\n\nD\n무료로 프린트해서 바로 써보세요!\n\n👉 ${SITE}/p/d`
+    `⭐ 할 일 체크표 (스티커판)\n\nD\n무료로 프린트해서 바로 써보세요!\n\n👉 ${SITE}/p/d`
   );
 });

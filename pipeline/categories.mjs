@@ -1,22 +1,33 @@
 // pipeline/categories.mjs
-// 3대분류(🎨 색칠도안 · 🧩 두뇌놀이 · ⭐ 생활·학습판) 표준화.
+// 3대분류(색칠도안 · 두뇌놀이 · 스티커판) 표준화.
+//
+// 2026-11 개편: 3번째 대분류 이름을 '생활·학습판' → '스티커판'으로 변경.
+//   기존 노션/데이터에 남아 있는 '생활·학습판'(표기 흔들림 포함) 값은 별칭으로 흡수해
+//   그대로 '스티커판'으로 매핑한다(하위 호환).
 //
 // 노션에 '대분류' Select 컬럼이 아직 없거나, 있어도 값이 비어 있는 기존 행이 있어도
 // 빌드가 멈추지 않도록: (1) '대분류' 값 → (2) '카테고리' 키워드 유추 → (3) 기본값 '색칠도안'
-// 순서로 항상 값을 채운다. 기존 21개 색칠도안 행은 카테고리(전통/전래동화/동화/바다)가
+// 순서로 항상 값을 채운다. 기존 색칠도안 행은 카테고리(전통/전래동화/동화/바다)가
 // 모두 색칠도안이므로 결과가 그대로 유지된다(하위 호환).
 
 export const MAIN = {
   COLOR: '색칠도안',
   BRAIN: '두뇌놀이',
-  LIFE: '생활·학습판',
+  LIFE: '스티커판', // ← '생활·학습판'에서 이름 변경
 };
 
 export const MAIN_ORDER = [MAIN.COLOR, MAIN.BRAIN, MAIN.LIFE];
 
+// 상단 네비·히어로·탭에서 쓰는 아이콘(투명 WebP). build.mjs가 public/icons/로 복사한다.
+export const MAIN_ICONS = {
+  [MAIN.COLOR]: '/icons/color.webp',
+  [MAIN.BRAIN]: '/icons/brain.webp',
+  [MAIN.LIFE]: '/icons/sticker.webp',
+};
+
 // 두뇌놀이 표준 하위분류
 export const BRAIN_SUBS = ['미로찾기', '선잇기', '점잇기'];
-// 생활·학습판 표준 하위분류
+// 스티커판 표준 하위분류
 export const LIFE_SUBS = ['칭찬스티커판', '체크표'];
 // 두뇌놀이 대상 필터
 export const AUDIENCES = ['유아용', '어르신 인지용'];
@@ -39,10 +50,10 @@ export const MAIN_COPY = {
   },
   [MAIN.LIFE]: {
     emoji: '⭐',
-    noun: '생활·학습판',
+    noun: '스티커판',
     cta: '무료로 프린트해서 바로 써보세요!',
-    ogLabel: '무료 생활·학습판',
-    pageNoun: '생활·학습판',
+    ogLabel: '무료 스티커판',
+    pageNoun: '스티커판',
   },
 };
 
@@ -52,8 +63,11 @@ const key = (s) => String(s ?? '').toLowerCase().replace(/[\s·・.．\-_/()]/g,
 const MAIN_ALIASES = new Map([
   ['색칠도안', MAIN.COLOR], ['색칠', MAIN.COLOR], ['도안', MAIN.COLOR], ['coloring', MAIN.COLOR],
   ['두뇌놀이', MAIN.BRAIN], ['두뇌', MAIN.BRAIN], ['brain', MAIN.BRAIN], ['퍼즐', MAIN.BRAIN], ['놀이', MAIN.BRAIN],
+  // 새 이름
+  ['스티커판', MAIN.LIFE], ['스티커', MAIN.LIFE], ['sticker', MAIN.LIFE],
+  // 옛 이름(하위 호환) — '생활·학습판' 시절 값도 그대로 스티커판으로
   ['생활학습판', MAIN.LIFE], ['생활학습', MAIN.LIFE], ['생활', MAIN.LIFE], ['학습판', MAIN.LIFE],
-  ['스티커판', MAIN.LIFE], ['life', MAIN.LIFE],
+  ['life', MAIN.LIFE],
 ]);
 
 // '카테고리'만 보고 대분류를 유추할 때 쓰는 키워드

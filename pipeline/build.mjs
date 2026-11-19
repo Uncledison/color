@@ -4,10 +4,12 @@
 //
 // NOTION_TOKEN 이 없으면 data.sample.json 으로 폴백(로컬 미리보기용).
 //
-// 3대분류(색칠도안 · 두뇌놀이 · 생활·학습판) 개편:
+// 3대분류(색칠도안 · 두뇌놀이 · 스티커판) 개편:
 // - item.mainCategory / item.audience 를 항상 채운다(노션에 컬럼이 없어도 안전).
 // - '단일' 유형은 시리즈용 10칸 그리드(-grid) 이미지가 없으므로 og/promo 를 대표 이미지(cover)로 만든다.
 // - 공유문구·OG 문구를 대분류에 맞게 분기한다(색칠도안은 기존 문구 그대로).
+// - 3번째 대분류는 '스티커판'(옛 '생활·학습판' 값은 categories.mjs에서 호환 매핑).
+// - 인쇄 버튼도 다운로드와 같은 5초 커피 후원 인터스티셜을 거친 뒤 인쇄한다.
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -138,6 +140,41 @@ const blogPage = (it) => promoCopyPage(it, { text: it.blogText, label: '블로�
 const cafePage = (it) => promoCopyPage(it, { text: it.cafeText, label: '카페' });
 
 // 인쇄 버튼: 현재 창에서 iframe 으로 인쇄 전용 문서를 띄운다(팝업 차단 없음).
+// 인쇄 버튼 → 5초 커피 후원 인터스티셜 → 실제 인쇄(단일 워크시트 페이지용)
+const GATE_JS = (printUrl) => `
+var PRINT_URL=${JSON.stringify(printUrl)};
+var cdTimer=null;
+function openInter(){
+  var el=document.getElementById('inter');
+  el.classList.add('open');
+  document.body.style.overflow='hidden';
+  var skip=document.getElementById('skipBtn'),lbl=document.getElementById('cdLabel');
+  skip.classList.remove('ready');
+  var fill=document.getElementById('cdFill');
+  fill.style.animation='none';fill.offsetHeight;
+  fill.style.animation='cdFill 5s linear forwards';
+  clearInterval(cdTimer);var s=5;
+  lbl.textContent=s+'초 후 인쇄 가능...';
+  cdTimer=setInterval(function(){
+    s--;
+    if(s<=0){clearInterval(cdTimer);lbl.textContent='인쇄 준비 완료! ✓';skip.classList.add('ready')}
+    else{lbl.textContent=s+'초 후 인쇄 가능...'}
+  },1000);
+}
+function closeInter(){
+  document.getElementById('inter').classList.remove('open');
+  clearInterval(cdTimer);
+  document.body.style.overflow='';
+}
+function execPrint(){
+  document.getElementById('inter').classList.remove('open');
+  clearInterval(cdTimer);
+  document.body.style.overflow='';
+  printSheet(PRINT_URL);
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeInter()});
+`;
+
 const PRINT_JS = `
 function printSheet(src){
   var f=document.getElementById('printFrame');
@@ -160,6 +197,7 @@ function ogPage(it) {
   const first = it.pages[0] || {};
 
   if (it.type === 'single') {
+    const printUrl = first.print || first.preview || '';
     return `<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(it.title)} — color.uncle ${esc(copy.ogLabel)}</title>
@@ -192,9 +230,33 @@ function ogPage(it) {
   .btn:active{transform:translateY(1px)}
   .hint{font-size:12.5px;color:var(--ink-3);margin:0 0 22px;line-height:1.6}
   .to-site{display:inline-block;font-size:14px;font-weight:600;color:#c8442a;text-decoration:underline;padding:8px}
+  /* ── 인쇄 전 커피 후원 인터스티셜 (다운로드와 같은 5초 게이트) ── */
+  .inter{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:800;align-items:center;justify-content:center;padding:20px}
+  .inter.open{display:flex}
+  .inter-box{position:relative;background:#fff;border-radius:20px;padding:24px;max-width:400px;width:100%;text-align:center;
+             box-shadow:0 20px 60px rgba(0,0,0,.3);animation:fadeUp .35s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .inter-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:none;background:#fff3e0;
+               color:#8a7860;font-size:15px;cursor:pointer;line-height:1;font-family:inherit}
+  .inter-h{font-size:13px;color:#8a7860;margin-bottom:14px}
+  .inter-coffee{display:block;text-decoration:none;color:inherit;margin-bottom:16px}
+  .coffee-header{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:10px}
+  .coffee-cup-icon{width:38px;height:38px;object-fit:contain}
+  .coffee-title{font-size:15px;font-weight:700;color:#e8734f}
+  .coffee-msg{font-size:13px;color:#6b5c4d;margin-bottom:10px}
+  .coffee-qr-wrap{width:100%;max-width:190px;margin:0 auto 8px}
+  .coffee-qr-img{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+  .coffee-instruction{font-size:14px;font-weight:600;color:#3d2b1f}
+  .countdown-track{width:100%;height:5px;background:#f3e6d6;border-radius:3px;overflow:hidden;margin-bottom:5px}
+  .countdown-fill{height:100%;background:#e8734f;border-radius:3px;animation:cdFill 5s linear forwards}
+  @keyframes cdFill{from{width:100%}to{width:0%}}
+  .countdown-label{font-size:12px;color:#8a7860;margin-bottom:14px}
+  .btn-skip{width:100%;height:48px;border:none;border-radius:100px;background:#c8442a;color:#fff;font-size:15px;font-weight:700;
+            font-family:inherit;opacity:.45;pointer-events:none;transition:opacity .3s}
+  .btn-skip.ready{opacity:1;pointer-events:auto}
   /* 이 페이지에서 바로 Ctrl+P 해도 A4 그림만 깔끔하게 나오도록 */
   @media print{
-    .kicker,h1,.acts,.hint,.to-site{display:none}
+    .kicker,h1,.acts,.hint,.to-site,.inter{display:none!important}
     body{background:#fff}
     .wrap{padding:0;max-width:none}
     .a4{max-width:none;width:100%;border:none;border-radius:0;box-shadow:none}
@@ -206,14 +268,36 @@ function ogPage(it) {
   <h1>${esc(it.title)}</h1>
   <div class="a4"><img src="${esc(first.preview || it.thumb)}" alt="${esc(it.title)} ${esc(copy.noun)} 미리보기"></div>
   <div class="acts">
-    <button class="btn btn-print" onclick="printSheet('${esc(first.print || first.preview || '')}')">🖨 A4로 인쇄</button>
+    <button class="btn btn-print" onclick="openInter()">🖨 A4로 인쇄</button>
     <a class="btn btn-dl" href="${esc(first.download || '#')}" rel="noopener">⬇ 다운로드</a>
   </div>
   <p class="hint">인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다.</p>
   <p class="hint">${esc(desc)}</p>
   <a class="to-site" href="/#${esc(it.id)}">사이트에서 크게 보기 →</a>
+
+  <!-- 인쇄 전 커피 후원 안내(5초) — 다운로드 버튼과 같은 흐름 -->
+  <div class="inter" id="inter">
+    <div class="inter-box">
+      <button class="inter-close" onclick="closeInter()" aria-label="닫기">✕</button>
+      <div class="inter-h">A4 인쇄 준비 중... 😊</div>
+      <a class="inter-coffee" href="https://qr.kakaopay.com/FX9MSRl4N9c402668" target="_blank" rel="noopener">
+        <div class="coffee-header">
+          <img class="coffee-cup-icon" src="/coffee-cup.png" alt="">
+          <div class="coffee-title">커피 한 잔 보내기</div>
+        </div>
+        <div class="coffee-msg">무료로 프린트해가주셔서 감사해요 ☕</div>
+        <div class="coffee-qr-wrap">
+          <img class="coffee-qr-img" src="/coffee-qr.png" alt="커피 후원 QR - 눌러서 카카오페이로 이동">
+        </div>
+        <div class="coffee-instruction">QR찍거나 눌러서 후원하기</div>
+      </a>
+      <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
+      <div class="countdown-label" id="cdLabel">5초 후 인쇄 가능...</div>
+      <button class="btn-skip" id="skipBtn" onclick="execPrint()">✓ 인쇄 시작</button>
+    </div>
+  </div>
 </div>
-<script>${PRINT_JS}</script>
+<script>${PRINT_JS}${GATE_JS(printUrl)}</script>
 </body></html>`;
   }
 
@@ -298,6 +382,14 @@ async function main() {
   await fs.copyFile(path.join(ROOT, 'icon-512.png'), path.join(OUT, 'icon-512.png'));
   await fs.copyFile(path.join(ROOT, 'site.webmanifest'), path.join(OUT, 'site.webmanifest'));
   await fs.copyFile(path.join(ROOT, 'sw.js'), path.join(OUT, 'sw.js'));
+
+  // 3대분류 아이콘(투명 WebP) — 상단 네비·히어로·탭·섹션 제목에서 사용
+  const ICON_SRC = path.join(ROOT, 'assets', 'icons');
+  await fs.mkdir(path.join(OUT, 'icons'), { recursive: true });
+  for (const file of await fs.readdir(ICON_SRC)) {
+    if (!/\.(webp|png|svg)$/i.test(file)) continue;
+    await fs.copyFile(path.join(ICON_SRC, file), path.join(OUT, 'icons', file));
+  }
 
   // OG 페이지 + 블로그/카페 복사용 페이지
   await fs.mkdir(path.join(OUT, 'blog'), { recursive: true });

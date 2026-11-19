@@ -13,7 +13,7 @@ const P = {
   title: '제목',
   id: 'ID',
   type: '유형',        // Select: 시리즈 | 단일
-  main: '대분류',       // Select: 색칠도안 | 두뇌놀이 | 생활·학습판  (없어도 동작)
+  main: '대분류',       // Select: 색칠도안 | 두뇌놀이 | 스티커판  (없어도 동작, 옛 '생활·학습판'도 허용)
   category: '카테고리', // Select: 전통/동화/자연… , 미로찾기/선잇기/점잇기, 칭찬스티커판…
   audience: '대상',     // Select(선택): 유아용 | 어르신 인지용  (없으면 태그로 유추)
   tags: '태그',         // Multi-select

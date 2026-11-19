@@ -1,5 +1,5 @@
 {
-  "_comment": "Notion 미연결 시 로컬 미리보기용 폴백. 실제 운영은 Notion에서 생성됨. 3대분류(색칠도안·두뇌놀이·생활·학습판) 화면 확인용 샘플 포함.",
+  "_comment": "Notion 미연결 시 로컬 미리보기용 폴백. 실제 운영은 Notion에서 생성됨. 3대분류(색칠도안·두뇌놀이·스티커판) 화면 확인용 샘플 포함.",
   "items": [
     {
       "id": "hanbok-girl",
@@ -156,7 +156,7 @@
     {
       "id": "sticker-30",
       "type": "single",
-      "mainCategory": "생활·학습판",
+      "mainCategory": "스티커판",
       "title": "칭찬스티커판 30칸",
       "category": "칭찬스티커판",
       "tags": ["칭찬스티커", "30칸", "생활"],
@@ -172,7 +172,7 @@
     {
       "id": "sticker-50",
       "type": "single",
-      "mainCategory": "생활·학습판",
+      "mainCategory": "스티커판",
       "title": "칭찬스티커판 50칸",
       "category": "칭찬스티커판",
       "tags": ["칭찬스티커", "50칸", "생활"],
@@ -188,7 +188,7 @@
     {
       "id": "sticker-100",
       "type": "single",
-      "mainCategory": "생활·학습판",
+      "mainCategory": "스티커판",
       "title": "칭찬스티커판 100칸",
       "category": "칭찬스티커판",
       "tags": ["칭찬스티커", "100칸", "생활"],
@@ -204,7 +204,7 @@
     {
       "id": "check-chores",
       "type": "single",
-      "mainCategory": "생활·학습판",
+      "mainCategory": "스티커판",
       "title": "우리 집 할 일 체크표",
       "category": "체크표",
       "tags": ["체크표", "생활", "습관"],
