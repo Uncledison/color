@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "node pipeline/build.mjs",
-    "split": "node pipeline/split-upload.mjs"
+    "split": "node pipeline/split-upload.mjs",
+    "test": "node --test pipeline/categories.test.mjs"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
