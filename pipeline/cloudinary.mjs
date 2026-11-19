@@ -66,11 +66,24 @@ export function download(publicId, { cloud, filename }) {
 }
 
 // ── 4) 모달 미리보기 (워터마크 얹은 화면용, 다운로드 방지 품질) ──
-export function preview(publicId, { cloud }) {
+export function preview(publicId, { cloud, w = 900 }) {
   return [
     BASE(cloud),
     'f_auto,q_auto',
-    'w_900,c_limit',
+    `w_${w},c_limit`,
+    publicId,
+  ].join('/');
+}
+
+// ── 6) 인쇄용 (A4 한 장을 그대로 뽑는 용도, 다운로드본과 같은 워터마크) ──
+// A4 150dpi(1240×1754)에 맞춰 폭 1240으로 제한. 브라우저 인쇄 대화상자에서
+// "여백 없음 + A4 세로"로 뽑으면 한 장에 꽉 차게 나온다.
+export function printable(publicId, { cloud }) {
+  return [
+    BASE(cloud),
+    'f_png,q_auto',
+    'w_1240,c_limit',
+    `l_text:${WATERMARK_FONT}_22_bold:${DOWNLOAD_WATERMARK},co_white,b_rgb:000000,g_south_east,x_14,y_14`,
     publicId,
   ].join('/');
 }

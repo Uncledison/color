@@ -6,13 +6,13 @@
 <meta name="google-site-verification" content="gafyxybm6dpWY1dRDbk02J00e05KAD5QRgg34khfozM" />
 <meta name="naver-site-verification" content="0eb43c68eef0cfcdf16c60344a319bd20a1a4673" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2751064253088315" crossorigin="anonymous"></script>
-<title>color.uncle — 색칠도안 무료 다운로드</title>
-<meta name="description" content="매주 새로 올라오는 무료 색칠도안. 한 장씩 넘기면 이야기가 되는 시리즈 도안부터 단일 도안까지, A4로 바로 출력해서 색칠하세요.">
+<title>color.uncle — 색칠도안 · 두뇌놀이 · 칭찬스티커판 무료 프린트</title>
+<meta name="description" content="아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안, 미로찾기·선잇기·점잇기 같은 두뇌놀이, 칭찬스티커판과 체크표를 A4로 바로 프린트해서 쓰세요.">
 <link rel="canonical" href="https://color.uncledison.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="color.uncle">
-<meta property="og:title" content="color.uncle — 색칠도안 무료 다운로드">
-<meta property="og:description" content="매주 새로 올라오는 무료 색칠도안. 한 장씩 넘기면 이야기가 되는 시리즈 도안부터 단일 도안까지, A4로 바로 출력해서 색칠하세요.">
+<meta property="og:title" content="color.uncle — 무료 프린트 놀이터 (색칠도안 · 두뇌놀이 · 칭찬스티커판)">
+<meta property="og:description" content="아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안, 미로찾기·선잇기·점잇기, 칭찬스티커판을 A4로 바로 프린트하세요.">
 <meta property="og:image" content="https://res.cloudinary.com/dhfobwnfc/image/upload/f_auto,q_auto/w_1200,h_630,c_pad,b_rgb:fff7e6/l_text:NanumGothic_40_bold:color.uncle%20%C2%B7%20%EC%8A%A4%ED%86%A0%EB%A6%AC%EA%B0%80%20%EC%9E%88%EB%8A%94%20%EB%AC%B4%EB%A3%8C%20%EC%83%89%EC%B9%A0%EB%8F%84%EC%95%88,co_white,b_rgb:3d2b1f,g_south,x_0,y_0,w_1200,c_fit/uncledison/coloring/HGC-MB/HGC-MB_01">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -67,6 +67,29 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .coloring-card .card-img,.series-cover,.series-thumb,.modal-artwork{overflow:hidden}
 .card-img img,.series-cover img,.series-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .modal-artwork img{max-width:100%;max-height:36vh;width:auto;height:auto;display:block;background:#fff;border-radius:var(--r);}
+
+/* '단일' 워크시트(미로찾기·선잇기·점잇기·칭찬스티커판 등)는 A4 한 장 비율 그대로 크게 */
+.modal.wide{max-width:780px}
+.modal-artwork.is-single{
+  flex-direction:column;padding:0;border:0;background:var(--warm);border-radius:var(--r-lg);
+}
+.modal-artwork.is-single img{max-height:none;border-radius:0}
+.modal-artwork.is-single .page-nav-btn{display:none}
+.modal-artwork.is-single #modalSvg{width:100%;display:flex;justify-content:center}
+/* 워터마크는 A4 그림을 가리지 않게 아래 캐션으로 */
+.modal-artwork.is-single .wm{
+  position:static;background:transparent;width:100%;justify-content:center;gap:16px;
+  padding:6px 0 8px;color:var(--ink-3);
+}
+.a4-frame{
+  width:min(100%,calc(56vh * 210 / 297));
+  aspect-ratio:210/297;
+  margin:8px auto 0;
+  background:#fff;border:1px solid var(--border);border-radius:6px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 24px rgba(0,0,0,.08);
+}
+.a4-frame img{width:100%;height:100%;object-fit:contain;display:block}
 
 /* ── KEYFRAMES ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
@@ -130,6 +153,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   padding:10px 12px;cursor:pointer;text-align:left;
 }
 .search-result-item:hover{background:var(--warm)}
+.search-result-item>div{min-width:0;flex:1}
 .search-result-item img{width:34px;height:46px;object-fit:cover;border-radius:4px;flex-shrink:0;background:var(--warm-2)}
 .search-result-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
 .search-result-desc{font-size:11.5px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -177,7 +201,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .bgm-toggle.on .icon-mute{display:none}
 .bgm-toggle.on .icon-play{display:block}
 
-@media(max-width:900px){
+@media(max-width:1024px){
   .nav-links{display:none}
 }
 @media(max-width:600px){
@@ -281,6 +305,65 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   line-height:1;margin-bottom:4px;
 }
 .stat-label{font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.5px}
+
+/* ── HERO 3대분류 바로가기 ── */
+.hero-cats{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+  margin-bottom:36px;
+}
+.hero-cat{
+  height:44px;padding:0 18px;
+  border:1.5px solid var(--border);border-radius:100px;
+  background:var(--canvas);color:var(--ink);
+  font-size:14.5px;font-weight:600;
+  display:inline-flex;align-items:center;gap:7px;
+  transition:border-color .18s,background .18s,transform .12s;
+}
+.hero-cat:hover{border-color:var(--coral);background:var(--warm);transform:translateY(-2px)}
+.hero-cat .n{font-size:12px;font-weight:600;color:var(--ink-3)}
+
+/* ── 3대분류 탭 (스티키) ── */
+.catbar{
+  position:sticky;top:60px;z-index:60;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.catbar-inner{
+  display:flex;gap:8px;align-items:center;
+  padding:10px 0;overflow-x:auto;scrollbar-width:none;
+}
+.catbar-inner::-webkit-scrollbar{display:none}
+.cat-tab{
+  height:44px;padding:0 18px;flex-shrink:0;
+  border:1.5px solid var(--border);border-radius:100px;
+  background:var(--canvas);color:var(--ink-2);
+  font-size:14.5px;font-weight:700;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .18s;
+}
+.cat-tab:hover{border-color:var(--ink-3);background:var(--warm)}
+.cat-tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.cat-tab .cnt{
+  font-size:11.5px;font-weight:700;color:var(--ink-3);
+  background:var(--warm);border-radius:100px;padding:1px 8px;
+}
+.cat-tab.active .cnt{background:rgba(255,255,255,.2);color:#fff}
+
+/* ── 2단 필터 칩 ── */
+.filter-row{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:12px}
+#audRow{margin-bottom:20px}
+.chip{
+  height:34px;padding:0 14px;border-radius:100px;
+  border:1px solid var(--border);background:var(--canvas);
+  font-size:13px;font-weight:600;color:var(--ink-2);
+  display:inline-flex;align-items:center;gap:5px;
+  transition:all .15s;
+}
+.chip:hover{background:var(--warm)}
+.chip.active{background:var(--coral);border-color:var(--coral);color:#fff}
+.chip-label{font-size:11.5px;font-weight:700;color:var(--ink-3);letter-spacing:.6px;margin-right:3px}
+.gallery-count{font-size:13px;font-weight:600;color:var(--ink-3);white-space:nowrap;padding-bottom:2px}
 
 .card-img{
   width:100%;
@@ -618,7 +701,7 @@ footer{
 }
 .modal-dl-info strong{font-size:15px;font-weight:700;display:block;margin-bottom:2px}
 .modal-dl-info span{font-size:12px;color:var(--ink-3)}
-.dl-btns{display:flex;gap:8px}
+.dl-btns{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:600px){
   .modal-dl-row{flex-direction:column;text-align:center}
   .dl-btns{justify-content:center;width:100%}
@@ -709,13 +792,14 @@ svg.coloring .no-fill{fill:none}
     </a>
     <div class="nav-search">
       <svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="6"/><path d="m15 15 3 3"/></svg>
-      <input type="text" id="searchInput" placeholder="해님 달님, 호랑이와 곶감..." autocomplete="off" oninput="handleSearchInput(this.value)" onfocus="handleSearchInput(this.value)">
+      <input type="text" id="searchInput" placeholder="해님 달님, 미로찾기, 칭찬스티커판..." autocomplete="off" oninput="handleSearchInput(this.value)" onfocus="handleSearchInput(this.value)">
       <div class="search-results" id="searchResults"></div>
     </div>
     <nav class="nav-links">
-      <a class="nav-link active" href="#">홈</a>
-      <a class="nav-link" href="#">전체 도안</a>
-      <a class="nav-link" href="#">시리즈</a>
+      <a class="nav-link" href="#" onclick="return goHome()">홈</a>
+      <a class="nav-link active" data-main="색칠도안" href="#" onclick="return selectMain('색칠도안')">🎨 색칠도안</a>
+      <a class="nav-link" data-main="두뇌놀이" href="#" onclick="return selectMain('두뇌놀이')">🧩 두뇌놀이</a>
+      <a class="nav-link" data-main="생활·학습판" href="#" onclick="return selectMain('생활·학습판')">⭐ 생활·학습판</a>
     </nav>
     <audio id="bgmAudio" src="/bgm.mp3" loop preload="none"></audio>
     <button class="bgm-toggle" id="bgmToggle" onclick="toggleBgm()" aria-label="배경음악 재생/정지">
@@ -744,25 +828,21 @@ svg.coloring .no-fill{fill:none}
 
       <!-- left -->
       <div>
-        <div class="hero-eyebrow anim-1">매주 새 도안 · 완전 무료</div>
+        <div class="hero-eyebrow anim-1">매주 새로 올라오는 · 전부 무료</div>
         <h1 class="hero-h1 anim-2">
-          <em>색칠</em>하고 싶은<br><em>도안</em>을 바로<br>만나세요
+          아이와 어르신을 위한<br><em>무료 프린트 놀이터</em>
         </h1>
         <p class="hero-sub anim-3">
-          한 장씩 넘기면 이야기가 되는 색칠도안.<br>
-          A4로 프린트해서 바로 색칠하세요.
+          색칠도안 · 두뇌놀이 · 칭찬스티커판을<br>
+          A4로 바로 프린트해서 쓰세요.
         </p>
-        <div class="hero-ctas anim-4">
-          <button class="btn-primary" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M4 7l4 4 4-4"/><path d="M2 13h12"/></svg>
-            도안 받기
-          </button>
-          <button class="btn-secondary" onclick="document.getElementById('series').scrollIntoView({behavior:'smooth'})">
-            시리즈 보기 →
-          </button>
+        <div class="hero-cats anim-4">
+          <button class="hero-cat" onclick="selectMain('색칠도안')">🎨 색칠도안</button>
+          <button class="hero-cat" onclick="selectMain('두뇌놀이')">🧩 두뇌놀이</button>
+          <button class="hero-cat" onclick="selectMain('생활·학습판')">⭐ 생활·학습판</button>
         </div>
         <div class="hero-stats anim-5">
-          <div><div class="stat-val">2,400+</div><div class="stat-label">도안</div></div>
+          <div><div class="stat-val">3가지</div><div class="stat-label">놀이 종류</div></div>
           <div><div class="stat-val">무료</div><div class="stat-label">전체</div></div>
           <div><div class="stat-val">A4</div><div class="stat-label">인쇄 최적화</div></div>
           <div><div class="stat-val">매주</div><div class="stat-label">신규 업로드</div></div>
@@ -772,6 +852,13 @@ svg.coloring .no-fill{fill:none}
   </div>
 </section>
 
+<!-- 3대분류 탭 -->
+<div class="catbar" id="catBar">
+  <div class="container">
+    <div class="catbar-inner" id="mainTabs"></div>
+  </div>
+</div>
+
 <!-- GALLERY + SIDEBAR -->
 <div class="section" id="gallery">
   <div class="container">
@@ -779,11 +866,14 @@ svg.coloring .no-fill{fill:none}
       <main>
         <div class="section-header">
           <div>
-            <div class="section-title">최신 도안</div>
-            <div class="section-sub">최근 올라온 도안들</div>
+            <div class="section-title" id="galleryTitle">🎨 색칠도안</div>
+            <div class="section-sub" id="gallerySub">최근 올라온 도안들</div>
           </div>
-          <a class="section-more" href="#gallery" onclick="event.preventDefault();document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">전체 보기 →</a>
+          <div class="gallery-count" id="galleryCount"></div>
         </div>
+
+        <div class="filter-row" id="filterRow"></div>
+        <div class="filter-row" id="audRow" style="display:none"></div>
 
         <div class="card-grid" id="cardGrid">
           <!-- 자바스크립트가 data.json을 읽어 채움 (아래는 폴백) -->
@@ -1043,14 +1133,14 @@ svg.coloring .no-fill{fill:none}
 </div>
 
 <!-- SERIES SECTION -->
-<div class="section" id="series">
+<div class="section" id="seriesSection">
   <div class="container">
     <div class="section-header">
       <div>
-        <div class="section-title">이야기가 있는 시리즈</div>
-        <div class="section-sub">10장 세트로 이어지는 동화 색칠도안</div>
+        <div class="section-title" id="seriesTitle">이야기가 있는 시리즈</div>
+        <div class="section-sub" id="seriesSub">10장 세트로 이어지는 동화 색칠도안</div>
       </div>
-      <a class="section-more" href="#series" onclick="event.preventDefault();document.getElementById('series').scrollIntoView({behavior:'smooth'})">전체 시리즈 →</a>
+      <div class="gallery-count" id="seriesCount"></div>
     </div>
     <div class="series-row" id="seriesRow">
       <!-- 자바스크립트가 data.json의 시리즈를 읽어 채움 (아래는 폴백) -->
@@ -1212,13 +1302,14 @@ svg.coloring .no-fill{fill:none}
     <div class="footer-inner">
       <div>
         <div class="footer-brand-name"><span class="accent">color</span>.uncle</div>
-        <div class="footer-desc">유아부터 어른까지 즐기는 색칠도안 전문 사이트. 매주 새로운 도안이 업로드됩니다.</div>
+        <div class="footer-desc">아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안 · 두뇌놀이 · 칭찬스티커판을 매주 새로 올립니다.</div>
       </div>
       <div>
-        <div class="footer-col-title">도안</div>
+        <div class="footer-col-title">놀이</div>
         <ul class="footer-links">
-          <li><a href="#">전체 도안</a></li>
-          <li><a href="#">시리즈 목록</a></li>
+          <li><a href="#" onclick="return selectMain('색칠도안')">🎨 색칠도안</a></li>
+          <li><a href="#" onclick="return selectMain('두뇌놀이')">🧩 두뇌놀이</a></li>
+          <li><a href="#" onclick="return selectMain('생활·학습판')">⭐ 생활·학습판</a></li>
         </ul>
       </div>
       <div>
@@ -1251,7 +1342,7 @@ svg.coloring .no-fill{fill:none}
     </div>
     <div class="modal-body">
       <div class="page-dots" id="pageDots"></div>
-      <div class="modal-artwork">
+      <div class="modal-artwork" id="modalArtwork">
         <button class="page-nav-btn nav-prev" onclick="event.stopPropagation();changePage(-1)">◀</button>
         <div id="modalSvg"></div>
         <button class="page-nav-btn nav-next" onclick="event.stopPropagation();changePage(1)">▶</button>
@@ -1277,6 +1368,7 @@ svg.coloring .no-fill{fill:none}
         </div>
         <div class="dl-btns">
           <button class="btn-dl outline" onclick="shareItem()">🔗 공유 복사</button>
+          <button class="btn-dl outline" onclick="printCurrent()">🖨 인쇄</button>
           <button class="btn-dl fill" onclick="triggerDownload()">⬇ 다운로드</button>
         </div>
       </div>
@@ -1342,29 +1434,119 @@ const stories={
   house:['작은 마을에 할아버지 빵집이 있었어요.','새벽 4시부터 빵 굽는 냄새가 퍼졌어요.','동그란 크림빵, 달콤한 단팥빵... 🍞','학교 가는 아이들이 빵을 사 갔어요.','고양이 한 마리가 빵집 앞에 앉아있었어요.','할아버지가 고양이에게 빵 조각을 줬어요. 💕','저녁 불빛이 따뜻하게 빛났어요.','오늘도 모든 빵이 팔렸어요. 할아버지가 웃었어요.','내일 메뉴를 생각하며 잠이 들었어요.','이 작은 마을의 빵집은 오늘도 행복했어요. 🏡']
 };
 
-/* ── 카탈로그: data.json을 읽어 카드/시리즈 렌더 ── */
+/* ── 3대분류 카탈로그: data.json을 읽어 카드/시리즈 렌더 ── */
+const MAINS=['색칠도안','두뇌놀이','생활·학습판'];
+const MAIN_EMOJI={'색칠도안':'🎨','두뇌놀이':'🧩','생활·학습판':'⭐'};
+const MAIN_SUB={
+  '색칠도안':'전래동화 · 전통 · 계절 · 자연 — 한 장부터 10장 시리즈까지',
+  '두뇌놀이':'미로찾기 · 선잇기 · 점잇기 — 유아용부터 어르신 인지용까지',
+  '생활·학습판':'칭찬스티커판 · 체크표 — 프린트해서 바로 쓰는 생활 도구'
+};
 let DATA=[], byId={}, current=null, currentPage=0;
+let TAB='색칠도안', SUB='전체', AUD='전체';
+
+/* data.json에 대분류가 비어 있어도(구버전 캐시 등) 화면이 비지 않도록 같은 규칙으로 한 번 더 보정 */
+const catKey=s=>String(s||'').toLowerCase().replace(/[\s·・.．\-_/()]/g,'');
+const MAIN_ALIAS={'색칠도안':'색칠도안','색칠':'색칠도안','도안':'색칠도안','coloring':'색칠도안','두뇌놀이':'두뇌놀이','두뇌':'두뇌놀이','brain':'두뇌놀이','퍼즐':'두뇌놀이','놀이':'두뇌놀이','생활학습판':'생활·학습판','생활':'생활·학습판','학습판':'생활·학습판','스티커판':'생활·학습판','life':'생활·학습판'};
+const BRAIN_KEY=['미로','선잇기','점잇기','점선잇기','퍼즐','다른그림','틀린그림','숨은그림','낱말','퀴즈','기억','짝맞추기','같은그림','관찰','집중놀이','브레인'];
+const LIFE_KEY=['칭찬','스티커','체크표','체크리스트','생활','학습','계획표','일과표','이름표','달력','용돈','심부름','습관','스티커판','칭찬판','생활판','학습판'];
+function inferMain(raw,cat){
+  const d=MAIN_ALIAS[catKey(raw)];
+  if(d)return d;
+  const c=catKey(cat);
+  if(c){
+    if(BRAIN_KEY.some(w=>c.includes(w)))return '두뇌놀이';
+    if(LIFE_KEY.some(w=>c.includes(w)))return '생활·학습판';
+  }
+  return '색칠도안';
+}
+function inferAud(it){
+  if(it.audience)return it.audience;
+  if(it.mainCategory==='색칠도안')return '';
+  const hay=catKey([it.category,...(it.tags||[])].join('|'));
+  if(['어르신','어른신','시니어','인지','치매','요양','노인','경로','실버'].some(w=>hay.includes(catKey(w))))return '어르신 인지용';
+  if(['유아','아이','어린이','키즈','아동','초등'].some(w=>hay.includes(catKey(w))))return '유아용';
+  return '';
+}
+function prepareData(items){
+  return (items||[]).map(it=>{
+    const mainCategory=inferMain(it.mainCategory,it.category);
+    const audience=inferAud({...it,mainCategory});
+    return {...it,mainCategory,audience,categoryLabel:[it.category,audience].filter(Boolean).join(' · ')};
+  });
+}
 
 async function loadCatalog(){
   try{
     const res=await fetch('/data.json',{cache:'no-store'});
-    DATA=(await res.json()).items||[];
+    DATA=prepareData((await res.json()).items);
   }catch(e){DATA=[]}
   byId=Object.fromEntries(DATA.map(it=>[it.id,it]));
-  renderCatalog();
   const h=decodeURIComponent(location.hash.slice(1));
+  if(h&&byId[h]){TAB=byId[h].mainCategory;SUB='전체';AUD='전체'}
+  renderCatalog();
   if(h&&byId[h]) openModal(h);
 }
 
 function diffDots(n){let s='';for(let i=0;i<3;i++)s+='<div class="diff-dot'+(i<n?' on':'')+'"></div>';return s}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+
+/* ── 탭 / 2단 필터 ── */
+const countOf=main=>DATA.filter(it=>it.mainCategory===main).length;
+function renderTabs(){
+  const box=document.getElementById('mainTabs');
+  if(box){
+    box.innerHTML=MAINS.map(m=>
+      '<button class="cat-tab'+(TAB===m?' active':'')+'" onclick="return selectMain(\''+esc(m)+'\')">'
+      +MAIN_EMOJI[m]+' '+esc(m)+' <span class="cnt">'+countOf(m)+'</span></button>'
+    ).join('');
+  }
+  document.querySelectorAll('.nav-link[data-main]').forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('data-main')===TAB);
+  });
+}
+function renderFilters(){
+  const row=document.getElementById('filterRow');
+  if(!row)return;
+  const items=DATA.filter(it=>it.mainCategory===TAB);
+  const subs=[...new Set(items.map(it=>it.category).filter(Boolean))];
+  let html='<span class="chip-label">종류</span>'
+    +'<button class="chip'+(SUB==='전체'?' active':'')+'" onclick="setSub(\'전체\')">전체</button>';
+  html+=subs.map(s=>'<button class="chip'+(SUB===s?' active':'')+'" onclick="setSub(\''+esc(s)+'\')">'+esc(s)+'</button>').join('');
+  row.innerHTML=html;
+
+  const arow=document.getElementById('audRow');
+  if(!arow)return;
+  const auds=[...new Set(items.map(it=>it.audience).filter(Boolean))];
+  if(TAB!=='색칠도안'&&auds.length){
+    arow.style.display='flex';
+    arow.innerHTML='<span class="chip-label">대상</span>'
+      +'<button class="chip'+(AUD==='전체'?' active':'')+'" onclick="setAud(\'전체\')">전체</button>'
+      +auds.map(a=>'<button class="chip'+(AUD===a?' active':'')+'" onclick="setAud(\''+esc(a)+'\')">'+esc(a)+'</button>').join('');
+  }else{
+    arow.style.display='none';
+    arow.innerHTML='';
+  }
+}
+function setSub(s){SUB=s;renderCatalog()}
+function setAud(a){AUD=a;renderCatalog()}
+function selectMain(main){
+  TAB=MAINS.indexOf(main)>=0?main:'색칠도안';
+  SUB='전체';AUD='전체';
+  renderCatalog();
+  const g=document.getElementById('gallery');
+  if(g)window.scrollTo({top:Math.max(0,g.offsetTop-110),behavior:'smooth'});
+  return false;
+}
+function goHome(){window.scrollTo({top:0,behavior:'smooth'});return false}
 
 function cardHTML(it){
   const pages=it.type==='series'?('📄 '+it.pageCount+'장 세트'):'📄 1장';
+  const kind=it.categoryLabel||it.category||'';
   return '<div class="coloring-card" onclick="openModal(\''+it.id+'\')">'
     +'<button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>'
     +'<div class="card-img coloring-img"><img src="'+it.thumb+'" alt="'+esc(it.title)+'" loading="lazy"></div>'
-    +'<div class="card-foot"><div class="card-category">'+esc(it.category)+'</div>'
+    +'<div class="card-foot"><div class="card-category">'+esc(kind)+'</div>'
     +'<div class="card-title">'+esc(it.title)+'</div>'
     +'<div class="card-meta"><span class="card-pages">'+pages+'</span>'
     +'<div class="diff-dots">'+diffDots(it.difficulty)+'</div></div></div>'
@@ -1375,7 +1557,7 @@ function seriesHTML(it){
   const strip=it.pages.slice(0,5).map((p,i)=>'<div class="series-thumb'+(i===0?' active':'')+'" onclick="event.stopPropagation();openModal(\''+it.id+'\','+i+')"><img src="'+p.preview+'" alt=""></div>').join('');
   return '<div class="series-card" onclick="openModal(\''+it.id+'\')">'
     +'<div class="series-cover"><img src="'+it.thumb+'" alt="'+esc(it.title)+'" loading="lazy"><span class="series-count-badge">'+it.pageCount+'장 세트</span></div>'
-    +'<div class="series-body"><div class="series-kicker">'+esc(it.category)+'</div>'
+    +'<div class="series-body"><div class="series-kicker">'+esc(it.categoryLabel||it.category)+'</div>'
     +'<div class="series-title">'+esc(it.title)+'</div>'
     +'<div class="series-desc">'+esc(it.desc)+'</div>'
     +'<button class="series-dl-btn" onclick="event.stopPropagation();openModal(\''+it.id+'\')">전체 보기</button></div>'
@@ -1383,35 +1565,64 @@ function seriesHTML(it){
 }
 
 const INFEED_AD_HTML='<div class="ad-infeed"><ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-6t+ed+2i-1n-4w" data-ad-client="ca-pub-2751064253088315" data-ad-slot="5652280918"></ins></div>';
+
+function visibleItems(){
+  return DATA.filter(it=>it.mainCategory===TAB
+    &&(SUB==='전체'||it.category===SUB)
+    &&(AUD==='전체'||it.audience===AUD));
+}
+
 function renderCatalog(){
+  renderTabs();
+  renderFilters();
+  const list=visibleItems();
+
+  const titleEl=document.getElementById('galleryTitle');
+  const subEl=document.getElementById('gallerySub');
+  const cntEl=document.getElementById('galleryCount');
+  if(titleEl)titleEl.textContent=MAIN_EMOJI[TAB]+' '+TAB+(SUB!=='전체'?' · '+SUB:'');
+  if(subEl)subEl.textContent=MAIN_SUB[TAB]||'';
+  if(cntEl)cntEl.textContent=list.length+'개';
+
   const grid=document.getElementById('cardGrid');
-  const sr=document.getElementById('seriesRow');
   if(grid){
-    if(DATA.length){
-      const cards=DATA.map(cardHTML);
+    if(list.length){
+      const cards=list.map(cardHTML);
       if(cards.length>3)cards.splice(3,0,INFEED_AD_HTML);
       grid.innerHTML=cards.join('');
       try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
     }else{
-      grid.innerHTML='<p style="color:var(--ink-3);padding:20px">아직 공개된 도안이 없어요. Notion에서 "공개"를 켜보세요.</p>';
+      grid.innerHTML='<p style="grid-column:1/-1;color:var(--ink-3);padding:28px 4px;line-height:1.8">'
+        +(TAB==='색칠도안'
+          ?'아직 공개된 도안이 없어요. Notion에서 "공개"를 켜보세요.'
+          :TAB+' 자료를 준비하고 있어요. 곧 올라옵니다!')+'</p>';
     }
   }
-  if(sr){const series=DATA.filter(it=>it.type==='series');sr.innerHTML=series.map(seriesHTML).join('')||'<p style="color:var(--ink-3);padding:20px">곧 시리즈가 올라옵니다.</p>';}
+
+  // 시리즈 섹션 — 지금 고른 대분류/필터에 시리즈가 있을 때만
+  const sec=document.getElementById('seriesSection');
+  const series=list.filter(it=>it.type==='series');
+  if(sec)sec.style.display=series.length?'':'none';
+  const sr=document.getElementById('seriesRow');
+  if(sr)sr.innerHTML=series.map(seriesHTML).join('');
+  const sc=document.getElementById('seriesCount');
+  if(sc)sc.textContent=series.length?series.length+'세트':'';
 }
 
 /* ── 검색 ── */
 function searchResultHTML(it){
+  const kind=it.categoryLabel||it.mainCategory||'';
   return '<div class="search-result-item" onclick="selectSearchResult(\''+it.id+'\')">'
     +'<img src="'+it.thumb+'" alt="" loading="lazy">'
     +'<div><div class="search-result-title">'+esc(it.title)+'</div>'
-    +'<div class="search-result-desc">'+esc(it.desc)+'</div></div></div>';
+    +'<div class="search-result-desc">'+esc(kind)+(it.desc?' · '+esc(it.desc):'')+'</div></div></div>';
 }
 function handleSearchInput(q){
   const panel=document.getElementById('searchResults');
   const kw=q.trim().toLowerCase();
   if(!kw){panel.classList.remove('open');panel.innerHTML='';return}
   const matches=DATA.filter(it=>{
-    const hay=[it.title,it.desc,it.category,...(it.tags||[])].join(' ').toLowerCase();
+    const hay=[it.title,it.desc,it.category,it.mainCategory,it.audience,it.categoryLabel,...(it.tags||[])].join(' ').toLowerCase();
     return hay.includes(kw);
   }).slice(0,8);
   panel.innerHTML=matches.length
@@ -1422,6 +1633,8 @@ function handleSearchInput(q){
 function selectSearchResult(id){
   document.getElementById('searchResults').classList.remove('open');
   document.getElementById('searchInput').value='';
+  const it=byId[id];
+  if(it&&it.mainCategory!==TAB){TAB=it.mainCategory;SUB='전체';AUD='전체';renderCatalog()}
   openModal(id);
 }
 document.addEventListener('click',(e)=>{
@@ -1439,8 +1652,19 @@ function buildDots(n){
 function updateModal(){
   if(!current)return;
   const pg=current.pages[currentPage];
-  document.getElementById('modalSvg').innerHTML='<img src="'+pg.preview+'" alt="'+esc(current.title)+'">';
-  document.getElementById('storyText').textContent=pg.story||'';
+  const single=current.type==='single';
+  const art=document.getElementById('modalArtwork');
+  if(art)art.classList.toggle('is-single',single);
+  const panel=document.querySelector('#modal .modal');
+  if(panel)panel.classList.toggle('wide',single);
+  const dots=document.getElementById('pageDots');
+  if(dots)dots.style.display=single?'none':'flex';
+  // '단일' 워크시트는 A4 한 장 비율 그대로 크게 보여준다
+  document.getElementById('modalSvg').innerHTML=single
+    ?'<div class="a4-frame"><img src="'+pg.preview+'" alt="'+esc(current.title)+'"></div>'
+    :'<img src="'+pg.preview+'" alt="'+esc(current.title)+'">';
+  const storyEl=document.getElementById('storyText');
+  if(storyEl)storyEl.textContent=pg.story||'';
   document.getElementById('dlTitle').textContent=current.type==='series'?('📄 '+(currentPage+1)+'번 도안 다운로드'):'📄 도안 다운로드';
   document.querySelectorAll('.pdot').forEach((d,i)=>{d.className='pdot'+(i<currentPage?' done':i===currentPage?' active':'')});
 }
@@ -1452,16 +1676,37 @@ function openModal(id,page){
   buildDots(current.pages.length);updateModal();
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow='hidden';
-  const modalAdIns=window.matchMedia('(max-width:600px)').matches
+  const mobile=typeof window.matchMedia==='function'&&window.matchMedia('(max-width:600px)').matches;
+  const modalAdIns=mobile
     ?document.getElementById('modalAdInsMobile')
     :document.getElementById('modalAdInsDesktop');
-  if(modalAdIns.getAttribute('data-adsbygoogle-status')!=='done'){
+  if(modalAdIns&&modalAdIns.getAttribute('data-adsbygoogle-status')!=='done'){
     try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
   }
   if(history.replaceState)history.replaceState(null,'','#'+current.id);
 }
 function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';if(history.replaceState)history.replaceState(null,'',location.pathname)}
 function changePage(d){if(!current)return;const n=current.pages.length;currentPage=Math.max(0,Math.min(n-1,currentPage+d));updateModal()}
+
+/* ── A4 인쇄: 숨은 iframe에 인쇄 전용 문서를 써서 바로 인쇄 대화상자를 띄운다 ── */
+function printSheet(src){
+  if(!src)return;
+  let f=document.getElementById('printFrame');
+  if(!f){
+    f=document.createElement('iframe');f.id='printFrame';f.setAttribute('aria-hidden','true');
+    f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';
+    document.body.appendChild(f);
+  }
+  const d=f.contentWindow.document;
+  d.open();
+  d.write('<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page{size:A4 portrait;margin:0}html,body{margin:0;padding:0}img{display:block;width:210mm;height:auto}</style></head><body><img src="'+src+'" onload="setTimeout(function(){window.focus();window.print()},200)"></body></html>');
+  d.close();
+}
+function printCurrent(){
+  if(!current)return;
+  const pg=current.pages[currentPage]||{};
+  printSheet(pg.print||pg.preview);
+}
 
 /* ── 공유 (PC: 클립보드 복사) ── */
 async function shareItem(){

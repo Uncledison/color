@@ -1,5 +1,5 @@
 {
-  "_comment": "Notion 미연결 시 로컬 미리보기용 폴백. 실제 운영은 Notion에서 생성됨.",
+  "_comment": "Notion 미연결 시 로컬 미리보기용 폴백. 실제 운영은 Notion에서 생성됨. 3대분류(색칠도안·두뇌놀이·생활·학습판) 화면 확인용 샘플 포함.",
   "items": [
     {
       "id": "hanbok-girl",
@@ -67,6 +67,153 @@
       "cover": "single/whale",
       "pages": [
         { "n": 1, "publicId": "single/whale", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "maze-icecream",
+      "type": "single",
+      "mainCategory": "두뇌놀이",
+      "title": "아이스크림 미로찾기",
+      "category": "미로찾기",
+      "audience": "유아용",
+      "tags": ["미로", "유아용", "쉬움"],
+      "difficulty": 1,
+      "desc": "곰돌이가 아이스크림 가게까지 갈 수 있게 길을 찾아주세요. 연필로 천천히 따라가면 돼요.",
+      "pageCount": 1,
+      "cover": "single/spring-tree",
+      "pages": [
+        { "n": 1, "publicId": "single/spring-tree", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "maze-numbers-senior",
+      "type": "single",
+      "mainCategory": "두뇌놀이",
+      "title": "숫자 미로찾기 (1부터 20까지)",
+      "category": "미로찾기",
+      "audience": "어르신 인지용",
+      "tags": ["미로", "어르신", "인지", "숫자"],
+      "difficulty": 2,
+      "desc": "1부터 20까지 숫자를 순서대로 이어가며 길을 찾는 미로. 숫자를 따라가다 보면 집중력과 기억력 훈련이 됩니다.",
+      "pageCount": 1,
+      "cover": "single/whale",
+      "pages": [
+        { "n": 1, "publicId": "single/whale", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "dot-butterfly",
+      "type": "single",
+      "mainCategory": "두뇌놀이",
+      "title": "나비 점잇기 (1~20)",
+      "category": "점잇기",
+      "audience": "유아용",
+      "tags": ["점잇기", "유아용", "숫자", "쉬움"],
+      "difficulty": 1,
+      "desc": "1번부터 20번까지 점을 순서대로 이으면 나비가 완성돼요. 완성한 그림에 색칠도 해보세요.",
+      "pageCount": 1,
+      "cover": "single/spring-tree",
+      "pages": [
+        { "n": 1, "publicId": "single/spring-tree", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "line-fruits",
+      "type": "single",
+      "mainCategory": "두뇌놀이",
+      "title": "같은 과일 선잇기",
+      "category": "선잇기",
+      "audience": "어르신 인지용",
+      "tags": ["선잇기", "어르신", "인지", "과일"],
+      "difficulty": 1,
+      "desc": "왼쪽과 오른쪽에 흩어진 같은 과일끼리 선을 그어 연결하세요. 사과·배·감·밤 네 쌍이에요.",
+      "pageCount": 1,
+      "cover": "single/whale",
+      "pages": [
+        { "n": 1, "publicId": "single/whale", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "maze-farm",
+      "type": "single",
+      "title": "농장 동물 미로찾기",
+      "category": "미로찾기",
+      "tags": ["미로", "유아용", "동물"],
+      "difficulty": 1,
+      "desc": "대분류 값을 비워둔 샘플 — 카테고리(미로찾기)를 보고 두뇌놀이로 자동 분류되는지 확인용.",
+      "pageCount": 1,
+      "cover": "single/spring-tree",
+      "pages": [
+        { "n": 1, "publicId": "single/spring-tree", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "sticker-30",
+      "type": "single",
+      "mainCategory": "생활·학습판",
+      "title": "칭찬스티커판 30칸",
+      "category": "칭찬스티커판",
+      "tags": ["칭찬스티커", "30칸", "생활"],
+      "difficulty": 1,
+      "desc": "한 달 동안 칭찬 스티커를 붙이는 30칸 판. 다 붙이면 아이와 함께 원하는 것을 정해보세요.",
+      "pageCount": 1,
+      "cover": "https://res.cloudinary.com/dhfobwnfc/image/upload/v1782626800/uncledison/coloring/Korean_girl_in_hanbok_202606281504_exlznl.jpg",
+      "pages": [
+        { "n": 1, "publicId": "https://res.cloudinary.com/dhfobwnfc/image/upload/v1782626800/uncledison/coloring/Korean_girl_in_hanbok_202606281504_exlznl.jpg", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "sticker-50",
+      "type": "single",
+      "mainCategory": "생활·학습판",
+      "title": "칭찬스티커판 50칸",
+      "category": "칭찬스티커판",
+      "tags": ["칭찬스티커", "50칸", "생활"],
+      "difficulty": 1,
+      "desc": "50칸짜리 칭찬스티커판. 학기 동안 천천히 채워가는 용도로 쓰기 좋아요.",
+      "pageCount": 1,
+      "cover": "single/spring-tree",
+      "pages": [
+        { "n": 1, "publicId": "single/spring-tree", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "sticker-100",
+      "type": "single",
+      "mainCategory": "생활·학습판",
+      "title": "칭찬스티커판 100칸",
+      "category": "칭찬스티커판",
+      "tags": ["칭찬스티커", "100칸", "생활"],
+      "difficulty": 2,
+      "desc": "100칸 대형 칭찬스티커판. 100개를 모으면 큰 상을 약속해보세요.",
+      "pageCount": 1,
+      "cover": "single/whale",
+      "pages": [
+        { "n": 1, "publicId": "single/whale", "story": "" }
+      ],
+      "published": true
+    },
+    {
+      "id": "check-chores",
+      "type": "single",
+      "mainCategory": "생활·학습판",
+      "title": "우리 집 할 일 체크표",
+      "category": "체크표",
+      "tags": ["체크표", "생활", "습관"],
+      "difficulty": 1,
+      "desc": "요일별로 할 일을 적고 동그라미로 표시하는 체크표. 냉장고에 붙여두고 함께 체크해보세요.",
+      "pageCount": 1,
+      "cover": "single/spring-tree",
+      "pages": [
+        { "n": 1, "publicId": "single/spring-tree", "story": "" }
       ],
       "published": true
     }

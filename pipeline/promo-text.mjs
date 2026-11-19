@@ -66,7 +66,9 @@ async function main() {
   }
 
   const url = `${SITE}/p/${it.id}`;
-  const promoUrl = CL.socialShare(`uncledison/coloring/${it.id}/${it.id}-grid`, { cloud: CLOUD });
+  // 시리즈는 10칸 그리드, '단일' 워크시트는 그리드 합성본이 없어 대표 이미지를 쓴다.
+  const visual = it.type === 'single' ? CL.toPublicId(it.cover) : `uncledison/coloring/${it.id}/${it.id}-grid`;
+  const promoUrl = CL.socialShare(visual, { cloud: CLOUD });
 
   console.log('='.repeat(60));
   console.log('네이버 블로그용 (긴 글)');

@@ -2,6 +2,8 @@
 // Sandbox: https://api-sandbox.pinterest.com/v5 (테스트용, 실제 공개 계정엔 안 보임)
 // Standard 승인 후엔 PINTEREST_API_BASE=https://api.pinterest.com/v5 로 전환
 
+import { MAIN_COPY, MAIN } from './categories.mjs';
+
 const BASE = process.env.PINTEREST_API_BASE || 'https://api-sandbox.pinterest.com/v5';
 const TOKEN = process.env.PINTEREST_ACCESS_TOKEN;
 const BOARD_NAME = 'color.uncle 색칠도안';
@@ -67,12 +69,13 @@ async function createPin({ title, description, link, imageUrl }) {
 
 // item(enrich() 이후의 표준 item, pg.preview 포함) → 페이지별 핀 생성
 export async function publishItemToPinterest(item) {
+  const copy = MAIN_COPY[item.mainCategory] || MAIN_COPY[MAIN.COLOR];
   const results = [];
   for (const pg of item.pages) {
     try {
       const pin = await createPin({
-        title: `${item.title} - 무료 색칠도안`,
-        description: `${item.desc || item.title}\n무료로 다운받아 색칠해보세요! color.uncle`,
+        title: `${item.title} - ${copy.ogLabel}`,
+        description: `${item.desc || item.title}\n${copy.cta} color.uncle`,
         link: item.url,
         imageUrl: pg.social,
       });
