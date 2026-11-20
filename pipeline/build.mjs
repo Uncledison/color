@@ -347,6 +347,37 @@ function robotsTxt() {
   return `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`;
 }
 
+// 존재하지 않는 주소용 404 페이지.
+// Cloudflare Pages는 public/404.html이 있으면 없는 주소에 이 파일을 404 상태로 서빙한다.
+// (없으면 index.html을 200으로 돌려줘 soft 404가 된다 — Vercel에서는 404였다.)
+function notFoundHtml() {
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>페이지를 찾을 수 없습니다 — color.uncle</title>
+<style>
+  body{margin:0;min-height:100vh;display:grid;place-items:center;background:#faf7f3;color:#3d2b1f;
+       font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;text-align:center;padding:24px}
+  h1{font-size:1.4rem;margin:0 0 .75rem}
+  p{margin:0 0 1.5rem;color:#8a7860;line-height:1.6}
+  a{display:inline-block;padding:.75rem 1.5rem;border-radius:999px;background:#c8442a;color:#fff;
+    text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+  <main>
+    <h1>앗, 이 페이지를 찾을 수 없어요</h1>
+    <p>주소가 바뀌었거나 잘못 입력된 것 같아요.<br>아래 버튼으로 홈에서 도안을 골라 보세요.</p>
+    <a href="/">무료 도안 보러 가기</a>
+  </main>
+</body>
+</html>
+`;
+}
+
 // 노션에서 새로 공개된(아직 핀터레스트 미업로드) 항목만 골라 자동으로 핀 생성
 async function publishNewItemsToPinterest(items) {
   if (!process.env.PINTEREST_ACCESS_TOKEN) return;
@@ -410,6 +441,7 @@ async function main() {
   // sitemap.xml / robots.txt
   await fs.writeFile(path.join(OUT, 'sitemap.xml'), sitemapXml(items));
   await fs.writeFile(path.join(OUT, 'robots.txt'), robotsTxt());
+  await fs.writeFile(path.join(OUT, '404.html'), notFoundHtml()); // Cloudflare Pages가 없는 주소에 404 상태로 서빙
 
   // 대분류별 개수 로그(노션 '대분류' 매핑이 의도대로 됐는지 한눈에 확인)
   const counts = Object.fromEntries([...Object.values(MAIN), '미분류'].map((m) => [m, 0]));
