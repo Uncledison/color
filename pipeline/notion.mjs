@@ -83,6 +83,7 @@ export async function fetchPublishedItems() {
       pinterestDone: check(p[P.pinterest]),
       blogText: txt(p[P.blogText]),
       cafeText: txt(p[P.cafeText]),
+      updated: row.last_edited_time || '', // sitemap.xml lastmod 용
     });
   }).filter((it) => it.id && it.title && it.pages.length);
 }

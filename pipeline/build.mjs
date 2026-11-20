@@ -18,6 +18,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as CL from './cloudinary.mjs';
 import { MAIN, MAIN_COPY, buildShareText, categoryLabel, normalizeItem } from './categories.mjs';
+import { buildSeo, jsonLdScript } from './seo.mjs';
+import { INDEXNOW_KEY, keyFileName, pingIndexNow, shouldPingIndexNow } from './indexnow.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -194,30 +196,57 @@ function printSheet(src){
 }
 `;
 
+// 같은 대분류의 다른 도안 링크 — 검색봇이 모든 /p/ 페이지를 찾아가는 내부 링크가 된다.
+function relatedHtml(list, copy) {
+  if (!list.length) return '';
+  const links = list
+    .map((r) => `<a class="rel-link" href="/p/${esc(r.id)}">${esc(r.title)}</a>`)
+    .join('');
+  return `<section class="related">
+    <h2>${esc(copy.noun)} 더 보기</h2>
+    <div class="rel-list">${links}</div>
+  </section>`;
+}
+
+// 같은 카테고리를 앞에, 그다음 같은 대분류 순으로 최대 limit개
+function relatedFor(it, items, limit = 6) {
+  const same = (o) => (o.category || '') === (it.category || '');
+  const pool = items.filter((o) => o.id !== it.id && o.mainCategory === it.mainCategory);
+  return [...pool.filter(same), ...pool.filter((o) => !same(o))].slice(0, limit);
+}
+
 // 크롤러가 읽는 정적 OG 페이지 + 사람에겐 도안으로 진입시키는 가벼운 랜딩.
 // '단일' 워크시트(미로찾기·선잇기·점잇기·칭찬스티커판 등)는 A4 한 장을 크게 보여주고
 // 인쇄/다운로드 버튼을 바로 누를 수 있게 만든다.
-function ogPage(it) {
+function ogPage(it, { seo, related = [] } = {}) {
   const copy = copyOf(it);
-  const desc = it.desc || `${it.title} ${copy.ogLabel} 다운로드`;
+  const s = seo || buildSeo(it, { site: SITE });
   const kicker = categoryLabel(it) || copy.ogLabel;
   const first = it.pages[0] || {};
+  const rel = relatedHtml(related, copy);
+  const ld = `<script type="application/ld+json">${jsonLdScript(s.jsonLd)}</script>`;
 
   if (it.type === 'single') {
     const printUrl = first.print || first.preview || '';
     return `<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(it.title)} — color.uncle ${esc(copy.ogLabel)}</title>
-<meta name="description" content="${esc(desc)}">
+<title>${esc(s.title)}</title>
+<meta name="description" content="${esc(s.description)}">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <meta property="og:type" content="article">
-<meta property="og:title" content="${esc(it.title)}">
-<meta property="og:description" content="${esc(desc)} · ${esc(copy.cta)}">
+<meta property="og:title" content="${esc(s.ogTitle)}">
+<meta property="og:description" content="${esc(s.ogDescription)}">
 <meta property="og:image" content="${esc(it.og)}">
+<meta property="og:image:alt" content="${esc(s.alt)}">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:url" content="${esc(it.url)}">
 <meta property="og:site_name" content="color.uncle">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(s.ogTitle)}">
+<meta name="twitter:description" content="${esc(s.description)}">
+<meta name="twitter:image:alt" content="${esc(s.alt)}">
 <link rel="canonical" href="${esc(it.url)}">
+${ld}
 <style>
   :root{--ink:#3d2b1f;--ink-3:#8a7860;--coral:#f2a72e;--warm:#fff7e6;--border:rgba(61,43,31,.12)}
   *{box-sizing:border-box}
@@ -262,8 +291,15 @@ function ogPage(it) {
             font-family:inherit;opacity:.45;pointer-events:none;transition:opacity .3s}
   .btn-skip.ready{opacity:1;pointer-events:auto}
   /* 이 페이지에서 바로 Ctrl+P 해도 A4 그림만 깔끔하게 나오도록 */
+  /* ── 같은 분류의 다른 도안(내부 링크) ── */
+  .related{margin:34px auto 0;padding-top:22px;border-top:1px solid var(--border);text-align:left}
+  .related h2{font-size:15px;font-weight:700;margin:0 0 10px;color:var(--ink)}
+  .rel-list{display:flex;flex-wrap:wrap;gap:8px}
+  .rel-link{display:inline-block;padding:7px 12px;border-radius:100px;background:#fff;border:1px solid var(--border);
+            color:#5c4a38;font-size:13px;text-decoration:none}
+  .rel-link:hover{border-color:#c8442a;color:#c8442a}
   @media print{
-    .kicker,h1,.acts,.hint,.to-site,.inter{display:none!important}
+    .kicker,h1,.acts,.hint,.to-site,.inter,.related{display:none!important}
     body{background:#fff}
     .wrap{padding:0;max-width:none}
     .a4{max-width:none;width:100%;border:none;border-radius:0;box-shadow:none}
@@ -273,14 +309,15 @@ function ogPage(it) {
 <div class="wrap">
   <div class="kicker">${esc(kicker)}</div>
   <h1>${esc(it.title)}</h1>
-  <div class="a4"><img src="${esc(first.preview || it.thumb)}" alt="${esc(it.title)} ${esc(copy.noun)} 미리보기"></div>
+  <div class="a4"><img src="${esc(first.preview || it.thumb)}" alt="${esc(s.alt)}"></div>
   <div class="acts">
     <button class="btn btn-print" onclick="openInter()">🖨 A4로 인쇄</button>
     <a class="btn btn-dl" href="${esc(first.download || '#')}" rel="noopener">⬇ 다운로드</a>
   </div>
   <p class="hint">인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다.</p>
-  <p class="hint">${esc(desc)}</p>
+  <p class="hint">${esc(s.description)}</p>
   <a class="to-site" href="/#${esc(it.id)}">사이트에서 크게 보기 →</a>
+  ${rel}
 
   <!-- 인쇄 전 커피 후원 안내(5초) — 다운로드 버튼과 같은 흐름 -->
   <div class="inter" id="inter">
@@ -310,35 +347,56 @@ function ogPage(it) {
 
   return `<!DOCTYPE html><html lang="ko"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(it.title)} — color.uncle ${esc(copy.ogLabel)}</title>
-<meta name="description" content="${esc(desc)}">
+<title>${esc(s.title)}</title>
+<meta name="description" content="${esc(s.description)}">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <meta property="og:type" content="article">
-<meta property="og:title" content="${esc(it.title)}">
-<meta property="og:description" content="${esc(desc)} · 다운받아 활용해보세요!">
+<meta property="og:title" content="${esc(s.ogTitle)}">
+<meta property="og:description" content="${esc(s.ogDescription)}">
 <meta property="og:image" content="${esc(it.og)}">
+<meta property="og:image:alt" content="${esc(s.alt)}">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:url" content="${esc(it.url)}">
 <meta property="og:site_name" content="color.uncle">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(s.ogTitle)}">
+<meta name="twitter:description" content="${esc(s.description)}">
+<meta name="twitter:image:alt" content="${esc(s.alt)}">
 <link rel="canonical" href="${esc(it.url)}">
+${ld}
+<style>
+  .related{max-width:560px;margin:34px auto 0;padding:22px 20px 0;border-top:1px solid rgba(61,43,31,.12);text-align:left}
+  .related h2{font-size:15px;font-weight:700;margin:0 0 10px;color:#3d2b1f}
+  .rel-list{display:flex;flex-wrap:wrap;gap:8px}
+  .rel-link{display:inline-block;padding:7px 12px;border-radius:100px;background:#fff;border:1px solid rgba(61,43,31,.12);
+            color:#5c4a38;font-size:13px;text-decoration:none}
+  .rel-link:hover{border-color:#c8442a;color:#c8442a}
+</style>
 </head><body style="margin:0;font-family:'Noto Sans KR',sans-serif;background:#faf7f3;text-align:center">
 <div style="max-width:560px;margin:0 auto;padding:40px 20px">
-  <img src="${esc(it.thumb)}" alt="${esc(it.title)}" style="max-width:320px;width:100%;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.12)">
+  <img src="${esc(it.thumb)}" alt="${esc(s.alt)}" style="max-width:320px;width:100%;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.12)">
   <h1 style="font-size:22px;margin:24px 0 8px">${esc(it.title)}</h1>
-  <p style="color:#7a7269;margin:0 0 24px">${esc(desc)}</p>
+  <p style="color:#7a7269;margin:0 0 24px">${esc(s.description)}</p>
   <a href="/#${esc(it.id)}" style="display:inline-block;background:#c8442a;color:#fff;padding:14px 28px;border-radius:8px;font-weight:600;text-decoration:none">${esc(copy.noun)} 보러가기 →</a>
 </div>
+${rel}
 </body></html>`;
 }
 
 // 검색엔진 등록·크롤링용 sitemap.xml / robots.txt
 function sitemapXml(items) {
+  const latest = items.map((it) => it.updated).filter(Boolean).sort().pop();
   const urls = [
-    { loc: `${SITE}/`, priority: '1.0' },
-    ...items.map((it) => ({ loc: it.url, priority: '0.8' })),
+    { loc: `${SITE}/`, priority: '1.0', lastmod: latest },
+    ...items.map((it) => ({ loc: it.url, priority: '0.8', lastmod: it.updated })),
   ];
   const body = urls
-    .map((u) => `  <url><loc>${esc(u.loc)}</loc><priority>${u.priority}</priority></url>`)
+    .map(
+      (u) =>
+        `  <url><loc>${esc(u.loc)}</loc>` +
+        (u.lastmod ? `<lastmod>${esc(u.lastmod)}</lastmod>` : '') +
+        `<priority>${u.priority}</priority></url>`
+    )
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
@@ -429,14 +487,18 @@ async function main() {
     await fs.copyFile(path.join(ICON_SRC, file), path.join(OUT, 'icons', file));
   }
 
-  // OG 페이지 + 블로그/카페 복사용 페이지
+  // OG 페이지 + 블로그/카페 복사용 페이지 (OG 페이지에는 SEO 메타·JSON-LD·내부 링크를 입힌다)
   await fs.mkdir(path.join(OUT, 'blog'), { recursive: true });
   await fs.mkdir(path.join(OUT, 'cafe'), { recursive: true });
   for (const it of items) {
-    await fs.writeFile(path.join(OUT, 'p', `${it.id}.html`), ogPage(it));
+    const seo = buildSeo(it, { site: SITE });
+    await fs.writeFile(path.join(OUT, 'p', `${it.id}.html`), ogPage(it, { seo, related: relatedFor(it, items) }));
     await fs.writeFile(path.join(OUT, 'blog', `${it.id}.html`), blogPage(it));
     await fs.writeFile(path.join(OUT, 'cafe', `${it.id}.html`), cafePage(it));
   }
+
+  // IndexNow 키 파일 — https://color.uncledison.com/<key>.txt 로 서빙되어 소유 확인에 쓰인다
+  await fs.writeFile(path.join(OUT, keyFileName()), INDEXNOW_KEY, 'utf8');
 
   // sitemap.xml / robots.txt
   await fs.writeFile(path.join(OUT, 'sitemap.xml'), sitemapXml(items));
@@ -451,6 +513,14 @@ async function main() {
     .map(([m, n]) => `${m} ${n}`)
     .join(' · ');
   console.log(`[build] ${items.length}개 항목 (${breakdown}) · cloud=${CLOUD} · site=${SITE}`);
+
+  // IndexNow 자동 통지 — 프로덕션 빌드(Cloudflare Pages)에서만, 실패해도 빌드는 성공으로 끝난다
+  const indexUrls = [`${SITE}/`, ...items.map((it) => it.url)];
+  if (shouldPingIndexNow()) {
+    await pingIndexNow({ site: SITE, urls: indexUrls, log: console.log });
+  } else {
+    console.log(`[indexnow] 전송 건너뜀 — 로컬/테스트 빌드 (키 파일 ${keyFileName()} 은 생성됨)`);
+  }
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
