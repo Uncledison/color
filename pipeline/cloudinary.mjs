@@ -52,15 +52,29 @@ export function ogImage(publicId, { cloud }) {
 
 // ── 3) 다운로드용 원본 (우하단 워터마크 실제 픽셀에 각인, 강제 다운로드) ──
 // 워터마크는 고딕(NanumGothic)으로 고정 — 명조체(FONT)보다 작은 크기에서 더 또렷하게 읽힘.
+//
+// 워터마크 정책: 색칠도안은 기존처럼 우하단 검정 워터마크를 유지하고,
+// 두뇌놀이(미로찾기·선잇기·점잇기)·스티커판(칭찬스티커판·체크표)은 원본에 이미 하단 문구가
+// 들어가 있어 다운로드·인쇄·공유 변환에서 워터마크 오버레이를 넣지 않는다(watermark:false).
+// build.mjs가 대분류를 보고 watermark 값을 넘긴다.
 const WATERMARK_FONT = 'NanumGothic';
 const DOWNLOAD_WATERMARK = encText('무료도안: color.uncledison.com');
-export function download(publicId, { cloud, filename }) {
+
+// 오버레이 변환 문자열. watermark가 false면 빈 배열(변환 없음).
+function watermarkTf(size, { x, y }) {
+  return `l_text:${WATERMARK_FONT}_${size}_bold:${DOWNLOAD_WATERMARK},co_white,b_rgb:000000,g_south_east,x_${x},y_${y}`;
+}
+const tf = (list) => list.filter(Boolean);
+
+export function download(publicId, { cloud, filename, watermark = true }) {
   const fn = filename ? `fl_attachment:${encodeURIComponent(filename)}` : 'fl_attachment';
   return [
-    BASE(cloud),
-    'f_png,q_auto',
-    `l_text:${WATERMARK_FONT}_30_bold:${DOWNLOAD_WATERMARK},co_white,b_rgb:000000,g_south_east,x_20,y_20`,
-    fn,
+    ...tf([
+      BASE(cloud),
+      'f_png,q_auto',
+      watermark && watermarkTf(30, { x: 20, y: 20 }),
+      fn,
+    ]),
     publicId,
   ].join('/');
 }
@@ -78,23 +92,27 @@ export function preview(publicId, { cloud, w = 900 }) {
 // ── 6) 인쇄용 (A4 한 장을 그대로 뽑는 용도, 다운로드본과 같은 워터마크) ──
 // A4 150dpi(1240×1754)에 맞춰 폭 1240으로 제한. 브라우저 인쇄 대화상자에서
 // "여백 없음 + A4 세로"로 뽑으면 한 장에 꽉 차게 나온다.
-export function printable(publicId, { cloud }) {
+export function printable(publicId, { cloud, watermark = true }) {
   return [
-    BASE(cloud),
-    'f_png,q_auto',
-    'w_1240,c_limit',
-    `l_text:${WATERMARK_FONT}_22_bold:${DOWNLOAD_WATERMARK},co_white,b_rgb:000000,g_south_east,x_14,y_14`,
+    ...tf([
+      BASE(cloud),
+      'f_png,q_auto',
+      'w_1240,c_limit',
+      watermark && watermarkTf(22, { x: 14, y: 14 }),
+    ]),
     publicId,
   ].join('/');
 }
 
 // ── 5) SNS(핀터레스트 등) 공유용 — 작게 + 워터마크 (원본 유출/스크랩 방지) ──
-export function socialShare(publicId, { cloud }) {
+export function socialShare(publicId, { cloud, watermark = true }) {
   return [
-    BASE(cloud),
-    'f_auto,q_auto',
-    'w_600,c_limit',
-    `l_text:${WATERMARK_FONT}_22_bold:${DOWNLOAD_WATERMARK},co_white,b_rgb:000000,g_south_east,x_14,y_14`,
+    ...tf([
+      BASE(cloud),
+      'f_auto,q_auto',
+      'w_600,c_limit',
+      watermark && watermarkTf(22, { x: 14, y: 14 }),
+    ]),
     publicId,
   ].join('/');
 }

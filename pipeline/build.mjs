@@ -10,6 +10,8 @@
 // - 공유문구·OG 문구를 대분류에 맞게 분기한다(색칠도안은 기존 문구 그대로).
 // - 3번째 대분류는 '스티커판'(옛 '생활·학습판' 값은 categories.mjs에서 호환 매핑).
 // - 인쇄 버튼도 다운로드와 같은 5초 커피 후원 인터스티셜을 거친 뒤 인쇄한다.
+// - 워터마크: 색칠도안만 우하단 검정 워터마크 유지, 두뇌놀이·스티커판은 다운로드·인쇄·공유
+//   변환에서 오버레이를 빼고 깨끗한 고해상도 이미지를 쓴다(cloudinary.mjs watermark:false).
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -44,6 +46,10 @@ function enrich(it) {
   // '단일' 워크시트는 그리드 합성본이 없으니 대표 이미지를 그대로 쓴다.
   const shareVisual = it.type === 'single' ? cover : `uncledison/coloring/${it.id}/${it.id}-grid`;
   const visual = shareVisual || cover;
+  // 워터마크 정책: 색칠도안만 우하단 검정 워터마크 유지.
+  // 두뇌놀이·스티커판 원본은 이미 하단에 사이트 문구가 들어가 있어 다운로드·인쇄·공유
+  // 변환에서 워터마크 오버레이를 빼고 깨끗한 고해상도 이미지를 쓴다.
+  const watermark = it.mainCategory === MAIN.COLOR;
 
   return {
     ...it,
@@ -53,18 +59,19 @@ function enrich(it) {
     url: `${SITE}/p/${it.id}`,
     thumb: CL.thumb(cover, o),
     og: CL.ogImage(visual, o),
-    promo: CL.socialShare(visual, { cloud: CLOUD }),
+    promo: CL.socialShare(visual, { cloud: CLOUD, watermark }),
     pages: it.pages.map((pg) => {
       const publicId = CL.toPublicId(pg.publicId);
       return {
         ...pg,
         publicId,
         preview: CL.preview(publicId, { cloud: CLOUD }),
-        print: CL.printable(publicId, { cloud: CLOUD }),
-        social: CL.socialShare(publicId, { cloud: CLOUD }),
+        print: CL.printable(publicId, { cloud: CLOUD, watermark }),
+        social: CL.socialShare(publicId, { cloud: CLOUD, watermark }),
         download: CL.download(publicId, {
           cloud: CLOUD,
           filename: `${it.id}-${String(pg.n).padStart(2, '0')}`,
+          watermark,
         }),
       };
     }),

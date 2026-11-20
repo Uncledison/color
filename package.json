@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node pipeline/build.mjs",
     "split": "node pipeline/split-upload.mjs",
-    "test": "node --test pipeline/categories.test.mjs"
+    "test": "node --test pipeline/categories.test.mjs pipeline/cloudinary.test.mjs"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
