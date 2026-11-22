@@ -6,7 +6,7 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { download, printable, socialShare } from './cloudinary.mjs';
+import { download, printable, socialShare, WATERMARK_TEXT } from './cloudinary.mjs';
 
 const CLOUD = 'dhfobwnfc';
 const PID = 'uncledison/coloring/maze-circular-snowman/maze-circular-snowman';
@@ -20,6 +20,20 @@ test('색칠도안(기본값)은 다운로드·인쇄·공유 모두 워터마�
     assert.match(url, /l_text:NanumGothic_\d+_bold:/, url);
     assert.match(url, /co_white,b_rgb:000000,g_south_east/, url);
     assert.ok(url.includes(PID), url);
+  }
+});
+
+test('워터마크 문구는 브랜드명 "무료도안 라라시스터"이고 URL에서 깨지지 않게 인코딩된다', () => {
+  assert.equal(WATERMARK_TEXT, '무료도안 라라시스터');
+  const expected = encodeURIComponent('무료도안 라라시스터'); // %EB%AC%B4...%20%EB%9D%BC...
+  for (const url of [
+    download(PID, { cloud: CLOUD, filename: 'good-brothers-01' }),
+    printable(PID, { cloud: CLOUD }),
+    socialShare(PID, { cloud: CLOUD }),
+  ]) {
+    assert.ok(url.includes(`l_text:NanumGothic_`), url);
+    assert.ok(url.includes(`:${expected},`), url);
+    assert.ok(!url.includes('color.uncledison.com,'), url);
   }
 });
 

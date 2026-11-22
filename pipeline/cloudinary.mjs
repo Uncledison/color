@@ -57,8 +57,11 @@ export function ogImage(publicId, { cloud }) {
 // 두뇌놀이(미로찾기·선잇기·점잇기)·스티커판(칭찬스티커판·체크표)은 원본에 이미 하단 문구가
 // 들어가 있어 다운로드·인쇄·공유 변환에서 워터마크 오버레이를 넣지 않는다(watermark:false).
 // build.mjs가 대분류를 보고 watermark 값을 넘긴다.
+//
+// 워터마크 문구는 운영자가 사이트 URL 대신 브랜드 문구로 바꿀 수 있다(2026-11-22 '무료도안 라라시스터').
 const WATERMARK_FONT = 'NanumGothic';
-const DOWNLOAD_WATERMARK = encText('무료도안: color.uncledison.com');
+export const WATERMARK_TEXT = '무료도안 라라시스터';
+const DOWNLOAD_WATERMARK = encText(WATERMARK_TEXT);
 
 // 오버레이 변환 문자열. watermark가 false면 빈 배열(변환 없음).
 function watermarkTf(size, { x, y }) {
