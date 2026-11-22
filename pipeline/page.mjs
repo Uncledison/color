@@ -6,7 +6,10 @@
 //   그 자리에서 미리보기 · 인쇄 · 다운로드 · 공유 복사를 할 수 있어야 한다.
 //   (예전엔 썸네일 1장 + '/#id' 보러가기 버튼뿐이라, 들어온 사람이 다시 홈으로 가야 했다.)
 // - SEO 메타(<title>·description·og:*·canonical·JSON-LD)와 내부 링크는 기존 것을 그대로 쓰거나 넓힌다.
-// - 인쇄·다운로드는 홈과 같은 '5초 커피 후원' 게이트를 거친다(운영 정책 유지).
+// - 인쇄·다운로드는 홈과 같은 '3초 커피 후원' 게이트를 거친다(운영 정책 유지). 게이트 없이
+//   여러 장을 한 번에 인쇄하거나, 크게 보기로 고화질 원본을 띄우는 길은 두지 않는다.
+// - 미리보기는 <canvas> 에 저해상 썸네일만 그린다. DOM 에 도안 <img src> 가 없어야
+//   브라우저 일괄 다운로드 확장이 도안을 긁어갈 수 없다(고화질 주소는 게이트 뒤에만 풀림).
 // - 홈(index.html)은 /#<id> 옛 주소를 계속 열어주고, 주소창만 /p/<id> 로 바꾼다(하위 호환).
 
 import { MAIN, MAIN_COPY, categoryLabel } from './categories.mjs';
@@ -53,15 +56,20 @@ function difficultyDots(n) {
   return out;
 }
 
-/** 도안 한 장(장 번호, 이야기, 미리보기·인쇄·저장 URL)을 카드로 */
+/** 도안 한 장(장 번호, 이야기, 인쇄·저장 버튼)을 카드로
+ *
+ * 미리보기는 <img> 대신 <canvas>로 그린다. DOM에 도안 이미지 주소가 <img src>로 남으면
+ * 크롬 일괄 다운로드 확장이 그 주소를 전부 긁어가기 때문이다. 캔버스는 저해상 썸네일(w_560)을
+ * 받아 화면에만 그리고, 인쇄·저장용 고화질 주소는 게이트(3초) 뒤에만 풀린다.
+ * 위에는 투명 shield를 덮어 우클릭·길게 누르기가 이미지에 닿지 않게 한다. */
 function sheetHtml(it, pg, index) {
   const label = `${it.title} ${pg.n}번째 장`;
   const story = String(pg.story || '').trim();
   return `      <li class="sheet">
-        <button class="thumb" type="button" onclick="openZoom(${pg.n})" aria-label="${esc(label)} 크게 보기">
-          <img src="${esc(pg.small || pg.preview || it.thumb)}" alt="${esc(label)}"${index === 0 ? '' : ' loading="lazy"'} decoding="async">
-          <span class="zoom-hint">크게 보기</span>
-        </button>
+        <div class="thumb">
+          <canvas class="pv" data-pv="${index}" width="520" height="735" role="img" aria-label="${esc(label)}"></canvas>
+          <span class="shield" aria-hidden="true"></span>
+        </div>
         <div class="sheet-body">
           <div class="sheet-head"><span class="num">${esc(pg.n)}</span><span class="sheet-label">${pg.n}번째 장</span></div>
           ${story ? `<p class="story">${esc(story)}</p>` : ''}
@@ -78,8 +86,9 @@ const STYLE = `
         --bg:#faf7f3;--card:#fff;--border:rgba(61,43,31,.12)}
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
-  body{font-family:'Noto Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  img{display:block;max-width:100%}
+  body{font-family:'Noto Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+       -webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-touch-callout:none}
+  img,canvas{display:block;max-width:100%;-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;user-drag:none;-webkit-touch-callout:none}
   a{color:inherit;text-decoration:none}
   button{font-family:inherit;color:inherit}
 
@@ -117,10 +126,10 @@ const STYLE = `
   .grid{list-style:none;display:grid;grid-template-columns:1fr;gap:18px}
   .sheet{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;
          box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 28px rgba(0,0,0,.05)}
-  .thumb{position:relative;display:block;width:100%;padding:0;border:none;background:#f4efe8;cursor:zoom-in}
-  .thumb img{width:100%;aspect-ratio:210/297;object-fit:contain;background:#fff}
-  .zoom-hint{position:absolute;right:10px;bottom:10px;font-size:11px;font-weight:700;color:#3d2b1f;
-             background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:100px;padding:4px 10px}
+  .thumb{position:relative;display:block;width:100%;background:#fff;overflow:hidden}
+  .thumb canvas{width:100%;height:auto;display:block;background:#fff;-webkit-user-select:none;user-select:none}
+  /* 투명 방어막 — 우클릭·드래그·길게 누르기가 캔버스에 직접 닿지 않는다 */
+  .shield{position:absolute;inset:0;z-index:2;background:transparent;-webkit-touch-callout:none;user-select:none}
   .sheet-body{padding:12px 15px 15px}
   .sheet-head{display:flex;align-items:center;gap:8px;margin-bottom:7px}
   .num{flex:none;width:22px;height:22px;border-radius:50%;background:var(--warm);color:var(--accent);
@@ -155,26 +164,13 @@ const STYLE = `
   .foot{margin-top:30px;text-align:center;font-size:12px;color:var(--ink-3);line-height:1.9}
   .foot a{text-decoration:underline;text-underline-offset:2px}
 
-  /* ── 크게 보기(라이트박스) ── */
-  .zoom{display:none;position:fixed;inset:0;z-index:900;background:rgba(24,18,13,.94);padding:16px;
-        align-items:center;justify-content:center}
-  .zoom.open{display:flex}
-  .zoom img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;background:#fff;border-radius:6px}
-  .zoom-close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:none;
-              background:rgba(255,255,255,.14);color:#fff;font-size:17px;cursor:pointer}
-  .zoom-nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:none;
-            background:rgba(255,255,255,.14);color:#fff;font-size:15px;cursor:pointer}
-  .zoom-nav.prev{left:10px}
-  .zoom-nav.next{right:10px}
-  .zoom-count{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:12px;color:rgba(255,255,255,.8)}
-
   /* ── 토스트 ── */
   .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:1000;max-width:calc(100% - 32px);
          background:rgba(61,43,31,.95);color:#fff;font-size:13px;line-height:1.5;padding:11px 18px;border-radius:100px;
          opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease;text-align:center}
   .toast.on{opacity:1;transform:translate(-50%,0)}
 
-  /* ── 인쇄 전 커피 후원 인터스티셜 (다운로드와 같은 5초 게이트) ── */
+  /* ── 인쇄 전 커피 후원 인터스티셜 (다운로드와 같은 3초 게이트) ── */
   .inter{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:800;align-items:center;justify-content:center;padding:20px}
   .inter.open{display:flex}
   .inter-box{position:relative;background:#fff;border-radius:20px;padding:24px;max-width:400px;width:100%;text-align:center;
@@ -192,7 +188,7 @@ const STYLE = `
   .coffee-qr-img{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
   .coffee-instruction{font-size:14px;font-weight:600;color:#3d2b1f}
   .countdown-track{width:100%;height:5px;background:#f3e6d6;border-radius:3px;overflow:hidden;margin-bottom:5px}
-  .countdown-fill{height:100%;background:#e8734f;border-radius:3px;animation:cdFill 5s linear forwards}
+  .countdown-fill{height:100%;background:#e8734f;border-radius:3px;animation:cdFill 3s linear forwards}
   @keyframes cdFill{from{width:100%}to{width:0%}}
   .countdown-label{font-size:12px;color:#8a7860;margin-bottom:14px}
   .btn-skip{width:100%;height:48px;border:none;border-radius:100px;background:#c8442a;color:#fff;font-size:15px;font-weight:700;
@@ -205,16 +201,16 @@ const STYLE = `
     .grid.solo{grid-template-columns:1fr}
   }
 
-  /* 이 페이지에서 Ctrl+P 해도 A4 그림만 깔끔하게 나오도록 */
+  /* Ctrl+P 로는 아무것도 인쇄되지 않는다 — 도안은 장마다 [인쇄] 버튼(3초 게이트)으로만 나간다.
+     (게이트를 거친 인쇄는 숨은 iframe 문서 안에서 이뤄지므로 이 규칙과 무관하다) */
+  .print-only{display:none}
   @media print{
-    .top,.crumbs,.facts,.acts,.acts-note,.howto,.related,.home-cta,.foot,.zoom,.inter,.toast,h1,.lede,h2,.sheet-body{display:none!important}
-    body{background:#fff}
-    .wrap{padding:0;max-width:none}
-    .grid{display:block}
-    .sheet,.single-card{border:none;border-radius:0;box-shadow:none;margin:0}
-    .thumb{padding:0}
-    .thumb img{width:210mm;height:auto;aspect-ratio:auto;page-break-after:always;break-after:page}
-    .zoom-hint{display:none!important}
+    html,body{background:#fff}
+    body *{visibility:hidden!important}
+    .print-only,.print-only *{visibility:visible!important}
+    .print-only{display:block!important;position:absolute;left:0;top:0;width:100%;padding:40px 24px;
+                font-family:'Noto Sans KR',sans-serif;color:#3d2b1f;text-align:center;line-height:1.9}
+    .print-only b{color:#c8442a}
   }
 `;
 
@@ -228,7 +224,7 @@ function toast(msg){
   clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('on')},2800);
 }
 
-/* ── 커피 후원 게이트(5초) → 실제 인쇄/저장 ── */
+/* ── 커피 후원 게이트(3초) → 실제 인쇄/저장 ── */
 var gateTimer=null,gateRun=null;
 function openGate(kind,run){
   gateRun=run;
@@ -237,8 +233,8 @@ function openGate(kind,run){
   el.classList.add('open');document.body.style.overflow='hidden';
   skip.classList.remove('ready');skip.textContent='✓ '+kind+' 시작';
   fill.style.animation='none';fill.offsetHeight;
-  fill.style.animation='cdFill 5s linear forwards';
-  clearInterval(gateTimer);var s=5;
+  fill.style.animation='cdFill 3s linear forwards';
+  clearInterval(gateTimer);var s=3;
   lbl.textContent=s+'초 후 '+kind+' 가능...';
   gateTimer=setInterval(function(){
     s--;
@@ -256,113 +252,119 @@ function execGate(){
   closeGate();
   if(typeof run==='function')run();
 }
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){var z=$('zoom');if(z&&z.classList.contains('open'))closeZoom();else closeGate()}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeGate()});
 
-/* 여러 장을 한 번에 인쇄 — A4 한 장에 한 컷씩 */
-function printSheets(srcs){
-  if(!srcs||!srcs.length)return;
+/* ── 도안 미리보기: 캔버스에 저해상 썸네일(w_560)만 그린다 ──
+   화면에는 그림이 그대로 보이지만 DOM 에는 도안 이미지 주소(<img src>)가 하나도 없다.
+   일괄 다운로드 확장은 <img>/CSS 배경 주소를 긁으므로 잡을 것이 없다. */
+function paintPv(cv,im){
+  var w=cv.width,h=cv.height,ctx=cv.getContext('2d');
+  if(!ctx)return;
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);
+  var s=Math.min(w/im.width,h/im.height);
+  var iw=im.width*s,ih=im.height*s;
+  ctx.drawImage(im,(w-iw)/2,(h-ih)/2,iw,ih);
+  /* 가운데 흐린 미리보기 워터마크 — 캡처만으로 완성본을 쓰기 어렵게 */
+  ctx.save();ctx.globalAlpha=.12;ctx.fillStyle='#3d2b1f';
+  ctx.font='bold '+Math.round(w/24)+'px -apple-system,system-ui,sans-serif';
+  ctx.translate(w/2,h/2);ctx.rotate(-Math.PI/6);
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('미리보기 · color.uncle',0,0);
+  ctx.restore();
+}
+function drawPv(cv){
+  if(!cv||cv.getAttribute('data-drawn'))return;
+  var url=PV[+cv.getAttribute('data-pv')];
+  if(!url)return;
+  cv.setAttribute('data-drawn','1');
+  var im=new Image();
+  im.onload=function(){paintPv(cv,im)};
+  im.onerror=function(){cv.setAttribute('data-error','1')};
+  im.src=url;
+}
+(function hydratePv(){
+  var list=document.querySelectorAll('canvas.pv[data-pv]'),i;
+  if('IntersectionObserver' in window&&list.length>2){
+    var io=new IntersectionObserver(function(es){
+      for(var k=0;k<es.length;k++){if(es[k].isIntersecting){io.unobserve(es[k].target);drawPv(es[k].target)}}
+    },{rootMargin:'500px 0px'});
+    for(i=0;i<list.length;i++)io.observe(list[i]);
+  }else{
+    for(i=0;i<list.length;i++)drawPv(list[i]);
+  }
+})();
+
+/* ── 게이트가 끝난 뒤에만 풀리는 고화질 주소(인쇄·저장) ──
+   HTML 에는 base64 한 줄로만 실려 있고, 누르기 전에는 풀지 않는다. */
+var RES_CACHE=null;
+function unlockUrls(){
+  if(RES_CACHE)return RES_CACHE;
+  var raw=atob(RES),json=raw;
+  try{json=decodeURIComponent(escape(raw))}catch(e){}
+  RES_CACHE=JSON.parse(json);
+  return RES_CACHE;
+}
+
+/* ── 우클릭·드래그·길게 누르기로 이미지 저장하지 못하게 ── */
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false},true);
+document.addEventListener('selectstart',function(e){
+  var t=e.target;
+  if(t&&(t.tagName==='CANVAS'||t.className==='shield'))e.preventDefault();
+});
+
+/* 한 장만 인쇄 — 숨은 iframe 문서에 그 장만 써서 인쇄 대화상자를 띄운다. */
+function printSheet(src){
+  if(!src)return;
   var f=$('printFrame');
   if(!f){f=document.createElement('iframe');f.id='printFrame';f.setAttribute('aria-hidden','true');
     f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';document.body.appendChild(f)}
   var d=f.contentWindow.document;
-  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page{size:A4 portrait;margin:0}html,body{margin:0;padding:0}'+
-    'img{display:block;width:210mm;height:auto;page-break-after:always;break-after:page}img:last-child{page-break-after:auto;break-after:auto}</style></head><body>';
-  for(var i=0;i<srcs.length;i++)html+='<img src="'+srcs[i]+'">';
-  html+='</body></html>';
-  d.open();d.write(html);d.close();
-  var fired=false;
-  function fire(){if(fired)return;fired=true;try{window.focus();d.defaultView.focus();d.defaultView.print()}catch(e){}}
-  try{
-    var imgs=d.images||[],left=imgs.length;
-    if(!left){setTimeout(fire,250);return}
-    for(var k=0;k<imgs.length;k++){
-      if(imgs[k].complete){left--;continue}
-      imgs[k].onload=imgs[k].onerror=function(){left--;if(left<=0)setTimeout(fire,150)};
-    }
-    if(left<=0)setTimeout(fire,200);
-    setTimeout(fire,4000); /* 이미지가 늦어도 4초 뒤엔 인쇄 대화상자 */
-  }catch(e){setTimeout(fire,600)}
+  d.open();
+  d.write('<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page{size:A4 portrait;margin:0}html,body{margin:0;padding:0}'+
+    'img{display:block;width:210mm;height:auto}</style></head><body><img src="'+src+'" onload="setTimeout(function(){window.focus();window.print()},200)"></body></html>');
+  d.close();
 }
 
-/* 인쇄: n을 주면 그 장만, 없으면 전체 */
+/* 인쇄: n번째 장 한 장만 — 여러 장을 모아 뽑는 길은 두지 않는다 */
 function askPrint(n){
-  var list=SHEET_DATA.sheets;
-  var srcs=n?[list[n-1].print]:list.map(function(x){return x.print});
-  srcs=srcs.filter(Boolean);
-  if(!srcs.length)return;
-  openGate('인쇄',function(){printSheets(srcs)});
+  var idx=(Number(n)||1)-1;
+  if(idx<0)return;
+  openGate('인쇄',function(){
+    var s=unlockUrls()[idx];
+    if(s&&s.print)printSheet(s.print);
+    else toast('인쇄할 장을 찾지 못했어요');
+  });
 }
-/* 저장: n번째 장 원본(PNG) 다운로드 */
+/* 저장: n번째 장 원본(PNG) 한 장만 내려받기 */
 function askDownload(n){
-  var s=SHEET_DATA.sheets[n-1];
-  if(!s||!s.download)return;
+  var idx=(Number(n)||1)-1;
+  if(idx<0)return;
   openGate('다운로드',function(){
+    var s=unlockUrls()[idx];
+    if(!s||!s.download){toast('저장할 장을 찾지 못했어요');return}
     var a=document.createElement('a');a.href=s.download;a.rel='noopener';
     document.body.appendChild(a);a.click();a.remove();
-    toast(s.n+'번째 장을 저장하고 있어요');
+    toast((idx+1)+'번째 장을 저장하고 있어요');
   });
 }
 
-/* 공유 복사 — 항상 정식 /p/<id> 주소가 들어간 문구를 복사한다 */
+/* 공유 복사 — 주소창·링크 입력칸에 그대로 붙여넣을 수 있게 '깨끗한 주소 하나'만 복사한다 */
 function copyShare(){
-  var text=SHEET_DATA.shareText;
-  function ok(){toast('공유 문구를 복사했어요 · '+SHEET_DATA.url)}
+  var url=SHEET_DATA.url;
+  function ok(){toast('링크를 복사했어요 · '+url)}
   function fallback(){
-    var ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');
+    var ta=document.createElement('textarea');ta.value=url;ta.setAttribute('readonly','');
     ta.style.cssText='position:fixed;top:-1000px;left:0;opacity:0';
     document.body.appendChild(ta);ta.select();
     var done=false;try{done=document.execCommand('copy')}catch(e){}
     ta.remove();
-    if(done)ok();else window.prompt('아래 내용을 복사하세요:',text);
+    if(done)ok();else window.prompt('아래 주소를 복사하세요:',url);
   }
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(ok).catch(fallback);
+    navigator.clipboard.writeText(url).then(ok).catch(fallback);
   }else fallback();
 }
-
-/* ── 크게 보기 ── */
-var zoomAt=0;
-function openZoom(n){
-  zoomAt=Math.max(0,Math.min(SHEET_DATA.sheets.length-1,(n||1)-1));
-  var z=$('zoom');z.classList.add('open');document.body.style.overflow='hidden';
-  renderZoom();
-}
-function renderZoom(){
-  var s=SHEET_DATA.sheets[zoomAt];
-  if(!s)return;
-  $('zoomImg').src=s.preview||'';
-  $('zoomImg').alt=SHEET_DATA.title+' '+(zoomAt+1)+'번째 장';
-  $('zoomCount').textContent=(zoomAt+1)+' / '+SHEET_DATA.sheets.length;
-  var multi=SHEET_DATA.sheets.length>1;
-  $('zoomPrev').style.display=multi?'block':'none';
-  $('zoomNext').style.display=multi?'block':'none';
-}
-function zoomStep(d){
-  var n=SHEET_DATA.sheets.length;
-  if(n<2)return;
-  zoomAt=(zoomAt+d+n)%n;
-  renderZoom();
-}
-function closeZoom(){
-  $('zoom').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.addEventListener('keydown',function(e){
-  var z=document.getElementById('zoom');
-  if(!z||!z.classList.contains('open'))return;
-  if(e.key==='ArrowLeft')zoomStep(-1);
-  if(e.key==='ArrowRight')zoomStep(1);
-});
-(function(){
-  var z=document.getElementById('zoom');
-  if(!z)return;
-  var sx=0,sy=0;
-  z.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
-  z.addEventListener('touchend',function(e){
-    var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
-    if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy))zoomStep(dx<0?1:-1);
-  },{passive:true});
-})();
 `;
 
 /**
@@ -377,17 +379,22 @@ export function richPage(it, { seo, related = [], site } = {}) {
   const series = it.type === 'series' && it.pages.length > 1;
   const pages = it.pages.map((pg, i) => ({ ...pg, n: Number(pg.n) || i + 1, small: pg.small || pg.preview }));
 
+  /* 화면에 쓰는 것은 제목·주소·장 번호뿐. 인쇄·저장용 고화질 주소는 아래 RES(base64)에만 들어간다. */
   const sheetData = {
     title: it.title,
     url: it.url,
-    shareText: it.shareText || `${it.title}\n\n👉 ${it.url}`,
-    sheets: pages.map((pg) => ({
-      n: pg.n,
-      preview: pg.preview || it.thumb,
-      print: pg.print || pg.preview || '',
-      download: pg.download || '',
-    })),
+    sheets: pages.map((pg) => ({ n: pg.n })),
   };
+
+  /* 미리보기용 저해상 썸네일(w_560) 주소 — 캔버스에 그리는 용도로만 JS 배열에 담는다 */
+  const previews = pages.map((pg) => pg.small || pg.preview || it.thumb);
+
+  /* 인쇄·저장용 고화질 주소 — HTML 에는 base64 한 줄로만 실린다(게이트가 끝나야 풀림) */
+  const reserved = pages.map((pg) => ({
+    print: pg.print || pg.preview || '',
+    download: pg.download || '',
+  }));
+  const RES_B64 = Buffer.from(JSON.stringify(reserved), 'utf8').toString('base64');
 
   const facts = [
     `<li><b>${series ? `${pages.length}장` : '1장'}</b> A4 인쇄</li>`,
@@ -397,15 +404,14 @@ export function richPage(it, { seo, related = [], site } = {}) {
   ].filter(Boolean).join('\n      ');
 
   const acts = series
-    ? `<button class="btn btn-primary" type="button" onclick="askPrint()">🖨 ${pages.length}장 전체 인쇄</button>
-        <button class="btn btn-ghost" type="button" onclick="copyShare()">🔗 공유 복사</button>`
+    ? `<button class="btn btn-ghost" type="button" onclick="copyShare()">🔗 링크 복사</button>`
     : `<button class="btn btn-primary wide" type="button" onclick="askPrint(1)">🖨 A4로 인쇄</button>
         <button class="btn btn-ghost half" type="button" onclick="askDownload(1)">⬇ 다운로드</button>
-        <button class="btn btn-ghost half" type="button" onclick="copyShare()">🔗 공유 복사</button>`;
+        <button class="btn btn-ghost half" type="button" onclick="copyShare()">🔗 링크 복사</button>`;
 
   const actsNote = series
-    ? '장마다 <b>인쇄 · 저장</b> 버튼이 있어요. 전체 인쇄를 누르면 A4 한 장에 한 컷씩 모두 인쇄됩니다.'
-    : '인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다.';
+    ? '장마다 <b>인쇄 · 저장</b> 버튼으로 <b>한 장씩</b> 인쇄·저장해 주세요. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
+    : '인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다. 저장은 고화질 PNG 한 장으로 내려받아요.';
 
   const gallery = series
     ? `<section class="sheets" id="sheets">
@@ -417,10 +423,10 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
     : `<section class="sheets" id="sheets">
     <h2>도안 미리보기</h2>
     <div class="single-card">
-      <button class="thumb" type="button" onclick="openZoom(1)" aria-label="${esc(it.title)} 크게 보기">
-        <img src="${esc(pages[0].preview || it.thumb)}" alt="${esc(s.alt)}" decoding="async">
-        <span class="zoom-hint">크게 보기</span>
-      </button>
+      <div class="thumb">
+        <canvas class="pv" data-pv="0" width="520" height="735" role="img" aria-label="${esc(s.alt)}"></canvas>
+        <span class="shield" aria-hidden="true"></span>
+      </div>
       ${pages[0].story ? `<div class="sheet-body"><p class="story">${esc(pages[0].story)}</p></div>` : ''}
     </div>
   </section>`;
@@ -441,6 +447,7 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(s.ogTitle)}">
 <meta name="twitter:description" content="${esc(s.description)}">
+<meta name="twitter:image" content="${esc(it.og)}">
 <meta name="twitter:image:alt" content="${esc(s.alt)}">
 <link rel="canonical" href="${esc(it.url)}">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -474,7 +481,8 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
     <h2>인쇄·저장 안내</h2>
     <ul>
       <li>인쇄: 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>으로 뽑으면 한 장에 꼭 맞습니다.</li>
-      <li>저장: <b>저장</b> 버튼을 누르면 고화질 PNG로 내려받아요. 스마트폰은 사진첩에 저장됩니다.</li>
+      <li>저장: <b>저장</b> 버튼을 누르면 그 장만 고화질 PNG로 내려받아요. 스마트폰은 사진첩에 저장됩니다.</li>
+      <li>여러 장을 쓰실 때는 장마다 <b>인쇄</b> 버튼을 눌러 한 장씩 뽑으시면 됩니다.</li>
       <li>집에서 바로 쓰는 무료 도안입니다. 가게·교실에서도 자유롭게 인쇄해 쓰세요. (재판매는 안 돼요)</li>
     </ul>
   </section>
@@ -488,16 +496,13 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
   </footer>
 </main>
 
-<!-- 크게 보기 -->
-<div class="zoom" id="zoom" onclick="if(event.target===this)closeZoom()">
-  <button class="zoom-close" type="button" onclick="closeZoom()" aria-label="닫기">✕</button>
-  <button class="zoom-nav prev" type="button" id="zoomPrev" onclick="zoomStep(-1)" aria-label="이전 장">◀</button>
-  <img id="zoomImg" src="" alt="">
-  <button class="zoom-nav next" type="button" id="zoomNext" onclick="zoomStep(1)" aria-label="다음 장">▶</button>
-  <div class="zoom-count" id="zoomCount"></div>
+<!-- Ctrl+P 로는 아무것도 나가지 않고 이 안내만 인쇄된다 -->
+<div class="print-only">
+  <p><b>도안은 한 장씩 인쇄해 주세요</b></p>
+  <p>각 도안 카드의 <b>인쇄</b> 버튼을 누르면 그 장만 A4로 인쇄됩니다.</p>
 </div>
 
-<!-- 인쇄·저장 전 커피 후원 안내(5초) -->
+<!-- 인쇄·저장 전 커피 후원 안내(3초) -->
 <div class="inter" id="inter">
   <div class="inter-box">
     <button class="inter-close" type="button" onclick="closeGate()" aria-label="닫기">✕</button>
@@ -514,7 +519,7 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
       <div class="coffee-instruction">QR찍거나 눌러서 후원하기</div>
     </a>
     <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
-    <div class="countdown-label" id="cdLabel">5초 후 인쇄 가능...</div>
+    <div class="countdown-label" id="cdLabel">3초 후 인쇄 가능...</div>
     <button class="btn-skip" type="button" id="skipBtn" onclick="execGate()">✓ 인쇄 시작</button>
   </div>
 </div>
@@ -526,6 +531,8 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
 
 <script>
 const SHEET_DATA=${jsonSafe(sheetData)};
+const PV=${jsonSafe(previews)};
+const RES="${RES_B64}";
 ${SCRIPT}
 </script>
 </body></html>`;
