@@ -58,25 +58,42 @@ body{
   background:var(--canvas);
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
+  -webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-touch-callout:none;
 }
-img{display:block;max-width:100%;-webkit-user-drag:none;user-select:none}
+img,canvas{display:block;max-width:100%;-webkit-user-drag:none;-khtml-user-drag:none;user-drag:none;user-select:none;-webkit-touch-callout:none}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+/* 검색창처럼 글자를 골라야 하는 곳은 선택을 다시 열어 둔다 */
+input,textarea{-webkit-user-select:text;user-select:text}
 
-/* Image lock */
-.coloring-img{pointer-events:none;-webkit-user-select:none;user-select:none}
+/* Image lock — 이미지는 전부 캔버스로 그리고 위에 투명 방어막을 덮는다.
+   우클릭·드래그·길게 눌러도 이미지에 닿지 않고, DOM 에 <img src> 가 없어
+   일괄 다운로드 확장이 긁어갈 주소도 없다. */
+.coloring-img{pointer-events:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.shield{position:absolute;inset:0;z-index:2;background:transparent;-webkit-touch-callout:none;user-select:none}
+canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 
 /* real coloring images (data-driven) */
-.coloring-card .card-img,.series-cover,.series-thumb,.modal-artwork{overflow:hidden}
-.card-img img,.series-cover img,.series-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.modal-artwork img{max-width:100%;max-height:36vh;width:auto;height:auto;display:block;background:#fff;border-radius:var(--r);}
+.coloring-card .card-img,.series-cover,.series-thumb,.modal-artwork{overflow:hidden;position:relative}
+.card-img canvas,.series-cover canvas,.series-thumb canvas{width:100%;height:100%;object-fit:cover;display:block}
+.modal-artwork canvas{max-width:100%;max-height:36vh;width:auto;height:auto;display:block;background:#fff;border-radius:var(--r);}
+
+/* Ctrl+P 보호: 인쇄될 것이 없고 안내문만 남는다 */
+.print-only{display:none}
+@media print{
+  body *{visibility:hidden!important}
+  .print-only,.print-only *{visibility:visible!important}
+  .print-only{display:block!important;position:absolute;left:0;top:0;width:100%;padding:40px 24px;
+              font-family:'Noto Sans KR',sans-serif;color:var(--ink);text-align:center;line-height:1.9}
+  .print-only b{color:var(--coral)}
+}
 
 /* '단일' 워크시트(미로찾기·선잇기·점잇기·칭찬스티커판 등)는 A4 한 장 비율 그대로 크게 */
 .modal.wide{max-width:780px}
 .modal-artwork.is-single{
   flex-direction:column;padding:0;border:0;background:var(--warm);border-radius:var(--r-lg);
 }
-.modal-artwork.is-single img{max-height:none;border-radius:0}
+.modal-artwork.is-single canvas{max-height:none;border-radius:0}
 .modal-artwork.is-single .page-nav-btn{display:none}
 .modal-artwork.is-single #modalSvg{width:100%;display:flex;justify-content:center}
 /* 워터마크는 A4 그림을 가리지 않게 아래 캐션으로 */
@@ -92,7 +109,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 24px rgba(0,0,0,.08);
 }
-.a4-frame img{width:100%;height:100%;object-fit:contain;display:block}
+.a4-frame canvas{width:100%;height:100%;object-fit:contain;display:block}
 
 /* ── KEYFRAMES ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
@@ -157,7 +174,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 }
 .search-result-item:hover{background:var(--warm)}
 .search-result-item>div{min-width:0;flex:1}
-.search-result-item img{width:34px;height:46px;object-fit:cover;border-radius:4px;flex-shrink:0;background:var(--warm-2)}
+.search-result-item canvas{width:34px;height:46px;object-fit:cover;border-radius:4px;flex-shrink:0;background:var(--warm-2)}
 .search-result-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
 .search-result-desc{font-size:11.5px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .search-empty{padding:18px 14px;text-align:center;font-size:13px;color:var(--ink-3)}
@@ -1364,6 +1381,12 @@ svg.coloring .no-fill{fill:none}
   </div>
 </footer>
 
+<!-- Ctrl+P 로는 도안이 인쇄되지 않고 이 안내만 나온다 -->
+<div class="print-only">
+  <p><b>도안은 한 장씩 인쇄해 주세요</b></p>
+  <p>도안을 열고 <b>인쇄하기</b> 버튼을 누르면 그 장만 A4로 인쇄됩니다.</p>
+</div>
+
 <!-- MODAL -->
 <div class="modal-wrap" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
@@ -1398,7 +1421,7 @@ svg.coloring .no-fill{fill:none}
           <strong id="dlTitle">📄 1번 도안 다운로드</strong>
         </div>
         <div class="dl-btns">
-          <button class="btn-dl outline" onclick="shareItem()">🔗 공유 복사</button>
+          <button class="btn-dl outline" onclick="shareItem()">🔗 링크 복사</button>
           <button class="btn-dl outline" onclick="printCurrent()">🖨 인쇄하기</button>
           <button class="btn-dl fill" onclick="triggerDownload()">⬇ 다운로드</button>
         </div>
@@ -1432,9 +1455,61 @@ svg.coloring .no-fill{fill:none}
 </div>
 
 <script>
-/* protect */
-document.addEventListener('contextmenu',e=>e.preventDefault());
-document.addEventListener('dragstart',e=>{if(e.target.tagName==='IMG'||e.target.closest('.coloring-img'))e.preventDefault()});
+/* protect — 우클릭·드래그·길게 누르기로 이미지를 저장하지 못하게 */
+document.addEventListener('contextmenu',e=>{e.preventDefault();return false},true);
+document.addEventListener('dragstart',e=>{e.preventDefault();return false},true);
+document.addEventListener('selectstart',e=>{const t=e.target;if(t&&(t.tagName==='CANVAS'||(t.classList&&t.classList.contains('shield'))))e.preventDefault()});
+
+/* ── 미리보기 캔버스 ──
+   도안은 <img src> 대신 저해상 썸네일(w_500/카드, w_560/도안)을 캔버스에 그린다.
+   DOM 에 도안 이미지 주소가 남지 않으므로 일괄 다운로드 확장이 긁어갈 것이 없고,
+   위에 투명 방어막(shield)을 덮어 우클릭·길게 누르기가 이미지에 닿지 않는다. */
+const PVS=[];
+function pvIdx(url){return PVS.push(url)-1}
+function pvHTML(url,w,h,cls,label){
+  if(!url)return '';
+  return '<canvas class="pv '+(cls||'')+'" data-pv="'+pvIdx(url)+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+esc(label||'')+'"></canvas>';
+}
+function paintPv(cv,im){
+  const w=cv.width,h=cv.height,ctx=cv.getContext('2d');
+  if(!ctx)return;
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);
+  const s=Math.min(w/im.width,h/im.height),iw=im.width*s,ih=im.height*s;
+  ctx.drawImage(im,(w-iw)/2,(h-ih)/2,iw,ih);
+  ctx.save();ctx.globalAlpha=.12;ctx.fillStyle='#3d2b1f';
+  ctx.font='bold '+Math.round(w/24)+'px -apple-system,system-ui,sans-serif';
+  ctx.translate(w/2,h/2);ctx.rotate(-Math.PI/6);
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('미리보기 · color.uncle',0,0);
+  ctx.restore();
+}
+function drawCanvasNow(cv,url){
+  if(!cv||!url)return;
+  const im=new Image();
+  im.onload=()=>{paintPv(cv,im);cv.setAttribute('data-drawn','1')};
+  im.onerror=()=>cv.setAttribute('data-error','1');
+  im.src=url;
+}
+function drawPv(cv){
+  if(!cv||cv.getAttribute('data-drawn'))return;
+  const url=PVS[+cv.getAttribute('data-pv')];
+  if(!url)return;
+  cv.setAttribute('data-drawn','1');
+  drawCanvasNow(cv,url);
+}
+let pvObserver=null;
+if('IntersectionObserver' in window){
+  pvObserver=new IntersectionObserver(es=>{
+    es.forEach(en=>{if(en.isIntersecting){pvObserver.unobserve(en.target);drawPv(en.target)}});
+  },{rootMargin:'400px 0px'});
+}
+function hydratePv(root){
+  const list=(root||document).querySelectorAll('canvas.pv:not([data-drawn])'),n=list.length;
+  for(let i=0;i<n;i++){if(pvObserver)pvObserver.observe(list[i]);else drawPv(list[i])}
+  if(!pvObserver)return;
+  /* 화면 밖(관찰되지 않는) 캔버스가 남지 않도록 첫 화면 분량은 바로 그린다 */
+  for(let i=0;i<Math.min(n,4);i++)drawPv(list[i]);
+}
 
 
 /* heart */
@@ -1580,7 +1655,7 @@ function cardHTML(it){
   const kind=it.categoryLabel||it.category||'';
   return '<div class="coloring-card" onclick="openModal(\''+it.id+'\')">'
     +'<button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>'
-    +'<div class="card-img coloring-img"><img src="'+it.thumb+'" alt="'+esc(it.title)+'" loading="lazy"></div>'
+    +'<div class="card-img coloring-img">'+pvHTML(it.thumb,300,420,'',it.title)+'<span class="shield"></span></div>'
     +'<div class="card-foot"><div class="card-category">'+esc(kind)+'</div>'
     +'<div class="card-title">'+esc(it.title)+'</div>'
     +'<div class="card-meta"><span class="card-pages">'+pages+'</span>'
@@ -1589,9 +1664,9 @@ function cardHTML(it){
 }
 
 function seriesHTML(it){
-  const strip=it.pages.slice(0,5).map((p,i)=>'<div class="series-thumb'+(i===0?' active':'')+'" onclick="event.stopPropagation();openModal(\''+it.id+'\','+i+')"><img src="'+p.preview+'" alt=""></div>').join('');
+  const strip=it.pages.slice(0,5).map((p,i)=>'<div class="series-thumb'+(i===0?' active':'')+'" onclick="event.stopPropagation();openModal(\''+it.id+'\','+i+')">'+pvHTML(p.small||p.preview,120,162,'',it.title+' '+(i+1)+'번째 장')+'<span class="shield"></span></div>').join('');
   return '<div class="series-card" onclick="openModal(\''+it.id+'\')">'
-    +'<div class="series-cover"><img src="'+it.thumb+'" alt="'+esc(it.title)+'" loading="lazy"><span class="series-count-badge">'+it.pageCount+'장 세트</span></div>'
+    +'<div class="series-cover">'+pvHTML(it.thumb,400,300,'',it.title)+'<span class="series-count-badge">'+it.pageCount+'장 세트</span></div>'
     +'<div class="series-body"><div class="series-kicker">'+esc(it.categoryLabel||it.category)+'</div>'
     +'<div class="series-title">'+esc(it.title)+'</div>'
     +'<div class="series-desc">'+esc(it.desc)+'</div>'
@@ -1625,6 +1700,7 @@ function renderCatalog(){
       const cards=list.map(cardHTML);
       if(cards.length>3)cards.splice(3,0,INFEED_AD_HTML);
       grid.innerHTML=cards.join('');
+      hydratePv(grid);
       try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
     }else{
       grid.innerHTML='<p style="grid-column:1/-1;color:var(--ink-3);padding:28px 4px;line-height:1.8">'
@@ -1639,7 +1715,7 @@ function renderCatalog(){
   const series=list.filter(it=>it.type==='series');
   if(sec)sec.style.display=series.length?'':'none';
   const sr=document.getElementById('seriesRow');
-  if(sr)sr.innerHTML=series.map(seriesHTML).join('');
+  if(sr){sr.innerHTML=series.map(seriesHTML).join('');hydratePv(sr)}
   const sc=document.getElementById('seriesCount');
   if(sc)sc.textContent=series.length?series.length+'세트':'';
 }
@@ -1648,7 +1724,7 @@ function renderCatalog(){
 function searchResultHTML(it){
   const kind=it.categoryLabel||it.mainCategory||'';
   return '<div class="search-result-item" onclick="selectSearchResult(\''+it.id+'\')">'
-    +'<img src="'+it.thumb+'" alt="" loading="lazy">'
+    +pvHTML(it.thumb,68,92,'',it.title)
     +'<div><div class="search-result-title">'+esc(it.title)+'</div>'
     +'<div class="search-result-desc">'+esc(kind)+(it.desc?' · '+esc(it.desc):'')+'</div></div></div>';
 }
@@ -1663,6 +1739,7 @@ function handleSearchInput(q){
   panel.innerHTML=matches.length
     ?matches.map(searchResultHTML).join('')
     :'<div class="search-empty">"'+esc(q)+'"에 맞는 도안을 못 찾았어요</div>';
+  hydratePv(panel);
   panel.classList.add('open');
 }
 function selectSearchResult(id){
@@ -1696,8 +1773,11 @@ function updateModal(){
   if(dots)dots.style.display=single?'none':'flex';
   // '단일' 워크시트는 A4 한 장 비율 그대로 크게 보여준다
   document.getElementById('modalSvg').innerHTML=single
-    ?'<div class="a4-frame"><img src="'+pg.preview+'" alt="'+esc(current.title)+'"></div>'
-    :'<img src="'+pg.preview+'" alt="'+esc(current.title)+'">';
+    ?'<div class="a4-frame">'+pvHTML(pg.small||pg.preview,620,877,'',current.title)+'</div>'
+    :pvHTML(pg.small||pg.preview,620,877,'',current.title);
+  /* 모달 그림은 바로 보여야 하므로 관찰자를 기다리지 않고 즉시 그린다 */
+  const mc=document.querySelector('#modalSvg canvas.pv');
+  if(mc)drawPv(mc);
   const storyEl=document.getElementById('storyText');
   if(storyEl)storyEl.textContent=pg.story||'';
   document.getElementById('dlTitle').textContent=current.type==='series'?('📄 '+(currentPage+1)+'번 도안 다운로드'):'📄 도안 다운로드';
@@ -1750,15 +1830,10 @@ function printCurrent(){
   openInter();
 }
 
-/* ── 공유 ──
-   공유 문구는 언제나 정식 주소(/p/<id>)를 쓴다 — 옛 /#<id> 주소를 복사해 보내지 않도록.
-   (data.json의 shareText 마지막 링크 줄을 정식 주소로 바꿔 끼운다) */
+/* ── 링크 복사 ──
+   주소창·링크 입력칸에 그대로 붙여넣을 수 있게 '깨끗한 주소 하나'만 복사한다.
+   (여러 줄 공유 문구를 복사하면 브라우저 주소창에서 안 열린다는 지적을 반영) */
 function shareUrlFor(it){return SITE_URL+itemPath(it.id)}
-function shareTextFor(it){
-  const url=shareUrlFor(it);
-  const base=String(it.shareText||'').split('👉')[0].trim();
-  return (base||('🎨 '+it.title))+`\n\n👉 ${url}`;
-}
 let toastTimer=null;
 function toast(msg){
   let el=document.getElementById('toast');
@@ -1768,17 +1843,17 @@ function toast(msg){
 }
 async function shareItem(){
   if(!current)return;
-  const text=shareTextFor(current);
-  const done=()=>toast('공유 문구를 복사했어요 · '+shareUrlFor(current));
-  try{await navigator.clipboard.writeText(text);done()}
+  const url=shareUrlFor(current);
+  const done=()=>toast('링크를 복사했어요 · '+url);
+  try{await navigator.clipboard.writeText(url);done()}
   catch(e){
     /* 클립보드 권한이 없는 환경(구버전·비보안 컨텍스트)은 직접 선택 복사 */
     const ta=document.createElement('textarea');
-    ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:-1000px;opacity:0';
+    ta.value=url;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:-1000px;opacity:0';
     document.body.appendChild(ta);ta.select();
     let ok=false;try{ok=document.execCommand('copy')}catch(err){}
     ta.remove();
-    if(ok)done();else window.prompt('아래 내용을 복사하세요:',text);
+    if(ok)done();else window.prompt('아래 주소를 복사하세요:',url);
   }
 }
 
