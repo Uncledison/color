@@ -70,5 +70,22 @@ CLOUDINARY_CLOUD=<클라우드명> node pipeline/build.mjs   # Notion 없으면 
 # 빌드 결과 확인 (public/ 이 사이트 루트)
 python3 -m http.server 8080 --directory public   # → http://localhost:8080
 ```
+
+### 실제 도안으로 /p/ 상세 페이지 확인 (권장)
+Notion 키 없이 운영 중인 `data.json` 스냅숏으로 그대로 빌드할 수 있습니다.
+```bash
+curl -s https://color.uncledison.com/data.json -o /tmp/live.json
+SKIP_INDEXNOW=1 DATA_FILE=/tmp/live.json node pipeline/build.mjs
+python3 -m http.server 8080 --directory public   # → http://localhost:8080/p/winter-closet-swap
+```
+(python http.server는 확장자 없는 `/p/<id>` 주소를 못 찾으니 `.html`을 붙여 확인하거나,
+Cloudflare Pages 프리뷰 배포에서 확인하세요.)
+
+### /p/<id> 페이지 구조
+- `pipeline/page.mjs`의 `richPage()`가 만듭니다. 시리즈는 전 장 미리보기 + 장별 인쇄·저장,
+  단일 워크시트는 A4 한 장 크게 + 인쇄·다운로드·공유.
+- 인쇄·다운로드는 홈과 같은 5초 커피 후원 게이트를 거칩니다.
+- 홈에서 도안을 열면 주소창이 `/p/<id>`로 바뀌고, 옛 `/#<id>` 링크도 그대로 열립니다.
+- 테스트: `npm test` (`pipeline/page.test.mjs`가 위 동작과 하위 호환을 검사)
 - `data.sample.json`에는 3대분류 화면 확인용 샘플(미로찾기·점잇기·선잇기·칭찬스티커판·체크표)이 들어 있습니다.
 - 실제 Notion 데이터로 빌드하려면 `NOTION_TOKEN`, `NOTION_DB_ID` 를 넣고 실행하세요.

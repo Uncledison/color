@@ -2,6 +2,9 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<!-- 도안을 열면 주소창이 /p/<id> 로 바뀐다(검색·공유용 주소). 그래서 이 페이지 안의
+     상대 링크(href="#" 등)가 /p/<id># 로 풀리지 않도록 기준 주소를 루트로 고정한다. -->
+<base href="/">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="gafyxybm6dpWY1dRDbk02J00e05KAD5QRgg34khfozM" />
 <meta name="naver-site-verification" content="0eb43c68eef0cfcdf16c60344a319bd20a1a4673" />
@@ -783,6 +786,17 @@ footer{
 .coffee-qr-img{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
 .coffee-instruction{font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:600;color:var(--ink)}
 
+/* ── 공유 복사 토스트 (alert 대신) ── */
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);
+  z-index:1200;max-width:calc(100% - 32px);
+  background:rgba(61,43,31,.96);color:#fff;
+  font-family:'Noto Sans KR',sans-serif;font-size:13px;line-height:1.5;
+  padding:11px 20px;border-radius:100px;text-align:center;
+  opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
 /* ── MISC ── */
 .divider{height:1px;background:var(--border-2);margin:0}
 
@@ -1461,6 +1475,8 @@ const MAIN_SUB={
 };
 let DATA=[], byId={}, current=null, currentPage=0;
 let TAB='색칠도안', SUB='전체', AUD='전체';
+/* 공유·모달 주소에 쓰는 정식 사이트 주소(data.json의 site, 없으면 현재 도메인) */
+let SITE_URL=location.origin;
 
 /* data.json에 대분류가 비어 있어도(구버전 캐시 등) 화면이 비지 않도록 같은 규칙으로 한 번 더 보정 */
 const catKey=s=>String(s||'').toLowerCase().replace(/[\s·・.．\-_/()]/g,'');
@@ -1496,7 +1512,9 @@ function prepareData(items){
 async function loadCatalog(){
   try{
     const res=await fetch('/data.json',{cache:'no-store'});
-    DATA=prepareData((await res.json()).items);
+    const payload=await res.json();
+    if(payload&&payload.site)SITE_URL=String(payload.site).replace(/\/$/,'');
+    DATA=prepareData(payload.items);
   }catch(e){DATA=[]}
   byId=Object.fromEntries(DATA.map(it=>[it.id,it]));
   const h=decodeURIComponent(location.hash.slice(1));
@@ -1685,6 +1703,12 @@ function updateModal(){
   document.getElementById('dlTitle').textContent=current.type==='series'?('📄 '+(currentPage+1)+'번 도안 다운로드'):'📄 도안 다운로드';
   document.querySelectorAll('.pdot').forEach((d,i)=>{d.className='pdot'+(i<currentPage?' done':i===currentPage?' active':'')});
 }
+/* ── 모달 주소: 도안을 열면 /p/<id> 로 (옛 /#<id> 링크는 그대로 열린다) ── */
+function itemPath(id){return '/p/'+encodeURIComponent(id)}
+function setModalUrl(id){
+  if(!history.replaceState)return;
+  try{history.replaceState(null, '', id?itemPath(id):'/')}catch(e){}
+}
 function openModal(id,page){
   current=byId[id]||DATA[0];
   if(!current)return;
@@ -1700,9 +1724,9 @@ function openModal(id,page){
   if(modalAdIns&&modalAdIns.getAttribute('data-adsbygoogle-status')!=='done'){
     try{(adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}
   }
-  if(history.replaceState)history.replaceState(null,'','#'+current.id);
+  setModalUrl(current.id);
 }
-function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';if(history.replaceState)history.replaceState(null,'',location.pathname)}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';setModalUrl(null)}
 function changePage(d){if(!current)return;const n=current.pages.length;currentPage=Math.max(0,Math.min(n-1,currentPage+d));updateModal()}
 
 /* ── A4 인쇄: 숨은 iframe에 인쇄 전용 문서를 써서 바로 인쇄 대화상자를 띄운다 ── */
@@ -1726,12 +1750,36 @@ function printCurrent(){
   openInter();
 }
 
-/* ── 공유 (PC: 클립보드 복사) ── */
+/* ── 공유 ──
+   공유 문구는 언제나 정식 주소(/p/<id>)를 쓴다 — 옛 /#<id> 주소를 복사해 보내지 않도록.
+   (data.json의 shareText 마지막 링크 줄을 정식 주소로 바꿔 끼운다) */
+function shareUrlFor(it){return SITE_URL+itemPath(it.id)}
+function shareTextFor(it){
+  const url=shareUrlFor(it);
+  const base=String(it.shareText||'').split('👉')[0].trim();
+  return (base||('🎨 '+it.title))+`\n\n👉 ${url}`;
+}
+let toastTimer=null;
+function toast(msg){
+  let el=document.getElementById('toast');
+  if(!el){el=document.createElement('div');el.id='toast';el.className='toast';document.body.appendChild(el)}
+  el.textContent=msg;el.classList.add('on');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('on'),2800);
+}
 async function shareItem(){
   if(!current)return;
-  try{await navigator.clipboard.writeText(current.shareText);
-    alert('✅ 공유 문구가 복사됐어요!\n네이버 카페·블로그 글쓰기에 붙여넣으면 썸네일 카드가 자동으로 펼쳐집니다.');
-  }catch(e){window.prompt('아래 내용을 복사하세요:',current.shareText)}
+  const text=shareTextFor(current);
+  const done=()=>toast('공유 문구를 복사했어요 · '+shareUrlFor(current));
+  try{await navigator.clipboard.writeText(text);done()}
+  catch(e){
+    /* 클립보드 권한이 없는 환경(구버전·비보안 컨텍스트)은 직접 선택 복사 */
+    const ta=document.createElement('textarea');
+    ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;top:-1000px;opacity:0';
+    document.body.appendChild(ta);ta.select();
+    let ok=false;try{ok=document.execCommand('copy')}catch(err){}
+    ta.remove();
+    if(ok)done();else window.prompt('아래 내용을 복사하세요:',text);
+  }
 }
 
 /* ── 커피 후원 문구 (셔플백: 20개 소진 전까지 절대 안 겹침) ── */
