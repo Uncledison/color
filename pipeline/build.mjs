@@ -18,7 +18,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as CL from './cloudinary.mjs';
 import { MAIN, MAIN_COPY, buildShareText, categoryLabel, normalizeItem } from './categories.mjs';
-import { buildSeo, jsonLdScript } from './seo.mjs';
+import { buildSeo } from './seo.mjs';
+import { richPage, relatedFor, esc } from './page.mjs';
 import { INDEXNOW_KEY, keyFileName, pingIndexNow, shouldPingIndexNow } from './indexnow.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -29,6 +30,13 @@ const CLOUD = process.env.CLOUDINARY_CLOUD || 'dhfobwnfc';
 const SITE = (process.env.SITE_URL || 'https://color.uncledison.com').replace(/\/$/, '');
 
 async function loadItems() {
+  // DATA_FILE=data.json 처럼 이미 만들어진 data.json 스냅숏으로 로컬 미리보기
+  // (Notion 비밀키 없이 실제 도안·이미지로 /p/<id> 페이지를 확인할 때)
+  if (process.env.DATA_FILE) {
+    const raw = await fs.readFile(path.resolve(process.env.DATA_FILE), 'utf8');
+    console.log(`[build] DATA_FILE=${process.env.DATA_FILE} 사용`);
+    return JSON.parse(raw).items.map(normalizeItem);
+  }
   if (process.env.NOTION_TOKEN && process.env.NOTION_DB_ID) {
     const { fetchPublishedItems } = await import('./notion.mjs');
     return fetchPublishedItems();
@@ -68,6 +76,8 @@ function enrich(it) {
         ...pg,
         publicId,
         preview: CL.preview(publicId, { cloud: CLOUD }),
+        // /p/<id> 그리드용 작은 미리보기 — 8~10장을 한 화면에 늘어놓아도 모바일 데이터를 아낀다
+        small: CL.preview(publicId, { cloud: CLOUD, w: 560 }),
         print: CL.printable(publicId, { cloud: CLOUD, watermark }),
         social: CL.socialShare(publicId, { cloud: CLOUD, watermark }),
         download: CL.download(publicId, {
@@ -79,10 +89,6 @@ function enrich(it) {
     }),
     shareText: buildShareText(it, SITE),
   };
-}
-
-function esc(s = '') {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 // 네이버 블로그/카페 붙여넣기용 정적 페이지. 본문 영역을 드래그+복사하면
@@ -147,241 +153,6 @@ function promoCopyPage(it, { text, label }) {
 
 const blogPage = (it) => promoCopyPage(it, { text: it.blogText, label: '블로그' });
 const cafePage = (it) => promoCopyPage(it, { text: it.cafeText, label: '카페' });
-
-// 인쇄 버튼: 현재 창에서 iframe 으로 인쇄 전용 문서를 띄운다(팝업 차단 없음).
-// 인쇄 버튼 → 5초 커피 후원 인터스티셜 → 실제 인쇄(단일 워크시트 페이지용)
-const GATE_JS = (printUrl) => `
-var PRINT_URL=${JSON.stringify(printUrl)};
-var cdTimer=null;
-function openInter(){
-  var el=document.getElementById('inter');
-  el.classList.add('open');
-  document.body.style.overflow='hidden';
-  var skip=document.getElementById('skipBtn'),lbl=document.getElementById('cdLabel');
-  skip.classList.remove('ready');
-  var fill=document.getElementById('cdFill');
-  fill.style.animation='none';fill.offsetHeight;
-  fill.style.animation='cdFill 5s linear forwards';
-  clearInterval(cdTimer);var s=5;
-  lbl.textContent=s+'초 후 인쇄 가능...';
-  cdTimer=setInterval(function(){
-    s--;
-    if(s<=0){clearInterval(cdTimer);lbl.textContent='인쇄 준비 완료! ✓';skip.classList.add('ready')}
-    else{lbl.textContent=s+'초 후 인쇄 가능...'}
-  },1000);
-}
-function closeInter(){
-  document.getElementById('inter').classList.remove('open');
-  clearInterval(cdTimer);
-  document.body.style.overflow='';
-}
-function execPrint(){
-  document.getElementById('inter').classList.remove('open');
-  clearInterval(cdTimer);
-  document.body.style.overflow='';
-  printSheet(PRINT_URL);
-}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeInter()});
-`;
-
-const PRINT_JS = `
-function printSheet(src){
-  var f=document.getElementById('printFrame');
-  if(!f){f=document.createElement('iframe');f.id='printFrame';f.setAttribute('aria-hidden','true');
-    f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0';document.body.appendChild(f);}
-  var d=f.contentWindow.document;
-  d.open();
-  d.write('<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page{size:A4 portrait;margin:0}html,body{margin:0;padding:0}img{display:block;width:210mm;height:auto}</style></head><body><img src="'+src+'" onload="setTimeout(function(){window.focus();window.print()},200)"></body></html>');
-  d.close();
-}
-`;
-
-// 같은 대분류의 다른 도안 링크 — 검색봇이 모든 /p/ 페이지를 찾아가는 내부 링크가 된다.
-function relatedHtml(list, copy) {
-  if (!list.length) return '';
-  const links = list
-    .map((r) => `<a class="rel-link" href="/p/${esc(r.id)}">${esc(r.title)}</a>`)
-    .join('');
-  return `<section class="related">
-    <h2>${esc(copy.noun)} 더 보기</h2>
-    <div class="rel-list">${links}</div>
-  </section>`;
-}
-
-// 같은 카테고리를 앞에, 그다음 같은 대분류 순으로 최대 limit개
-function relatedFor(it, items, limit = 6) {
-  const same = (o) => (o.category || '') === (it.category || '');
-  const pool = items.filter((o) => o.id !== it.id && o.mainCategory === it.mainCategory);
-  return [...pool.filter(same), ...pool.filter((o) => !same(o))].slice(0, limit);
-}
-
-// 크롤러가 읽는 정적 OG 페이지 + 사람에겐 도안으로 진입시키는 가벼운 랜딩.
-// '단일' 워크시트(미로찾기·선잇기·점잇기·칭찬스티커판 등)는 A4 한 장을 크게 보여주고
-// 인쇄/다운로드 버튼을 바로 누를 수 있게 만든다.
-function ogPage(it, { seo, related = [] } = {}) {
-  const copy = copyOf(it);
-  const s = seo || buildSeo(it, { site: SITE });
-  const kicker = categoryLabel(it) || copy.ogLabel;
-  const first = it.pages[0] || {};
-  const rel = relatedHtml(related, copy);
-  const ld = `<script type="application/ld+json">${jsonLdScript(s.jsonLd)}</script>`;
-
-  if (it.type === 'single') {
-    const printUrl = first.print || first.preview || '';
-    return `<!DOCTYPE html><html lang="ko"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(s.title)}</title>
-<meta name="description" content="${esc(s.description)}">
-<meta name="robots" content="index,follow,max-image-preview:large">
-<meta property="og:type" content="article">
-<meta property="og:title" content="${esc(s.ogTitle)}">
-<meta property="og:description" content="${esc(s.ogDescription)}">
-<meta property="og:image" content="${esc(it.og)}">
-<meta property="og:image:alt" content="${esc(s.alt)}">
-<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:url" content="${esc(it.url)}">
-<meta property="og:site_name" content="color.uncle">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(s.ogTitle)}">
-<meta name="twitter:description" content="${esc(s.description)}">
-<meta name="twitter:image:alt" content="${esc(s.alt)}">
-<link rel="canonical" href="${esc(it.url)}">
-${ld}
-<style>
-  :root{--ink:#3d2b1f;--ink-3:#8a7860;--coral:#f2a72e;--warm:#fff7e6;--border:rgba(61,43,31,.12)}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:#faf7f3;color:var(--ink);text-align:center}
-  .wrap{max-width:640px;margin:0 auto;padding:28px 18px 56px}
-  .kicker{font-size:12px;font-weight:700;letter-spacing:.06em;color:#c8442a;margin-bottom:6px}
-  h1{font-size:22px;font-weight:700;margin:0 0 16px;line-height:1.35}
-  /* A4 한 장 비율(210:297) 그대로 크게 */
-  .a4{aspect-ratio:210/297;width:100%;max-width:520px;margin:0 auto;background:#fff;border:1px solid var(--border);
-      border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.12);overflow:hidden;display:flex;align-items:center;justify-content:center}
-  .a4 img{width:100%;height:100%;object-fit:contain;display:block}
-  .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0 10px}
-  .btn{height:52px;padding:0 26px;border-radius:100px;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:7px;
-       text-decoration:none;border:none;cursor:pointer;font-family:inherit}
-  .btn-print{background:var(--coral);color:#fff}
-  .btn-dl{background:var(--ink);color:#fff}
-  .btn:active{transform:translateY(1px)}
-  .hint{font-size:12.5px;color:var(--ink-3);margin:0 0 22px;line-height:1.6}
-  .to-site{display:inline-block;font-size:14px;font-weight:600;color:#c8442a;text-decoration:underline;padding:8px}
-  /* ── 인쇄 전 커피 후원 인터스티셜 (다운로드와 같은 5초 게이트) ── */
-  .inter{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:800;align-items:center;justify-content:center;padding:20px}
-  .inter.open{display:flex}
-  .inter-box{position:relative;background:#fff;border-radius:20px;padding:24px;max-width:400px;width:100%;text-align:center;
-             box-shadow:0 20px 60px rgba(0,0,0,.3);animation:fadeUp .35s cubic-bezier(.34,1.56,.64,1)}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  .inter-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:none;background:#fff3e0;
-               color:#8a7860;font-size:15px;cursor:pointer;line-height:1;font-family:inherit}
-  .inter-h{font-size:13px;color:#8a7860;margin-bottom:14px}
-  .inter-coffee{display:block;text-decoration:none;color:inherit;margin-bottom:16px}
-  .coffee-header{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:10px}
-  .coffee-cup-icon{width:38px;height:38px;object-fit:contain}
-  .coffee-title{font-size:15px;font-weight:700;color:#e8734f}
-  .coffee-msg{font-size:13px;color:#6b5c4d;margin-bottom:10px}
-  .coffee-qr-wrap{width:100%;max-width:190px;margin:0 auto 8px}
-  .coffee-qr-img{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
-  .coffee-instruction{font-size:14px;font-weight:600;color:#3d2b1f}
-  .countdown-track{width:100%;height:5px;background:#f3e6d6;border-radius:3px;overflow:hidden;margin-bottom:5px}
-  .countdown-fill{height:100%;background:#e8734f;border-radius:3px;animation:cdFill 5s linear forwards}
-  @keyframes cdFill{from{width:100%}to{width:0%}}
-  .countdown-label{font-size:12px;color:#8a7860;margin-bottom:14px}
-  .btn-skip{width:100%;height:48px;border:none;border-radius:100px;background:#c8442a;color:#fff;font-size:15px;font-weight:700;
-            font-family:inherit;opacity:.45;pointer-events:none;transition:opacity .3s}
-  .btn-skip.ready{opacity:1;pointer-events:auto}
-  /* 이 페이지에서 바로 Ctrl+P 해도 A4 그림만 깔끔하게 나오도록 */
-  /* ── 같은 분류의 다른 도안(내부 링크) ── */
-  .related{margin:34px auto 0;padding-top:22px;border-top:1px solid var(--border);text-align:left}
-  .related h2{font-size:15px;font-weight:700;margin:0 0 10px;color:var(--ink)}
-  .rel-list{display:flex;flex-wrap:wrap;gap:8px}
-  .rel-link{display:inline-block;padding:7px 12px;border-radius:100px;background:#fff;border:1px solid var(--border);
-            color:#5c4a38;font-size:13px;text-decoration:none}
-  .rel-link:hover{border-color:#c8442a;color:#c8442a}
-  @media print{
-    .kicker,h1,.acts,.hint,.to-site,.inter,.related{display:none!important}
-    body{background:#fff}
-    .wrap{padding:0;max-width:none}
-    .a4{max-width:none;width:100%;border:none;border-radius:0;box-shadow:none}
-  }
-</style>
-</head><body>
-<div class="wrap">
-  <div class="kicker">${esc(kicker)}</div>
-  <h1>${esc(it.title)}</h1>
-  <div class="a4"><img src="${esc(first.preview || it.thumb)}" alt="${esc(s.alt)}"></div>
-  <div class="acts">
-    <button class="btn btn-print" onclick="openInter()">🖨 A4로 인쇄</button>
-    <a class="btn btn-dl" href="${esc(first.download || '#')}" rel="noopener">⬇ 다운로드</a>
-  </div>
-  <p class="hint">인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다.</p>
-  <p class="hint">${esc(s.description)}</p>
-  <a class="to-site" href="/#${esc(it.id)}">사이트에서 크게 보기 →</a>
-  ${rel}
-
-  <!-- 인쇄 전 커피 후원 안내(5초) — 다운로드 버튼과 같은 흐름 -->
-  <div class="inter" id="inter">
-    <div class="inter-box">
-      <button class="inter-close" onclick="closeInter()" aria-label="닫기">✕</button>
-      <div class="inter-h">A4 인쇄 준비 중... 😊</div>
-      <a class="inter-coffee" href="https://qr.kakaopay.com/FX9MSRl4N9c402668" target="_blank" rel="noopener">
-        <div class="coffee-header">
-          <img class="coffee-cup-icon" src="/coffee-cup.png" alt="">
-          <div class="coffee-title">커피 한 잔 보내기</div>
-        </div>
-        <div class="coffee-msg">무료로 프린트해가주셔서 감사해요 ☕</div>
-        <div class="coffee-qr-wrap">
-          <img class="coffee-qr-img" src="/coffee-qr.png" alt="커피 후원 QR - 눌러서 카카오페이로 이동">
-        </div>
-        <div class="coffee-instruction">QR찍거나 눌러서 후원하기</div>
-      </a>
-      <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
-      <div class="countdown-label" id="cdLabel">5초 후 인쇄 가능...</div>
-      <button class="btn-skip" id="skipBtn" onclick="execPrint()">✓ 인쇄 시작</button>
-    </div>
-  </div>
-</div>
-<script>${PRINT_JS}${GATE_JS(printUrl)}</script>
-</body></html>`;
-  }
-
-  return `<!DOCTYPE html><html lang="ko"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(s.title)}</title>
-<meta name="description" content="${esc(s.description)}">
-<meta name="robots" content="index,follow,max-image-preview:large">
-<meta property="og:type" content="article">
-<meta property="og:title" content="${esc(s.ogTitle)}">
-<meta property="og:description" content="${esc(s.ogDescription)}">
-<meta property="og:image" content="${esc(it.og)}">
-<meta property="og:image:alt" content="${esc(s.alt)}">
-<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:url" content="${esc(it.url)}">
-<meta property="og:site_name" content="color.uncle">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(s.ogTitle)}">
-<meta name="twitter:description" content="${esc(s.description)}">
-<meta name="twitter:image:alt" content="${esc(s.alt)}">
-<link rel="canonical" href="${esc(it.url)}">
-${ld}
-<style>
-  .related{max-width:560px;margin:34px auto 0;padding:22px 20px 0;border-top:1px solid rgba(61,43,31,.12);text-align:left}
-  .related h2{font-size:15px;font-weight:700;margin:0 0 10px;color:#3d2b1f}
-  .rel-list{display:flex;flex-wrap:wrap;gap:8px}
-  .rel-link{display:inline-block;padding:7px 12px;border-radius:100px;background:#fff;border:1px solid rgba(61,43,31,.12);
-            color:#5c4a38;font-size:13px;text-decoration:none}
-  .rel-link:hover{border-color:#c8442a;color:#c8442a}
-</style>
-</head><body style="margin:0;font-family:'Noto Sans KR',sans-serif;background:#faf7f3;text-align:center">
-<div style="max-width:560px;margin:0 auto;padding:40px 20px">
-  <img src="${esc(it.thumb)}" alt="${esc(s.alt)}" style="max-width:320px;width:100%;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.12)">
-  <h1 style="font-size:22px;margin:24px 0 8px">${esc(it.title)}</h1>
-  <p style="color:#7a7269;margin:0 0 24px">${esc(s.description)}</p>
-  <a href="/#${esc(it.id)}" style="display:inline-block;background:#c8442a;color:#fff;padding:14px 28px;border-radius:8px;font-weight:600;text-decoration:none">${esc(copy.noun)} 보러가기 →</a>
-</div>
-${rel}
-</body></html>`;
-}
 
 // 검색엔진 등록·크롤링용 sitemap.xml / robots.txt
 function sitemapXml(items) {
@@ -492,7 +263,7 @@ async function main() {
   await fs.mkdir(path.join(OUT, 'cafe'), { recursive: true });
   for (const it of items) {
     const seo = buildSeo(it, { site: SITE });
-    await fs.writeFile(path.join(OUT, 'p', `${it.id}.html`), ogPage(it, { seo, related: relatedFor(it, items) }));
+    await fs.writeFile(path.join(OUT, 'p', `${it.id}.html`), richPage(it, { seo, related: relatedFor(it, items), site: SITE }));
     await fs.writeFile(path.join(OUT, 'blog', `${it.id}.html`), blogPage(it));
     await fs.writeFile(path.join(OUT, 'cafe', `${it.id}.html`), cafePage(it));
   }
