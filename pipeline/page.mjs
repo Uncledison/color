@@ -6,7 +6,7 @@
 //   그 자리에서 미리보기 · 인쇄 · 다운로드 · 공유 복사를 할 수 있어야 한다.
 //   (예전엔 썸네일 1장 + '/#id' 보러가기 버튼뿐이라, 들어온 사람이 다시 홈으로 가야 했다.)
 // - SEO 메타(<title>·description·og:*·canonical·JSON-LD)와 내부 링크는 기존 것을 그대로 쓰거나 넓힌다.
-// - 인쇄·다운로드는 홈과 같은 '5초 커피 후원' 게이트를 거친다(운영 정책 유지). 게이트 없이
+// - 인쇄·다운로드는 홈과 같은 '3초 커피 후원' 게이트를 거친다(운영 정책 유지). 게이트 없이
 //   여러 장을 한 번에 인쇄하거나, 크게 보기로 고화질 원본을 띄우는 길은 두지 않는다.
 // - 미리보기는 <canvas> 에 저해상 썸네일만 그린다. DOM 에 도안 <img src> 가 없어야
 //   브라우저 일괄 다운로드 확장이 도안을 긁어갈 수 없다(고화질 주소는 게이트 뒤에만 풀림).
@@ -60,7 +60,7 @@ function difficultyDots(n) {
  *
  * 미리보기는 <img> 대신 <canvas>로 그린다. DOM에 도안 이미지 주소가 <img src>로 남으면
  * 크롬 일괄 다운로드 확장이 그 주소를 전부 긁어가기 때문이다. 캔버스는 저해상 썸네일(w_560)을
- * 받아 화면에만 그리고, 인쇄·저장용 고화질 주소는 게이트(5초) 뒤에만 풀린다.
+ * 받아 화면에만 그리고, 인쇄·저장용 고화질 주소는 게이트(3초) 뒤에만 풀린다.
  * 위에는 투명 shield를 덮어 우클릭·길게 누르기가 이미지에 닿지 않게 한다. */
 function sheetHtml(it, pg, index) {
   const label = `${it.title} ${pg.n}번째 장`;
@@ -170,7 +170,7 @@ const STYLE = `
          opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease;text-align:center}
   .toast.on{opacity:1;transform:translate(-50%,0)}
 
-  /* ── 인쇄 전 커피 후원 인터스티셜 (다운로드와 같은 5초 게이트) ── */
+  /* ── 인쇄 전 커피 후원 인터스티셜 (다운로드와 같은 3초 게이트) ── */
   .inter{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:800;align-items:center;justify-content:center;padding:20px}
   .inter.open{display:flex}
   .inter-box{position:relative;background:#fff;border-radius:20px;padding:24px;max-width:400px;width:100%;text-align:center;
@@ -188,7 +188,7 @@ const STYLE = `
   .coffee-qr-img{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
   .coffee-instruction{font-size:14px;font-weight:600;color:#3d2b1f}
   .countdown-track{width:100%;height:5px;background:#f3e6d6;border-radius:3px;overflow:hidden;margin-bottom:5px}
-  .countdown-fill{height:100%;background:#e8734f;border-radius:3px;animation:cdFill 5s linear forwards}
+  .countdown-fill{height:100%;background:#e8734f;border-radius:3px;animation:cdFill 3s linear forwards}
   @keyframes cdFill{from{width:100%}to{width:0%}}
   .countdown-label{font-size:12px;color:#8a7860;margin-bottom:14px}
   .btn-skip{width:100%;height:48px;border:none;border-radius:100px;background:#c8442a;color:#fff;font-size:15px;font-weight:700;
@@ -201,7 +201,7 @@ const STYLE = `
     .grid.solo{grid-template-columns:1fr}
   }
 
-  /* Ctrl+P 로는 아무것도 인쇄되지 않는다 — 도안은 장마다 [인쇄] 버튼(5초 게이트)으로만 나간다.
+  /* Ctrl+P 로는 아무것도 인쇄되지 않는다 — 도안은 장마다 [인쇄] 버튼(3초 게이트)으로만 나간다.
      (게이트를 거친 인쇄는 숨은 iframe 문서 안에서 이뤄지므로 이 규칙과 무관하다) */
   .print-only{display:none}
   @media print{
@@ -224,7 +224,7 @@ function toast(msg){
   clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('on')},2800);
 }
 
-/* ── 커피 후원 게이트(5초) → 실제 인쇄/저장 ── */
+/* ── 커피 후원 게이트(3초) → 실제 인쇄/저장 ── */
 var gateTimer=null,gateRun=null;
 function openGate(kind,run){
   gateRun=run;
@@ -233,8 +233,8 @@ function openGate(kind,run){
   el.classList.add('open');document.body.style.overflow='hidden';
   skip.classList.remove('ready');skip.textContent='✓ '+kind+' 시작';
   fill.style.animation='none';fill.offsetHeight;
-  fill.style.animation='cdFill 5s linear forwards';
-  clearInterval(gateTimer);var s=5;
+  fill.style.animation='cdFill 3s linear forwards';
+  clearInterval(gateTimer);var s=3;
   lbl.textContent=s+'초 후 '+kind+' 가능...';
   gateTimer=setInterval(function(){
     s--;
@@ -410,7 +410,7 @@ export function richPage(it, { seo, related = [], site } = {}) {
         <button class="btn btn-ghost half" type="button" onclick="copyShare()">🔗 링크 복사</button>`;
 
   const actsNote = series
-    ? '장마다 <b>인쇄 · 저장</b> 버튼으로 <b>한 장씩</b> 인쇄·저장해 주세요. (버튼을 누르면 5초 후원 안내가 먼저 나옵니다)'
+    ? '장마다 <b>인쇄 · 저장</b> 버튼으로 <b>한 장씩</b> 인쇄·저장해 주세요. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
     : '인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다. 저장은 고화질 PNG 한 장으로 내려받아요.';
 
   const gallery = series
@@ -502,7 +502,7 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
   <p>각 도안 카드의 <b>인쇄</b> 버튼을 누르면 그 장만 A4로 인쇄됩니다.</p>
 </div>
 
-<!-- 인쇄·저장 전 커피 후원 안내(5초) -->
+<!-- 인쇄·저장 전 커피 후원 안내(3초) -->
 <div class="inter" id="inter">
   <div class="inter-box">
     <button class="inter-close" type="button" onclick="closeGate()" aria-label="닫기">✕</button>
@@ -519,7 +519,7 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
       <div class="coffee-instruction">QR찍거나 눌러서 후원하기</div>
     </a>
     <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
-    <div class="countdown-label" id="cdLabel">5초 후 인쇄 가능...</div>
+    <div class="countdown-label" id="cdLabel">3초 후 인쇄 가능...</div>
     <button class="btn-skip" type="button" id="skipBtn" onclick="execGate()">✓ 인쇄 시작</button>
   </div>
 </div>

@@ -4,7 +4,7 @@
 // 1) 검색·SNS로 바로 들어온 사람이 /p/<id> 에서 미리보기·인쇄·저장·링크 복사를 다 할 수 있다.
 // 2) SEO 메타(<title>·description·og:*·canonical·JSON-LD)와 내부 링크가 그대로 남는다.
 // 3) 옛 /#<id> 링크는 홈에서 계속 열리고, 주소창만 /p/<id> 로 바뀐다.
-// 4) 5초 게이트를 건너뛰는 길(전체 인쇄·화질 높은 확대 보기·DOM 속 고화질 <img>)이 없다.
+// 4) 3초 게이트를 건너뛰는 길(전체 인쇄·화질 높은 확대 보기·DOM 속 고화질 <img>)이 없다.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -128,11 +128,13 @@ test('/p: 링크 복사는 정식 /p/ 주소 하나만 복사한다', () => {
   assert.ok(!/#winter-closet-swap/.test(html), '옛 /#주소가 남으면 안 된다');
 });
 
-test('/p: 인쇄·저장은 홈과 같은 5초 커피 게이트를 거친다', () => {
+test('/p: 인쇄·저장은 홈과 같은 3초 커피 게이트를 거친다', () => {
   const html = render(makeItem());
   assert.match(html, /function openGate\(/);
   assert.match(html, /id="skipBtn"/);
-  assert.match(html, /cdFill 5s linear forwards/);
+  assert.match(html, /cdFill 3s linear forwards/);
+  assert.ok(!/cdFill 5s/.test(html), '5초 게이트가 남아 있으면 안 된다');
+  assert.match(html, /var s=3;/);
   assert.match(html, /qr\.kakaopay\.com/);
   // 게이트를 거치지 않는 직접 다운로드 링크가 남아 있으면 정책이 뚫린다
   assert.equal((html.match(/class="btn[^"]*"[^>]*href="https:\/\/res\.cloudinary\.com/g) || []).length, 0);

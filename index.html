@@ -780,7 +780,7 @@ footer{
 .inter-close:hover{background:var(--warm-2);color:var(--ink)}
 .inter-h{font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;color:var(--ink-3);margin-bottom:14px}
 .countdown-track{width:100%;height:5px;background:var(--warm-2);border-radius:3px;overflow:hidden;margin-bottom:5px}
-.countdown-fill{height:100%;background:var(--coral);border-radius:3px;animation:cdFill 5s linear forwards}
+.countdown-fill{height:100%;background:var(--coral);border-radius:3px;animation:cdFill 3s linear forwards}
 @keyframes cdFill{from{width:100%}to{width:0%}}
 .countdown-label{font-size:12px;color:var(--ink-3);margin-bottom:14px}
 .btn-skip{
@@ -1449,7 +1449,7 @@ svg.coloring .no-fill{fill:none}
     </a>
 
     <div class="countdown-track"><div class="countdown-fill" id="cdFill"></div></div>
-    <div class="countdown-label" id="cdLabel">5초 후 다운로드 가능...</div>
+    <div class="countdown-label" id="cdLabel">3초 후 다운로드 가능...</div>
     <button class="btn-skip" id="skipBtn" onclick="execDownload()">✓ 다운로드 시작</button>
   </div>
 </div>
@@ -1895,7 +1895,7 @@ function nextCoffeeMsg(){
   return msg;
 }
 
-/* ── 후원 인터스티셜(5초) → 실제 다운로드/인쇄 ──
+/* ── 후원 인터스티셜(3초) → 실제 다운로드/인쇄 ──
    다운로드와 인쇄가 같은 창을 거친다. pendingAction.kind 로 문구만 바뀐다. */
 let cdTimer=null,pendingAction=null;
 function openInter(){
@@ -1913,9 +1913,9 @@ function openInter(){
   skip.textContent='✓ '+pendingAction.kind+' 시작';
   const fill=document.getElementById('cdFill');
   fill.style.animation='none';fill.offsetHeight;
-  fill.style.animation='cdFill 5s linear forwards';
+  fill.style.animation='cdFill 3s linear forwards';
   const kind=pendingAction.kind;
-  clearInterval(cdTimer);let s=5;
+  clearInterval(cdTimer);let s=3;
   lbl.textContent=s+'초 후 '+kind+' 가능...';
   cdTimer=setInterval(()=>{s--;if(s<=0){clearInterval(cdTimer);lbl.textContent=kind+' 준비 완료! ✓';skip.classList.add('ready')}else lbl.textContent=s+'초 후 '+kind+' 가능...'},1000);
 }
