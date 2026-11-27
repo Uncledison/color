@@ -119,8 +119,9 @@ export function buildSeoDescription(it) {
   }
 
   if (main === MAIN.CARD) {
-    const tail =
-      '카드·카드 봉투·편지지·편지 봉투를 A4 4장으로 바로 인쇄해 접고 붙이면 완성되는 무료 세트예요.';
+    const tail = it.type === 'single'
+      ? '실선을 따라 오리고 붉은 점선을 뒤로 접으면 앞면·뒷면이 바뀌는 무료 뒤집기 카드예요.'
+      : '카드·카드 봉투·편지지·편지 봉투를 A4 4장으로 바로 인쇄해 접고 붙이면 완성되는 무료 세트예요.';
     return composeDescription(it.desc, tail);
   }
 
@@ -176,14 +177,15 @@ export function buildSeoKeywords(it) {
   }
 
   if (main === MAIN.CARD) {
+    const flip = it.type === 'single';
     return unique([
       ...base,
       '크리스마스 카드 도안',
       '크리스마스 카드 만들기',
-      '크리스마스 편지지',
-      '편지지 도안',
-      '카드 봉투 도안',
-      '편지 봉투 도안',
+      flip ? '뒤집기 카드' : '크리스마스 편지지',
+      flip ? '카드 도안' : '편지지 도안',
+      flip ? '' : '카드 봉투 도안',
+      flip ? '' : '편지 봉투 도안',
       'A4 프린트',
       '무료 카드 도안',
       ...tags,

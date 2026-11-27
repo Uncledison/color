@@ -1576,7 +1576,7 @@ const MAIN_SUB={
   '색칠도안':'전래동화 · 전통 · 계절 · 자연 — 한 장부터 8~10장 시리즈까지',
   '두뇌놀이':'미로찾기 · 선잇기 · 점잇기 — 유아용부터 어르신 인지용까지',
   '스티커판':'칭찬스티커판 · 체크표 — 프린트해서 붙이는 칭찬·습관 스티커판',
-  '카드·편지지':'크리스마스 카드 · 봉투 · 편지지 — A4 4장을 접고 붙이면 완성'
+  '카드·편지지':'크리스마스 카드 · 봉투 · 편지지 · 뒤집기 카드 — A4로 인쇄해 접고 붙이면 완성'
 };
 let DATA=[], byId={}, current=null, currentPage=0;
 let TAB='색칠도안', SUB='전체', AUD='전체';
@@ -1683,7 +1683,7 @@ function selectMain(main){
 function goHome(){window.scrollTo({top:0,behavior:'smooth'});return false}
 
 function cardHTML(it){
-  const pages=it.type==='series'?('📄 '+it.pageCount+'장 세트'):'📄 1장';
+  const pages=it.mainCategory==='카드·편지지'&&it.type!=='series'?'📄 A4 1장':(it.type==='series'?('📄 '+it.pageCount+'장 세트'):'📄 1장');
   const kind=it.categoryLabel||it.category||'';
   const card=it.mainCategory==='카드·편지지';
   /* 카드·편지지 세트는 카드 실물 비율(가로) 캔버스로 보여준다 */
@@ -1856,10 +1856,10 @@ function updateModal(){
   }
   const cardSet=current.mainCategory==='카드·편지지';
   document.getElementById('dlTitle').textContent=cardSet
-    ?('📄 A4 PDF '+current.pages.length+'장 세트 다운로드')
+    ?(current.pages.length>1?('📄 A4 PDF '+current.pages.length+'장 세트 다운로드'):'📄 A4 PDF 1장 다운로드')
     :current.type==='series'?('📄 '+(currentPage+1)+'번 도안 다운로드'):'📄 도안 다운로드';
   const dlBtn=document.getElementById('dlBtn');
-  if(dlBtn)dlBtn.textContent=cardSet?'⬇ PDF '+current.pages.length+'장 받기':'⬇ 다운로드';
+  if(dlBtn)dlBtn.textContent=cardSet?(current.pages.length>1?'⬇ PDF '+current.pages.length+'장 받기':'⬇ A4 PDF 받기'):'⬇ 다운로드';
   document.querySelectorAll('.pdot').forEach((d,i)=>{d.className='pdot'+(i<currentPage?' done':i===currentPage?' active':'')});
   buildPageStrip();
 }

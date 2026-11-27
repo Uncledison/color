@@ -194,6 +194,13 @@ function promoCopyPage(it, { text, label }) {
 // 카드·편지지처럼 노션 글감(blogText/cafeText)이 없는 항목은 소개문으로 본문을 채운다.
 function promoFallbackText(it) {
   if (!it.cardSet) return '';
+  const n = (it.pages || []).length;
+  if (n < 2) {
+    return [
+      it.desc,
+      `A4 한 장에 앞면 MERRY CHRISTMAS · 뒷면 HAPPY NEW YEAR가 함께 들어 있어요. 실선을 따라 오린 뒤 가운데 붉은 점선을 뒤로 접어 위쪽 원을 넘기면 앞·뒷면이 바뀌고, 완성 지름은 ${it.sizes || '116mm'} 입니다.`,
+    ].join('\n\n');
+  }
   const pages = (it.pages || []).map((pg) => `${pg.n}. ${pg.name}`).join(' · ');
   return [
     it.desc,

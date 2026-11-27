@@ -24,24 +24,39 @@ const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'cards.json'), '
 const raw = DATA.items;
 const ids = raw.map((it) => it.id);
 
-test('카드·편지지 정적 데이터: 9종 세트, 모두 카드·편지지 대분류', () => {
-  assert.equal(raw.length, 9);
+test('카드·편지지 정적 데이터: 19종(4장 세트 14 · 1장 뒤집기 5), 모두 카드·편지지 대분류', () => {
+  assert.equal(raw.length, 19);
+  const sets = raw.filter((it) => it.type === 'series');
+  const flips = raw.filter((it) => it.type === 'single');
+  assert.equal(sets.length, 14);
+  assert.equal(flips.length, 5);
   for (const it of raw) {
     const norm = normalizeItem(it);
     assert.equal(norm.mainCategory, MAIN.CARD, it.id);
     assert.equal(norm.audience, '', `${it.id}: 카드에는 대상 구분을 쓰지 않는다`);
-    assert.equal(norm.type, 'series');
+    assert.equal(norm.cardSet, true, `${it.id}: 카드 세트 표시 누락`);
+    assert.ok(it.tags.includes('크리스마스'), `${it.id}: 크리스마스 태그 누락`);
+    for (const pg of norm.pages) {
+      assert.ok(pg.story && pg.spec, `${it.id} ${pg.n}장: 설명·규격 누락`);
+    }
+  }
+  for (const it of sets) {
+    const norm = normalizeItem(it);
     assert.equal(norm.pageCount, 4);
     assert.equal(norm.pages.length, 4);
     assert.deepEqual(
       norm.pages.map((p) => p.name),
       ['카드', '카드 봉투', '편지지', '편지 봉투']
     );
-    for (const pg of norm.pages) {
-      assert.ok(pg.story && pg.spec, `${it.id} ${pg.n}장: 설명·규격 누락`);
-    }
     assert.match(it.title, /카드|편지/);
-    assert.ok(it.tags.includes('크리스마스'), `${it.id}: 크리스마스 태그 누락`);
+  }
+  for (const it of flips) {
+    const norm = normalizeItem(it);
+    assert.equal(norm.pageCount, 1, it.id);
+    assert.equal(norm.pages.length, 1, it.id);
+    assert.match(it.sizes, /A4 1장/);
+    assert.match(it.sizes, /116mm/);
+    assert.match(it.title, /뒤집기 카드/);
   }
   assert.equal(new Set(ids).size, ids.length, 'id 중복');
 });
@@ -150,4 +165,52 @@ test('공유 문구: 카드·편지지 문구로 분기', () => {
   assert.match(text, /💌/);
   assert.match(text, /\(카드·편지지\)/);
   assert.ok(text.includes(`${SITE}/p/${it.id}`));
+});
+
+/* ── 1장 뒤집기 카드(xmas-flip-*) ─────────────────────────────────── */
+const flip0 = raw.find((it) => it.id === 'xmas-flip-01-snowman');
+
+function flipItem(src = flip0) {
+  const it = normalizeItem(src);
+  return {
+    ...it,
+    cloud: 'dhfobwnfc',
+    categoryLabel: it.category,
+    url: `${SITE}/p/${it.id}`,
+    og: `${SITE}${it.og}`,
+    thumb: it.thumb,
+    promo: it.promo,
+    pages: it.pages.map((pg, i) => ({ ...pg, n: Number(pg.n) || i + 1 })),
+    shareText: buildShareText(it, SITE),
+  };
+}
+
+test('/p 뒤집기 카드: A4 1장 미리보기 + 1장 PDF 버튼', () => {
+  const it = flipItem();
+  const html = render(it);
+  // 1장짜리는 장 그리드가 아니라 큰 미리보기 한 장
+  assert.equal((html.match(/<canvas class="pv" data-pv="\d+"/g) || []).length, 1);
+  assert.ok(html.includes(it.pages[0].small), '1장 미리보기 주소 누락');
+  assert.match(html, /askSetPdf\(\)/);
+  assert.match(html, /A4 PDF 1장 받기/);
+  assert.ok(html.includes('A4 1장 · 완성 지름 116mm'), '규격 안내 누락');
+  assert.ok(!/askDownload\(\d/.test(html), '뒤집기 카드에 장별 저장 버튼이 남아 있다');
+  assert.ok(!/카드 봉투|편지 봉투/.test(html), '뒤집기 카드에 4장 세트 문구가 남아 있다');
+  const res = resOf(html);
+  assert.equal(res.length, 1);
+  assert.equal(res[0].set, it.setPdf);
+  assert.equal(res[0].setName, it.downloadName);
+  assert.equal(res[0].pages, 1);
+  assert.ok(!html.includes('href="' + it.setPdf + '"'), 'PDF 직접 링크 금지');
+});
+
+test('/p 뒤집기 카드: SEO 설명이 1장 카드로 분기', () => {
+  const it = flipItem();
+  const seo = buildSeo(it, { site: SITE });
+  assert.match(seo.title, /뒤집기 카드/);
+  assert.ok(seo.title.length <= 62, `제목 길이 초과: ${seo.title.length}`);
+  assert.ok(seo.description.length <= 155, `설명 길이 초과: ${seo.description.length}`);
+  assert.match(seo.description, /뒤집기 카드/);
+  assert.ok(!/4장/.test(seo.description), '1장 카드에 4장 설명이 남아 있다');
+  assert.ok(seo.keywords.includes('뒤집기 카드'));
 });

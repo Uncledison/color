@@ -358,7 +358,7 @@ function askSetPdf(){
     var a=document.createElement('a');a.href=s.set;a.rel='noopener';
     if(s.setName)a.setAttribute('download',s.setName);
     document.body.appendChild(a);a.click();a.remove();
-    toast('A4 PDF 4장을 저장하고 있어요');
+    toast(s.pages>1?('A4 PDF '+s.pages+'장을 저장하고 있어요'):'A4 PDF를 저장하고 있어요');
   });
 }
 
@@ -406,7 +406,7 @@ export function richPage(it, { seo, related = [], site } = {}) {
   const reserved = pages.map((pg) => ({
     print: pg.print || pg.preview || '',
     download: pg.download || '',
-    ...(it.cardSet ? { set: it.setPdf || '', setName: it.downloadName || '' } : {}),
+    ...(it.cardSet ? { set: it.setPdf || '', setName: it.downloadName || '', pages: pages.length } : {}),
   }));
   const RES_B64 = Buffer.from(JSON.stringify(reserved), 'utf8').toString('base64');
 
@@ -418,7 +418,7 @@ export function richPage(it, { seo, related = [], site } = {}) {
   ].filter(Boolean).join('\n      ');
 
   const acts = it.cardSet
-    ? `<button class="btn btn-primary wide" type="button" onclick="askSetPdf()">📄 A4 PDF ${pages.length}장 한 번에 받기</button>
+    ? `<button class="btn btn-primary wide" type="button" onclick="askSetPdf()">📄 ${pages.length > 1 ? `A4 PDF ${pages.length}장 한 번에 받기` : 'A4 PDF 1장 받기'}</button>
         <button class="btn btn-ghost half" type="button" onclick="copyShare()">🔗 링크 복사</button>`
     : series
       ? `<button class="btn btn-ghost" type="button" onclick="copyShare()">🔗 링크 복사</button>`
@@ -427,7 +427,9 @@ export function richPage(it, { seo, related = [], site } = {}) {
         <button class="btn btn-ghost half" type="button" onclick="copyShare()">🔗 링크 복사</button>`;
 
   const actsNote = it.cardSet
-    ? 'PDF 한 부에 <b>카드 · 카드 봉투 · 편지지 · 편지 봉투</b>가 담겨 있어요. 한 장씩 바로 뽑고 싶을 땐 아래 카드의 <b>인쇄</b> 버튼을 누르세요. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
+    ? pages.length > 1
+      ? 'PDF 한 부에 <b>카드 · 카드 봉투 · 편지지 · 편지 봉투</b>가 담겨 있어요. 한 장씩 바로 뽑고 싶을 땐 아래 카드의 <b>인쇄</b> 버튼을 누르세요. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
+      : 'PDF 한 장에 <b>앞면 MERRY CHRISTMAS · 뒷면 HAPPY NEW YEAR</b>가 함께 들어 있어요. 가운데 붉은 점선을 뒤로 접어 위쪽 원을 넘기면 앞·뒷면이 바뀝니다. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
     : series
       ? '장마다 <b>인쇄 · 저장</b> 버튼으로 <b>한 장씩</b> 인쇄·저장해 주세요. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
       : '인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다. 저장은 고화질 PNG 한 장으로 내려받아요.';
@@ -499,11 +501,14 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
   <section class="howto">
     <h2>인쇄·저장 안내</h2>
     <ul>
-      ${it.cardSet && it.sizes ? `<li>한 부 구성: <b>${esc(it.sizes)}</b></li>` : ''}
+      ${it.cardSet && it.sizes ? `<li>${pages.length > 1 ? '한 부 구성' : '규격'}: <b>${esc(it.sizes)}</b></li>` : ''}
       <li>인쇄: 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>으로 뽑으면 한 장에 꼭 맞습니다.</li>
       ${it.cardSet
-        ? `<li>저장: <b>A4 PDF ${pages.length}장 한 번에 받기</b> 버튼을 누르면 PDF 한 부(4칸)를 받아요. 1=카드, 2=카드 봉투, 3=편지지, 4=편지 봉투 순서입니다.</li>
+        ? (pages.length > 1
+          ? `<li>저장: <b>A4 PDF ${pages.length}장 한 번에 받기</b> 버튼을 누르면 PDF 한 부(4칸)를 받아요. 1=카드, 2=카드 봉투, 3=편지지, 4=편지 봉투 순서입니다.</li>
       <li>4장 모두 <b>실선은 자르는 선</b>, <b>점선은 접는 선</b>이에요. 봉투는 점선을 따라 접어 양 날개 안쪽에 풀칠해 붙이면 됩니다.</li>`
+          : `<li>저장: <b>A4 PDF 1장 받기</b> 버튼을 누르면 A4 한 장 PDF를 받아요. 실선을 따라 오린 뒤 붉은 점선을 뒤로 접으면 됩니다.</li>
+      <li>접는 선이 <b>뒤로 산 접기</b>라 위·아래 원이 가운데 띠로 이어져 있어요. <b>실선은 자르는 선</b>, <b>붉은 점선은 접는 선</b>입니다. 180g 정도의 도톰한 종이에 실제 크기(100%)로 인쇄하면 모양이 잘 섭니다.</li>`)
         : `<li>저장: <b>저장</b> 버튼을 누르면 그 장만 고화질 PNG로 내려받아요. 스마트폰은 사진첩에 저장됩니다.</li>
       <li>여러 장을 쓰실 때는 장마다 <b>인쇄</b> 버튼을 눌러 한 장씩 뽑으시면 됩니다.</li>`}
       <li>집에서 바로 쓰는 무료 도안입니다. 가게·교실에서도 자유롭게 인쇄해 쓰세요. (재판매는 안 돼요)</li>
