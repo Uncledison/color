@@ -6,11 +6,15 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
-  normalizeMain, normalizeAudience, normalizeItem, buildShareText, MAIN,
+  normalizeMain, normalizeAudience, normalizeItem, buildShareText, MAIN, MAIN_ORDER,
 } from './categories.mjs';
 
 const SITE = 'https://color.uncledison.com';
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 test('기존 색칠도안 행(대분류 값 없음)은 모두 색칠도안으로 유지', () => {
   // 운영 Notion 21개 행에 실제로 쓰인 카테고리
@@ -62,6 +66,25 @@ test('normalizeItem 은 원본을 바꾸지 않는다', () => {
   assert.equal(src.mainCategory, undefined);
   assert.equal(out.mainCategory, MAIN.BRAIN);
   assert.equal(out.audience, '유아용');
+});
+
+test('대분류 표시 순서: 색칠도안 → 카드·편지지 → 두뇌놀이 → 스티커판', () => {
+  assert.deepEqual(MAIN_ORDER, ['색칠도안', '카드·편지지', '두뇌놀이', '스티커판']);
+
+  // 홈 화면은 index.html 안에서 순서를 직접 적으므로, 여기서 어긋나면 바로 잡는다.
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  const mains = html.match(/const MAINS=\[([^\]]+)\]/);
+  assert.ok(mains, 'index.html 의 MAINS 배열을 찾지 못함');
+  const tabsOrder = mains[1].split(',').map((s) => s.trim().replace(/^['"]|['"]$/g, ''));
+  assert.deepEqual(tabsOrder, MAIN_ORDER, '홈 상단 탭 순서');
+
+  // 데스크톱 네비 · 히어로 바로가기 · 푸터도 같은 순서여야 한다
+  const navOrder = [...html.matchAll(/class="nav-link[^"]*" data-main="([^"]+)"/g)].map((m) => m[1]);
+  assert.deepEqual(navOrder, MAIN_ORDER, '데스크톱 네비 순서');
+  const heroOrder = [...html.matchAll(/<button class="hero-cat" onclick="selectMain\('([^']+)'\)"/g)].map((m) => m[1]);
+  assert.deepEqual(heroOrder, MAIN_ORDER, '히어로 카테고리 순서');
+  const footOrder = [...html.matchAll(/<li><a href="#" onclick="return selectMain\('([^']+)'\)"><img class="foot-ico"/g)].map((m) => m[1]);
+  assert.deepEqual(footOrder, MAIN_ORDER, '푸터 카테고리 순서');
 });
 
 test('공유문구 — 색칠도안은 기존 문구 그대로', () => {

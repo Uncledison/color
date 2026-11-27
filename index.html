@@ -9,13 +9,13 @@
 <meta name="google-site-verification" content="gafyxybm6dpWY1dRDbk02J00e05KAD5QRgg34khfozM" />
 <meta name="naver-site-verification" content="0eb43c68eef0cfcdf16c60344a319bd20a1a4673" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2751064253088315" crossorigin="anonymous"></script>
-<title>color.uncle — 색칠도안 · 두뇌놀이 · 칭찬스티커판 무료 프린트</title>
-<meta name="description" content="아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안, 미로찾기·선잇기·점잇기 같은 두뇌놀이, 칭찬스티커판과 체크표를 A4로 바로 프린트해서 쓰세요.">
+<title>color.uncle — 색칠도안 · 카드·편지지 · 두뇌놀이 · 칭찬스티커판 무료 프린트</title>
+<meta name="description" content="아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안, 크리스마스 카드·편지지, 미로찾기·선잇기·점잇기 같은 두뇌놀이, 칭찬스티커판과 체크표를 A4로 바로 프린트해서 쓰세요.">
 <link rel="canonical" href="https://color.uncledison.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="color.uncle">
-<meta property="og:title" content="color.uncle — 무료 프린트 놀이터 (색칠도안 · 두뇌놀이 · 칭찬스티커판)">
-<meta property="og:description" content="아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안, 미로찾기·선잇기·점잇기, 칭찬스티커판을 A4로 바로 프린트하세요.">
+<meta property="og:title" content="color.uncle — 무료 프린트 놀이터 (색칠도안 · 카드·편지지 · 두뇌놀이 · 칭찬스티커판)">
+<meta property="og:description" content="아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안, 크리스마스 카드·편지지, 미로찾기·선잇기·점잇기, 칭찬스티커판을 A4로 바로 프린트하세요.">
 <meta property="og:image" content="https://res.cloudinary.com/dhfobwnfc/image/upload/f_auto,q_auto/w_1200,h_630,c_pad,b_rgb:fff7e6/l_text:NanumGothic_40_bold:color.uncle%20%C2%B7%20%EC%8A%A4%ED%86%A0%EB%A6%AC%EA%B0%80%20%EC%9E%88%EB%8A%94%20%EB%AC%B4%EB%A3%8C%20%EC%83%89%EC%B9%A0%EB%8F%84%EC%95%88,co_white,b_rgb:3d2b1f,g_south,x_0,y_0,w_1200,c_fit/uncledison/coloring/HGC-MB/HGC-MB_01">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -294,6 +294,7 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
   font-size:17px;color:var(--ink-2);
   line-height:1.7;max-width:420px;
   margin:0 auto 32px;font-weight:300;
+  word-break:keep-all;
 }
 
 .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px}
@@ -484,6 +485,10 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 .coloring-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
 
 .coloring-card .card-img{aspect-ratio:3/4;background:var(--warm)}
+/* 카드·편지지 세트는 카드 실물 비율(190×135mm)로 보여준다 */
+.coloring-card.is-card .card-img{aspect-ratio:141/100;background:var(--warm-2)}
+/* 긴 제목이 단어 중간에서 끊기지 않게(한국어 줄바꿈) */
+.card-title{word-break:keep-all}
 .coloring-card .card-img svg{width:72%;height:auto}
 
 .badge-top{
@@ -632,7 +637,7 @@ footer{
   color:#fff;margin-bottom:10px;
 }
 .footer-brand-name .accent{color:var(--coral)}
-.footer-desc{font-size:13px;line-height:1.7;color:rgba(255,255,255,.5);max-width:240px}
+.footer-desc{font-size:13px;line-height:1.7;color:rgba(255,255,255,.5);max-width:240px;word-break:keep-all}
 .footer-col-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.9);margin-bottom:14px}
 .footer-links{list-style:none;display:flex;flex-direction:column;gap:8px}
 .footer-links a{font-size:13px;color:rgba(255,255,255,.5);transition:color .15s}
@@ -698,7 +703,23 @@ footer{
 }
 
 /* page nav — 이미지 위에 오버레이 */
+/* 세트 안내: 이미지 위 '1 / 4' + 점, 이미지 아래 장 이름 칩(카드·편지지) — 모달을 열자마자 몇 장짜리인지 보인다 */
+.page-strip{display:flex;align-items:center;gap:8px;margin-bottom:10px;min-height:24px}
+.page-strip[hidden]{display:none}
+.page-set{flex:none;font-size:11px;font-weight:700;color:var(--coral, #c8442a);background:#fff4e2;
+  border:1px solid #f6d9ac;border-radius:100px;padding:3px 10px;letter-spacing:.02em;white-space:nowrap}
+.page-set[hidden]{display:none}
+.page-count{flex:none;font-size:12px;font-weight:700;color:var(--ink-2);background:var(--warm);
+  border-radius:100px;padding:3px 10px;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.page-chips{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 14px}
+.page-chips:empty{display:none}
+.page-chip{flex:none;font-size:12px;font-weight:600;color:var(--ink-2);background:#fff;border:1px solid var(--border);
+  border-radius:100px;padding:5px 12px;white-space:nowrap;cursor:pointer;transition:all .15s;line-height:1.3}
+.page-chip:hover{border-color:var(--ink)}
+.page-chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.page-chip.done{background:var(--warm);border-color:var(--warm-2);color:var(--ink-2)}
 .page-dots{display:flex;gap:5px;justify-content:center;margin-bottom:10px}
+.page-strip .page-dots{margin:0 0 0 auto}
 .pdot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .25s}
 .modal-artwork .page-nav-btn{
   position:absolute;top:50%;transform:translateY(-50%);
@@ -846,6 +867,7 @@ svg.coloring .no-fill{fill:none}
     <nav class="nav-links">
       <a class="nav-link" href="#" onclick="return goHome()">홈</a>
       <a class="nav-link active" data-main="색칠도안" href="#" onclick="return selectMain('색칠도안')"><img class="nav-ico" src="/icons/color.webp" alt="" width="18" height="18">색칠도안</a>
+      <a class="nav-link" data-main="카드·편지지" href="#" onclick="return selectMain('카드·편지지')"><img class="nav-ico" src="/icons/card.webp" alt="" width="18" height="18">카드·편지지</a>
       <a class="nav-link" data-main="두뇌놀이" href="#" onclick="return selectMain('두뇌놀이')"><img class="nav-ico" src="/icons/brain.webp" alt="" width="18" height="18">두뇌놀이</a>
       <a class="nav-link" data-main="스티커판" href="#" onclick="return selectMain('스티커판')"><img class="nav-ico" src="/icons/sticker.webp" alt="" width="18" height="18">스티커판</a>
     </nav>
@@ -881,16 +903,17 @@ svg.coloring .no-fill{fill:none}
           아이와 어르신을 위한<br><em>무료 프린트 놀이터</em>
         </h1>
         <p class="hero-sub anim-3">
-          색칠도안 · 두뇌놀이 · 칭찬스티커판을<br>
+          색칠도안 · 카드·편지지 · 두뇌놀이 · 칭찬스티커판을<br>
           A4로 바로 프린트해서 쓰세요.
         </p>
         <div class="hero-cats anim-4">
           <button class="hero-cat" onclick="selectMain('색칠도안')"><img class="hero-ico" src="/icons/color.webp" alt="" width="26" height="26">색칠도안</button>
+          <button class="hero-cat" onclick="selectMain('카드·편지지')"><img class="hero-ico" src="/icons/card.webp" alt="" width="26" height="26">카드·편지지</button>
           <button class="hero-cat" onclick="selectMain('두뇌놀이')"><img class="hero-ico" src="/icons/brain.webp" alt="" width="26" height="26">두뇌놀이</button>
           <button class="hero-cat" onclick="selectMain('스티커판')"><img class="hero-ico" src="/icons/sticker.webp" alt="" width="26" height="26">스티커판</button>
         </div>
         <div class="hero-stats anim-5">
-          <div><div class="stat-val">3가지</div><div class="stat-label">놀이 종류</div></div>
+          <div><div class="stat-val">4가지</div><div class="stat-label">놀이 종류</div></div>
           <div><div class="stat-val">무료</div><div class="stat-label">전체</div></div>
           <div><div class="stat-val">A4</div><div class="stat-label">인쇄 최적화</div></div>
           <div><div class="stat-val">매주</div><div class="stat-label">신규 업로드</div></div>
@@ -1350,12 +1373,13 @@ svg.coloring .no-fill{fill:none}
     <div class="footer-inner">
       <div>
         <div class="footer-brand-name"><span class="accent">color</span>.uncle</div>
-        <div class="footer-desc">아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안 · 두뇌놀이 · 칭찬스티커판을 매주 새로 올립니다.</div>
+        <div class="footer-desc">아이와 어르신을 위한 무료 프린트 놀이터. 색칠도안 · 카드·편지지 · 두뇌놀이 · 칭찬스티커판을 매주 새로 올립니다.</div>
       </div>
       <div>
         <div class="footer-col-title">놀이</div>
         <ul class="footer-links">
           <li><a href="#" onclick="return selectMain('색칠도안')"><img class="foot-ico" src="/icons/color.webp" alt="" width="16" height="16">색칠도안</a></li>
+          <li><a href="#" onclick="return selectMain('카드·편지지')"><img class="foot-ico" src="/icons/card.webp" alt="" width="16" height="16">카드·편지지</a></li>
           <li><a href="#" onclick="return selectMain('두뇌놀이')"><img class="foot-ico" src="/icons/brain.webp" alt="" width="16" height="16">두뇌놀이</a></li>
           <li><a href="#" onclick="return selectMain('스티커판')"><img class="foot-ico" src="/icons/sticker.webp" alt="" width="16" height="16">스티커판</a></li>
         </ul>
@@ -1395,7 +1419,11 @@ svg.coloring .no-fill{fill:none}
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="page-dots" id="pageDots"></div>
+      <div class="page-strip" id="pageStrip">
+        <span class="page-set" id="modalSetBadge">4장 세트</span>
+        <span class="page-count" id="pageCount">1 / 4</span>
+        <div class="page-dots" id="pageDots"></div>
+      </div>
       <div class="modal-artwork" id="modalArtwork">
         <button class="page-nav-btn nav-prev" onclick="event.stopPropagation();changePage(-1)">◀</button>
         <div id="modalSvg"></div>
@@ -1405,6 +1433,7 @@ svg.coloring .no-fill{fill:none}
           <span>color.uncledison.com</span>
         </div>
       </div>
+      <div class="page-chips" id="pageChips"></div>
       <p class="story-text" id="storyText"></p>
       <div class="modal-ad">
         <ins class="adsbygoogle modal-ad-desktop" id="modalAdInsDesktop"
@@ -1423,7 +1452,7 @@ svg.coloring .no-fill{fill:none}
         <div class="dl-btns">
           <button class="btn-dl outline" onclick="shareItem()">🔗 링크 복사</button>
           <button class="btn-dl outline" onclick="printCurrent()">🖨 인쇄하기</button>
-          <button class="btn-dl fill" onclick="triggerDownload()">⬇ 다운로드</button>
+          <button class="btn-dl fill" id="dlBtn" onclick="triggerDownload()">⬇ 다운로드</button>
         </div>
       </div>
     </div>
@@ -1540,13 +1569,14 @@ const stories={
   house:['작은 마을에 할아버지 빵집이 있었어요.','새벽 4시부터 빵 굽는 냄새가 퍼졌어요.','동그란 크림빵, 달콤한 단팥빵... 🍞','학교 가는 아이들이 빵을 사 갔어요.','고양이 한 마리가 빵집 앞에 앉아있었어요.','할아버지가 고양이에게 빵 조각을 줬어요. 💕','저녁 불빛이 따뜻하게 빛났어요.','오늘도 모든 빵이 팔렸어요. 할아버지가 웃었어요.','내일 메뉴를 생각하며 잠이 들었어요.','이 작은 마을의 빵집은 오늘도 행복했어요. 🏡']
 };
 
-/* ── 3대분류 카탈로그: data.json을 읽어 카드/시리즈 렌더 ── */
-const MAINS=['색칠도안','두뇌놀이','스티커판'];
-const MAIN_ICON={'색칠도안':'/icons/color.webp','두뇌놀이':'/icons/brain.webp','스티커판':'/icons/sticker.webp'};
+/* ── 4대분류 카탈로그: data.json을 읽어 카드/시리즈 렌더 ── */
+const MAINS=['색칠도안','카드·편지지','두뇌놀이','스티커판']; // 순서 = pipeline/categories.mjs의 MAIN_ORDER
+const MAIN_ICON={'색칠도안':'/icons/color.webp','두뇌놀이':'/icons/brain.webp','스티커판':'/icons/sticker.webp','카드·편지지':'/icons/card.webp'};
 const MAIN_SUB={
   '색칠도안':'전래동화 · 전통 · 계절 · 자연 — 한 장부터 8~10장 시리즈까지',
   '두뇌놀이':'미로찾기 · 선잇기 · 점잇기 — 유아용부터 어르신 인지용까지',
-  '스티커판':'칭찬스티커판 · 체크표 — 프린트해서 붙이는 칭찬·습관 스티커판'
+  '스티커판':'칭찬스티커판 · 체크표 — 프린트해서 붙이는 칭찬·습관 스티커판',
+  '카드·편지지':'크리스마스 카드 · 봉투 · 편지지 — A4 4장을 접고 붙이면 완성'
 };
 let DATA=[], byId={}, current=null, currentPage=0;
 let TAB='색칠도안', SUB='전체', AUD='전체';
@@ -1555,22 +1585,24 @@ let SITE_URL=location.origin;
 
 /* data.json에 대분류가 비어 있어도(구버전 캐시 등) 화면이 비지 않도록 같은 규칙으로 한 번 더 보정 */
 const catKey=s=>String(s||'').toLowerCase().replace(/[\s·・.．\-_/()]/g,'');
-const MAIN_ALIAS={'색칠도안':'색칠도안','색칠':'색칠도안','도안':'색칠도안','coloring':'색칠도안','두뇌놀이':'두뇌놀이','두뇌':'두뇌놀이','brain':'두뇌놀이','퍼즐':'두뇌놀이','놀이':'두뇌놀이','생활학습판':'스티커판','생활':'스티커판','학습판':'스티커판','스티커판':'스티커판','스티커':'스티커판','sticker':'스티커판','life':'스티커판'};
+const MAIN_ALIAS={'색칠도안':'색칠도안','색칠':'색칠도안','도안':'색칠도안','coloring':'색칠도안','두뇌놀이':'두뇌놀이','두뇌':'두뇌놀이','brain':'두뇌놀이','퍼즐':'두뇌놀이','놀이':'두뇌놀이','생활학습판':'스티커판','생활':'스티커판','학습판':'스티커판','스티커판':'스티커판','스티커':'스티커판','sticker':'스티커판','life':'스티커판','카드편지지':'카드·편지지','카드':'카드·편지지','편지지':'카드·편지지','card':'카드·편지지','letter':'카드·편지지'};
 const BRAIN_KEY=['미로','선잇기','점잇기','점선잇기','퍼즐','다른그림','틀린그림','숨은그림','낱말','퀴즈','기억','짝맞추기','같은그림','관찰','집중놀이','브레인'];
 const LIFE_KEY=['칭찬','스티커','체크표','체크리스트','생활','학습','계획표','일과표','이름표','달력','용돈','심부름','습관','스티커판','칭찬판','생활판','학습판'];
+const CARD_KEY=['카드','편지지','봉투','엽서','연하장','카드만들기','크리스마스카드'];
 function inferMain(raw,cat){
   const d=MAIN_ALIAS[catKey(raw)];
   if(d)return d;
   const c=catKey(cat);
   if(c){
     if(BRAIN_KEY.some(w=>c.includes(w)))return '두뇌놀이';
+    if(CARD_KEY.some(w=>c.includes(w)))return '카드·편지지';
     if(LIFE_KEY.some(w=>c.includes(w)))return '스티커판';
   }
   return '색칠도안';
 }
 function inferAud(it){
   if(it.audience)return it.audience;
-  if(it.mainCategory==='색칠도안')return '';
+  if(it.mainCategory==='색칠도안'||it.mainCategory==='카드·편지지')return '';
   const hay=catKey([it.category,...(it.tags||[])].join('|'));
   if(['어르신','어른신','시니어','인지','치매','요양','노인','경로','실버'].some(w=>hay.includes(catKey(w))))return '어르신 인지용';
   if(['유아','아이','어린이','키즈','아동','초등'].some(w=>hay.includes(catKey(w))))return '유아용';
@@ -1653,13 +1685,16 @@ function goHome(){window.scrollTo({top:0,behavior:'smooth'});return false}
 function cardHTML(it){
   const pages=it.type==='series'?('📄 '+it.pageCount+'장 세트'):'📄 1장';
   const kind=it.categoryLabel||it.category||'';
-  return '<div class="coloring-card" onclick="openModal(\''+it.id+'\')">'
+  const card=it.mainCategory==='카드·편지지';
+  /* 카드·편지지 세트는 카드 실물 비율(가로) 캔버스로 보여준다 */
+  const thumbPv=card?pvHTML(it.thumb,420,298,'',it.title):pvHTML(it.thumb,300,420,'',it.title);
+  return '<div class="coloring-card'+(card?' is-card':'')+'" onclick="openModal(\''+it.id+'\')">'
     +'<button class="heart-btn" onclick="event.stopPropagation();toggleHeart(this)">🤍</button>'
-    +'<div class="card-img coloring-img">'+pvHTML(it.thumb,300,420,'',it.title)+'<span class="shield"></span></div>'
+    +'<div class="card-img coloring-img">'+thumbPv+'<span class="shield"></span></div>'
     +'<div class="card-foot"><div class="card-category">'+esc(kind)+'</div>'
     +'<div class="card-title">'+esc(it.title)+'</div>'
     +'<div class="card-meta"><span class="card-pages">'+pages+'</span>'
-    +'<div class="diff-dots">'+diffDots(it.difficulty)+'</div></div></div>'
+    +(card?'':'<div class="diff-dots">'+diffDots(it.difficulty)+'</div>')+'</div></div>'
     +'<div class="card-overlay"><button class="overlay-dl" onclick="event.stopPropagation();openModal(\''+it.id+'\')">⬇ 다운로드</button></div></div>';
 }
 
@@ -1711,8 +1746,9 @@ function renderCatalog(){
   }
 
   // 시리즈 섹션 — 지금 고른 대분류/필터에 시리즈가 있을 때만
+  // ('카드·편지지' 4장 세트는 카드 그리드에서 이미 다 보이므로 여기서는 뺐다)
   const sec=document.getElementById('seriesSection');
-  const series=list.filter(it=>it.type==='series');
+  const series=TAB==='색칠도안'?list.filter(it=>it.type==='series'):[];
   if(sec)sec.style.display=series.length?'':'none';
   const sr=document.getElementById('seriesRow');
   if(sr){sr.innerHTML=series.map(seriesHTML).join('');hydratePv(sr)}
@@ -1761,6 +1797,42 @@ function buildDots(n){
   const c=document.getElementById('pageDots');c.innerHTML='';
   for(let i=0;i<n;i++){const d=document.createElement('div');d.className='pdot';c.appendChild(d)}
 }
+/* 세트 안내 줄 — 모달을 열자마자 '몇 장짜리 세트이고 지금 몇 번째 장'인지 보이게 한다.
+   장 이름이 있는 세트(카드·편지지: 카드 / 카드 봉투 / 편지지 / 편지 봉투)는 이름 칩으로 바로 점프,
+   이름이 없는 긴 시리즈(색칠도안 10장 등)는 기존 점(dot)을 그대로 두고 '3 / 10'만 더한다. */
+function buildPageStrip(){
+  if(!current)return;
+  const n=current.pages.length;
+  const single=current.type==='single'||n<2;
+  const strip=document.getElementById('pageStrip');
+  const badge=document.getElementById('modalSetBadge');
+  const chips=document.getElementById('pageChips');
+  if(badge){badge.hidden=single;badge.textContent=n+'장 세트'}
+  if(strip)strip.hidden=single;
+  if(single){
+    /* 1장짜리로 넘어올 때 앞서 연 세트의 장 이름 칩이 남지 않게 비운다 */
+    if(chips)chips.innerHTML='';
+    const d=document.getElementById('pageDots');
+    if(d)d.style.display='none';
+    return;
+  }
+  const count=document.getElementById('pageCount');
+  if(count)count.textContent=(currentPage+1)+' / '+n;
+  const named=n<=8&&current.pages.some(p=>p&&p.name);
+  if(chips){
+    chips.innerHTML=named?current.pages.map((p,i)=>
+      '<button type="button" class="page-chip'+(i===currentPage?' active':i<currentPage?' done':'')+'" onclick="goPage('+i+')"'
+      +' aria-label="'+(i+1)+'번째 장 '+esc(p.name)+'"'+(i===currentPage?' aria-current="true"':'')+'>'
+      +esc(p.name)+'</button>').join(''):'';
+  }
+  const dots=document.getElementById('pageDots');
+  if(dots)dots.style.display=named?'none':'flex';
+}
+function goPage(i){
+  if(!current)return;
+  currentPage=Math.max(0,Math.min(current.pages.length-1,Number(i)||0));
+  updateModal();
+}
 function updateModal(){
   if(!current)return;
   const pg=current.pages[currentPage];
@@ -1769,8 +1841,6 @@ function updateModal(){
   if(art)art.classList.toggle('is-single',single);
   const panel=document.querySelector('#modal .modal');
   if(panel)panel.classList.toggle('wide',single);
-  const dots=document.getElementById('pageDots');
-  if(dots)dots.style.display=single?'none':'flex';
   // '단일' 워크시트는 A4 한 장 비율 그대로 크게 보여준다
   document.getElementById('modalSvg').innerHTML=single
     ?'<div class="a4-frame">'+pvHTML(pg.small||pg.preview,620,877,'',current.title)+'</div>'
@@ -1779,9 +1849,19 @@ function updateModal(){
   const mc=document.querySelector('#modalSvg canvas.pv');
   if(mc)drawPv(mc);
   const storyEl=document.getElementById('storyText');
-  if(storyEl)storyEl.textContent=pg.story||'';
-  document.getElementById('dlTitle').textContent=current.type==='series'?('📄 '+(currentPage+1)+'번 도안 다운로드'):'📄 도안 다운로드';
+  if(storyEl){
+    /* 카드·편지지 장은 완성 규격을 앞에 붙여 준다(카드 95×135mm …) — 접어 만든 뒤 크기를 바로 알 수 있게 */
+    const spec=current.mainCategory==='카드·편지지'?String(pg.spec||'').trim():'';
+    storyEl.textContent=spec?(spec+' — '+(pg.story||'')):(pg.story||'');
+  }
+  const cardSet=current.mainCategory==='카드·편지지';
+  document.getElementById('dlTitle').textContent=cardSet
+    ?('📄 A4 PDF '+current.pages.length+'장 세트 다운로드')
+    :current.type==='series'?('📄 '+(currentPage+1)+'번 도안 다운로드'):'📄 도안 다운로드';
+  const dlBtn=document.getElementById('dlBtn');
+  if(dlBtn)dlBtn.textContent=cardSet?'⬇ PDF '+current.pages.length+'장 받기':'⬇ 다운로드';
   document.querySelectorAll('.pdot').forEach((d,i)=>{d.className='pdot'+(i<currentPage?' done':i===currentPage?' active':'')});
+  buildPageStrip();
 }
 /* ── 모달 주소: 도안을 열면 /p/<id> 로 (옛 /#<id> 링크는 그대로 열린다) ── */
 function itemPath(id){return '/p/'+encodeURIComponent(id)}
@@ -1901,9 +1981,8 @@ let cdTimer=null,pendingAction=null;
 function openInter(){
   if(!pendingAction)return;
   document.getElementById('coffeeMsg').textContent=nextCoffeeMsg();
-  document.getElementById('interH').textContent=pendingAction.kind==='인쇄'
-    ?'인쇄 준비 중... 😊'
-    :'고화질 이미지 준비 중... 😊';
+  document.getElementById('interH').textContent=pendingAction.head
+    ||(pendingAction.kind==='인쇄'?'인쇄 준비 중... 😊':'고화질 이미지 준비 중... 😊');
   const el=document.getElementById('inter');
   el.classList.add('open');
   document.body.style.overflow='hidden';
@@ -1922,8 +2001,11 @@ function openInter(){
 function triggerDownload(){
   if(!current)return;
   const url=current.pages[currentPage].download;
-  pendingAction={kind:'다운로드',run:()=>{
-    const a=document.createElement('a');a.href=url;a.rel='noopener';document.body.appendChild(a);a.click();a.remove();
+  const name=current.downloadName||'';
+  pendingAction={kind:'다운로드',head:current.mainCategory==='카드·편지지'?'A4 PDF 준비 중... 😊':'',run:()=>{
+    const a=document.createElement('a');a.href=url;a.rel='noopener';
+    if(name)a.setAttribute('download',name);
+    document.body.appendChild(a);a.click();a.remove();
     closeModal();
   }};
   openInter();

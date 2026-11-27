@@ -88,6 +88,11 @@ export function buildSeoTitle(it) {
       : fitTitle(t, ['| 유아 칭찬스티커판', '무료 인쇄']);
   }
 
+  if (main === MAIN.CARD) {
+    // 카드·편지지 세트는 '크리스마스 카드 도안 / 편지지 도안' 검색어로 들어온다.
+    return fitTitle(t, ['| 크리스마스 카드 도안', 'A4 무료 인쇄']);
+  }
+
   const count = it.type === 'series' && pages > 1 ? `${pages}장` : '';
   return fitTitle(t, ['색칠공부 도안', count, '무료 인쇄']);
 }
@@ -110,6 +115,12 @@ export function buildSeoDescription(it) {
     const tail = /체크/.test(cat)
       ? 'A4로 바로 인쇄해 매일 체크하며 쓰는 생활습관 체크표예요.'
       : 'A4로 바로 인쇄해 칸마다 스티커를 붙이는 유아 칭찬스티커판이에요.';
+    return composeDescription(it.desc, tail);
+  }
+
+  if (main === MAIN.CARD) {
+    const tail =
+      '카드·카드 봉투·편지지·편지 봉투를 A4 4장으로 바로 인쇄해 접고 붙이면 완성되는 무료 세트예요.';
     return composeDescription(it.desc, tail);
   }
 
@@ -164,6 +175,21 @@ export function buildSeoKeywords(it) {
     ]);
   }
 
+  if (main === MAIN.CARD) {
+    return unique([
+      ...base,
+      '크리스마스 카드 도안',
+      '크리스마스 카드 만들기',
+      '크리스마스 편지지',
+      '편지지 도안',
+      '카드 봉투 도안',
+      '편지 봉투 도안',
+      'A4 프린트',
+      '무료 카드 도안',
+      ...tags,
+    ]);
+  }
+
   return unique([
     ...base,
     '색칠공부 도안',
@@ -186,7 +212,9 @@ export function buildSeoAlt(it) {
       ? '색칠공부 도안'
       : main === MAIN.BRAIN
         ? `${cat || '두뇌놀이'} 활동지`
-        : `${cat || '스티커판'} 도안`;
+        : main === MAIN.CARD
+          ? '카드·편지지 도안'
+          : `${cat || '스티커판'} 도안`;
   return `${t} ${noun} — A4 무료 인쇄`;
 }
 

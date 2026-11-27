@@ -71,11 +71,10 @@ function sheetHtml(it, pg, index) {
           <span class="shield" aria-hidden="true"></span>
         </div>
         <div class="sheet-body">
-          <div class="sheet-head"><span class="num">${esc(pg.n)}</span><span class="sheet-label">${pg.n}번째 장</span></div>
+          <div class="sheet-head"><span class="num">${esc(pg.n)}</span><span class="sheet-label">${pg.n}번째 장${pg.name ? ` · ${esc(pg.name)}` : ''}</span>${pg.spec ? `<span class="spec">${esc(pg.spec)}</span>` : ''}</div>
           ${story ? `<p class="story">${esc(story)}</p>` : ''}
           <div class="mini-acts">
-            <button class="mini" type="button" onclick="askPrint(${pg.n})">🖨 인쇄</button>
-            <button class="mini primary" type="button" onclick="askDownload(${pg.n})">⬇ 저장</button>
+            <button class="mini" type="button" onclick="askPrint(${pg.n})">🖨 인쇄</button>${it.cardSet ? '' : `<button class="mini primary" type="button" onclick="askDownload(${pg.n})">⬇ 저장</button>`}
           </div>
         </div>
       </li>`;
@@ -135,6 +134,8 @@ const STYLE = `
   .num{flex:none;width:22px;height:22px;border-radius:50%;background:var(--warm);color:var(--accent);
        font-size:12px;font-weight:700;display:grid;place-items:center}
   .sheet-label{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:.02em}
+  .spec{margin-left:auto;font-size:11px;font-weight:600;color:var(--ink-3);background:var(--warm);
+        border-radius:100px;padding:2px 8px;white-space:nowrap}
   .story{font-size:13px;color:var(--ink-2);word-break:keep-all}
   .mini-acts{display:flex;gap:7px;margin-top:11px}
   .mini{flex:1;height:40px;border-radius:100px;font-size:13px;font-weight:700;border:1px solid var(--border);
@@ -349,6 +350,18 @@ function askDownload(n){
   });
 }
 
+/* 카드·편지지 세트: A4 4장짜리 PDF 한 부만 내려받기(같은 3초 게이트를 거친다) */
+function askSetPdf(){
+  openGate('PDF 저장',function(){
+    var s=unlockUrls()[0];
+    if(!s||!s.set){toast('세트 PDF를 찾지 못했어요');return}
+    var a=document.createElement('a');a.href=s.set;a.rel='noopener';
+    if(s.setName)a.setAttribute('download',s.setName);
+    document.body.appendChild(a);a.click();a.remove();
+    toast('A4 PDF 4장을 저장하고 있어요');
+  });
+}
+
 /* 공유 복사 — 주소창·링크 입력칸에 그대로 붙여넣을 수 있게 '깨끗한 주소 하나'만 복사한다 */
 function copyShare(){
   var url=SHEET_DATA.url;
@@ -393,6 +406,7 @@ export function richPage(it, { seo, related = [], site } = {}) {
   const reserved = pages.map((pg) => ({
     print: pg.print || pg.preview || '',
     download: pg.download || '',
+    ...(it.cardSet ? { set: it.setPdf || '', setName: it.downloadName || '' } : {}),
   }));
   const RES_B64 = Buffer.from(JSON.stringify(reserved), 'utf8').toString('base64');
 
@@ -403,15 +417,20 @@ export function richPage(it, { seo, related = [], site } = {}) {
     it.difficulty ? `<li>난이도 ${difficultyDots(it.difficulty)}</li>` : '',
   ].filter(Boolean).join('\n      ');
 
-  const acts = series
-    ? `<button class="btn btn-ghost" type="button" onclick="copyShare()">🔗 링크 복사</button>`
-    : `<button class="btn btn-primary wide" type="button" onclick="askPrint(1)">🖨 A4로 인쇄</button>
+  const acts = it.cardSet
+    ? `<button class="btn btn-primary wide" type="button" onclick="askSetPdf()">📄 A4 PDF ${pages.length}장 한 번에 받기</button>
+        <button class="btn btn-ghost half" type="button" onclick="copyShare()">🔗 링크 복사</button>`
+    : series
+      ? `<button class="btn btn-ghost" type="button" onclick="copyShare()">🔗 링크 복사</button>`
+      : `<button class="btn btn-primary wide" type="button" onclick="askPrint(1)">🖨 A4로 인쇄</button>
         <button class="btn btn-ghost half" type="button" onclick="askDownload(1)">⬇ 다운로드</button>
         <button class="btn btn-ghost half" type="button" onclick="copyShare()">🔗 링크 복사</button>`;
 
-  const actsNote = series
-    ? '장마다 <b>인쇄 · 저장</b> 버튼으로 <b>한 장씩</b> 인쇄·저장해 주세요. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
-    : '인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다. 저장은 고화질 PNG 한 장으로 내려받아요.';
+  const actsNote = it.cardSet
+    ? 'PDF 한 부에 <b>카드 · 카드 봉투 · 편지지 · 편지 봉투</b>가 담겨 있어요. 한 장씩 바로 뽑고 싶을 땐 아래 카드의 <b>인쇄</b> 버튼을 누르세요. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
+    : series
+      ? '장마다 <b>인쇄 · 저장</b> 버튼으로 <b>한 장씩</b> 인쇄·저장해 주세요. (버튼을 누르면 3초 후원 안내가 먼저 나옵니다)'
+      : '인쇄 대화상자에서 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>을 고르면 한 장에 꼭 맞게 나옵니다. 저장은 고화질 PNG 한 장으로 내려받아요.';
 
   const gallery = series
     ? `<section class="sheets" id="sheets">
@@ -480,9 +499,13 @@ ${pages.map((pg, i) => sheetHtml(it, pg, i)).join('\n')}
   <section class="howto">
     <h2>인쇄·저장 안내</h2>
     <ul>
+      ${it.cardSet && it.sizes ? `<li>한 부 구성: <b>${esc(it.sizes)}</b></li>` : ''}
       <li>인쇄: 용지 <b>A4 · 세로</b>, 여백 <b>없음</b>으로 뽑으면 한 장에 꼭 맞습니다.</li>
-      <li>저장: <b>저장</b> 버튼을 누르면 그 장만 고화질 PNG로 내려받아요. 스마트폰은 사진첩에 저장됩니다.</li>
-      <li>여러 장을 쓰실 때는 장마다 <b>인쇄</b> 버튼을 눌러 한 장씩 뽑으시면 됩니다.</li>
+      ${it.cardSet
+        ? `<li>저장: <b>A4 PDF ${pages.length}장 한 번에 받기</b> 버튼을 누르면 PDF 한 부(4칸)를 받아요. 1=카드, 2=카드 봉투, 3=편지지, 4=편지 봉투 순서입니다.</li>
+      <li>4장 모두 <b>실선은 자르는 선</b>, <b>점선은 접는 선</b>이에요. 봉투는 점선을 따라 접어 양 날개 안쪽에 풀칠해 붙이면 됩니다.</li>`
+        : `<li>저장: <b>저장</b> 버튼을 누르면 그 장만 고화질 PNG로 내려받아요. 스마트폰은 사진첩에 저장됩니다.</li>
+      <li>여러 장을 쓰실 때는 장마다 <b>인쇄</b> 버튼을 눌러 한 장씩 뽑으시면 됩니다.</li>`}
       <li>집에서 바로 쓰는 무료 도안입니다. 가게·교실에서도 자유롭게 인쇄해 쓰세요. (재판매는 안 돼요)</li>
     </ul>
   </section>
