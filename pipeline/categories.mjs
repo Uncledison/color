@@ -1,5 +1,9 @@
 // pipeline/categories.mjs
-// 3대분류(색칠도안 · 두뇌놀이 · 스티커판) 표준화.
+// 4대분류(색칠도안 · 두뇌놀이 · 스티커판 · 카드·편지지) 표준화.
+//
+// 2026-11-27: '카드·편지지' 대분류 추가 — 크리스마스 카드·봉투·편지지 4장 세트.
+//   노션에 이 대분류가 없어도 되도록, 카드·편지지 항목은 레포에 함께 커밋된
+//   data/cards.json(정적 데이터)에서 읽어 붙인다(build.mjs).
 //
 // 2026-11 개편: 3번째 대분류 이름을 '생활·학습판' → '스티커판'으로 변경.
 //   기존 노션/데이터에 남아 있는 '생활·학습판'(표기 흔들림 포함) 값은 별칭으로 흡수해
@@ -14,15 +18,17 @@ export const MAIN = {
   COLOR: '색칠도안',
   BRAIN: '두뇌놀이',
   LIFE: '스티커판', // ← '생활·학습판'에서 이름 변경
+  CARD: '카드·편지지', // ← 2026-11-27 추가(크리스마스 카드·봉투·편지지 세트)
 };
 
-export const MAIN_ORDER = [MAIN.COLOR, MAIN.BRAIN, MAIN.LIFE];
+export const MAIN_ORDER = [MAIN.COLOR, MAIN.BRAIN, MAIN.LIFE, MAIN.CARD];
 
 // 상단 네비·히어로·탭에서 쓰는 아이콘(투명 WebP). build.mjs가 public/icons/로 복사한다.
 export const MAIN_ICONS = {
   [MAIN.COLOR]: '/icons/color.webp',
   [MAIN.BRAIN]: '/icons/brain.webp',
   [MAIN.LIFE]: '/icons/sticker.webp',
+  [MAIN.CARD]: '/icons/card.webp',
 };
 
 // 두뇌놀이 표준 하위분류
@@ -55,6 +61,13 @@ export const MAIN_COPY = {
     ogLabel: '무료 스티커판',
     pageNoun: '스티커판',
   },
+  [MAIN.CARD]: {
+    emoji: '💌',
+    noun: '카드·편지지',
+    cta: '무료로 프린트해서 마음을 전해보세요!',
+    ogLabel: '무료 카드·편지지 도안',
+    pageNoun: '카드·편지지 세트',
+  },
 };
 
 // 표기 흔들림 흡수: 공백·가운뎃점·하이픈·슬래시·점 제거 + 소문자
@@ -68,6 +81,9 @@ const MAIN_ALIASES = new Map([
   // 옛 이름(하위 호환) — '생활·학습판' 시절 값도 그대로 스티커판으로
   ['생활학습판', MAIN.LIFE], ['생활학습', MAIN.LIFE], ['생활', MAIN.LIFE], ['학습판', MAIN.LIFE],
   ['life', MAIN.LIFE],
+  // 카드·편지지 (key()가 '·'를 지우므로 붙여 쓴 값도 함께)
+  ['카드편지지', MAIN.CARD], ['카드', MAIN.CARD], ['편지지', MAIN.CARD],
+  ['카드봉투', MAIN.CARD], ['card', MAIN.CARD], ['letter', MAIN.CARD],
 ]);
 
 // '카테고리'만 보고 대분류를 유추할 때 쓰는 키워드
@@ -78,6 +94,11 @@ const BRAIN_KEYWORDS = [
 const LIFE_KEYWORDS = [
   '칭찬', '스티커', '체크표', '체크리스트', '생활', '학습', '계획표', '일과표',
   '이름표', '달력', '용돈', '심부름', '습관', '스티커판', '칭찬판', '생활판', '학습판',
+];
+// '카드·편지지'로 유추하는 키워드. '낱말카드' 같은 학습 자료가 카드로 새지 않도록
+// normalizeMain 은 두뇌놀이 키워드를 먼저 본다.
+const CARD_KEYWORDS = [
+  '카드', '편지지', '봉투', '엽서', '연하장', '카드만들기', '크리스마스카드',
 ];
 
 const SENIOR_KEYWORDS = ['어르신', '어른신', '시니어', '인지', '치매', '요양', '노인', '경로', '실버', 'senior'];
@@ -95,6 +116,7 @@ export function normalizeMain(rawMain, category = '') {
   const cat = key(category);
   if (cat) {
     if (BRAIN_KEYWORDS.some((k) => cat.includes(k))) return MAIN.BRAIN;
+    if (CARD_KEYWORDS.some((k) => cat.includes(k))) return MAIN.CARD;
     if (LIFE_KEYWORDS.some((k) => cat.includes(k))) return MAIN.LIFE;
   }
   return MAIN.COLOR; // 기본값 — 기존 색칠도안 행은 전부 여기로
@@ -111,7 +133,7 @@ export function normalizeAudience(rawAudience, tags = [], mainCategory = MAIN.CO
     if (SENIOR_KEYWORDS.some((w) => k.includes(key(w)))) return AUDIENCES[1];
     if (KID_KEYWORDS.some((w) => k.includes(key(w)))) return AUDIENCES[0];
   }
-  if (mainCategory === MAIN.COLOR) return '';
+  if (mainCategory === MAIN.COLOR || mainCategory === MAIN.CARD) return '';
 
   const hay = [category, ...(tags || [])].map(key).join('|');
   if (SENIOR_KEYWORDS.some((w) => hay.includes(key(w)))) return AUDIENCES[1];

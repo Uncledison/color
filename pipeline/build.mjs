@@ -12,6 +12,12 @@
 // - 인쇄 버튼도 다운로드와 같은 3초 커피 후원 인터스티셜을 거친 뒤 인쇄한다.
 // - 워터마크: 색칠도안만 우하단 검정 워터마크 유지, 두뇌놀이·스티커판은 다운로드·인쇄·공유
 //   변환에서 오버레이를 빼고 깨끗한 고해상도 이미지를 쓴다(cloudinary.mjs watermark:false).
+//
+// 2026-11-27 '카드·편지지'(크리스마스 카드·봉투·편지지 4장 세트) 추가:
+// - 이 항목들은 노션이 아니라 레포에 커밋된 data/cards.json(정적 데이터)에서 읽는다.
+//   → 노션 빌드가 다시 돌아도 카드·편지지 항목과 10종 데이터는 지워지지 않는다.
+// - 이미지·PDF는 Cloudinary 변환을 거치지 않고 assets/cards/<세트>/ 아래 실제 파일을
+//   public/cards/ 로 복사해 그대로 서빙한다(오프라인·정적 자산).
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -46,10 +52,44 @@ async function loadItems() {
   return JSON.parse(raw).items.map(normalizeItem);
 }
 
+// 로컬 정적 자산(/cards/...)인지 — Cloudinary 변환을 거치면 안 된다.
+const isLocalAsset = (s) => typeof s === 'string' && /^\//.test(s);
+const absUrl = (s) => (isLocalAsset(s) ? `${SITE}${s}` : s);
+
+// 레포에 고정된 '카드·편지지' 데이터(노션과 무관). 파일이 없으면 조용히 넘긴다.
+async function loadStaticCards() {
+  const file = path.join(ROOT, 'data', 'cards.json');
+  try {
+    const raw = await fs.readFile(file, 'utf8');
+    const list = JSON.parse(raw).items.map(normalizeItem);
+    console.log(`[build] 카드·편지지 정적 데이터 ${list.length}건 (data/cards.json)`);
+    return list;
+  } catch (e) {
+    if (e.code !== 'ENOENT') console.warn('[build] data/cards.json 읽기 실패 —', e.message);
+    return [];
+  }
+}
+
 const copyOf = (it) => MAIN_COPY[it.mainCategory] || MAIN_COPY[MAIN.COLOR];
 
 // item에 Cloudinary URL과 공유문구를 입혀 사이트가 바로 쓰게 만듦
 function enrich(it) {
+  // 카드·편지지처럼 파일 경로(/cards/...)를 그대로 쓰는 항목은 변환 없이 통과시킨다.
+  if (it.static) {
+    return {
+      ...it,
+      cloud: CLOUD,
+      categoryLabel: categoryLabel(it),
+      url: `${SITE}/p/${it.id}`,
+      // og:image 만 절대 주소여야 카카오톡·검색엔진이 읽는다. 화면용 경로는 사이트 내 상대 경로로 둔다.
+      og: absUrl(it.og),
+      thumb: it.thumb || it.cover,
+      cover: it.cover,
+      promo: it.promo || it.cover,
+      pages: it.pages.map((pg, i) => ({ ...pg, n: Number(pg.n) || i + 1 })),
+      shareText: buildShareText(it, SITE),
+    };
+  }
   const o = { cloud: CLOUD, title: it.title };
   const cover = CL.toPublicId(it.cover); // 샘플의 전체 URL도 정규화
   // 시리즈는 split-upload 가 만들어 둔 10칸 그리드(<id>/<id>-grid)를 공유카드로 쓰고,
@@ -223,11 +263,19 @@ async function publishNewItemsToPinterest(items) {
 }
 
 async function main() {
-  const items = (await loadItems()).map(enrich);
+  const items = [...(await loadItems()), ...(await loadStaticCards())].map((it) => normalizeItem(it)).map(enrich);
 
   await publishNewItemsToPinterest(items);
 
   await fs.mkdir(path.join(OUT, 'p'), { recursive: true });
+
+  // 카드·편지지 정적 자산(미리보기·인쇄용 이미지·A4 PDF) — 레포 assets/cards → public/cards
+  const CARDS_SRC = path.join(ROOT, 'assets', 'cards');
+  try {
+    await fs.cp(CARDS_SRC, path.join(OUT, 'cards'), { recursive: true });
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
 
   // data.json
   await fs.writeFile(
@@ -250,7 +298,7 @@ async function main() {
   await fs.copyFile(path.join(ROOT, 'site.webmanifest'), path.join(OUT, 'site.webmanifest'));
   await fs.copyFile(path.join(ROOT, 'sw.js'), path.join(OUT, 'sw.js'));
 
-  // 3대분류 아이콘(투명 WebP) — 상단 네비·히어로·탭·섹션 제목에서 사용
+  // 4대분류 아이콘(투명 WebP) — 상단 네비·히어로·탭·섹션 제목에서 사용
   const ICON_SRC = path.join(ROOT, 'assets', 'icons');
   await fs.mkdir(path.join(OUT, 'icons'), { recursive: true });
   for (const file of await fs.readdir(ICON_SRC)) {
