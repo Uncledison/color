@@ -1,9 +1,9 @@
-// pipeline/cards.test.mjs — '카드·편지지' 대분류(크리스마스 카드 10종) 점검
+// pipeline/cards.test.mjs — '카드·편지지' 대분류(크리스마스 카드 세트) 점검
 //
 // 지키려는 것
-// 1) data/cards.json 은 Notion 빌드와 무관하게 레포에 고정된 10종을 담고 있고,
+// 1) data/cards.json 은 Notion 빌드와 무관하게 레포에 고정된 세트를 담고 있고,
 //    그 데이터가 가리키는 미리보기·인쇄 이미지·A4 PDF 파일이 실제로 저장소에 있다.
-//    (노션 빌드가 다시 돌아도 카테고리와 10종이 사라지지 않는다)
+//    (노션 빌드가 다시 돌아도 카테고리와 세트가 사라지지 않는다)
 // 2) /p/<id> 페이지는 4장 세트를 보여주고, 장별 인쇄 · 세트 PDF 받기 모두 3초 게이트를 거친다.
 // 3) PDF·고화질 주소는 HTML 에 그대로 노출되지 않는다(게이트 뒤 base64 안에만).
 import test from 'node:test';
@@ -24,8 +24,8 @@ const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'cards.json'), '
 const raw = DATA.items;
 const ids = raw.map((it) => it.id);
 
-test('카드·편지지 정적 데이터: 10종 세트, 모두 카드·편지지 대분류', () => {
-  assert.equal(raw.length, 10);
+test('카드·편지지 정적 데이터: 9종 세트, 모두 카드·편지지 대분류', () => {
+  assert.equal(raw.length, 9);
   for (const it of raw) {
     const norm = normalizeItem(it);
     assert.equal(norm.mainCategory, MAIN.CARD, it.id);

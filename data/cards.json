@@ -1,5 +1,5 @@
 {
-  "_comment": "카드·편지지(크리스마스 10종) — Notion 빌드와 무관하게 저장소에 고정된 정적 데이터. build.mjs가 항상 함께 읽어 붙인다. 미리보기·인쇄·PDF 파일은 assets/cards/ 아래에 함께 커밋되어 있다.",
+  "_comment": "카드·편지지(크리스마스 카드 세트) — Notion 빌드와 무관하게 저장소에 고정된 정적 데이터. build.mjs가 항상 함께 읽어 붙인다. 미리보기·인쇄·PDF 파일은 assets/cards/ 아래에 함께 커밋되어 있다.",
   "items": [
     {
       "id": "xmas-01-hiphop-santa",
@@ -144,79 +144,6 @@
           "print": "/cards/xmas-02-coffee-santa/p4-print.jpg",
           "social": "/cards/xmas-02-coffee-santa/p4.jpg",
           "download": "/cards/xmas-02-coffee-santa/set.pdf"
-        }
-      ]
-    },
-    {
-      "id": "xmas-03-chimney-santa",
-      "static": true,
-      "type": "series",
-      "cardSet": true,
-      "mainCategory": "카드·편지지",
-      "category": "크리스마스",
-      "title": "굴뚝에 낀 산타 크리스마스 카드 세트",
-      "desc": "굴뚝에 끼어 손을 흔드는 산타의 OH, WHAT A NIGHT 카드예요.",
-      "tags": [
-        "크리스마스",
-        "산타",
-        "굴뚝",
-        "카드",
-        "편지지",
-        "봉투"
-      ],
-      "pageCount": 4,
-      "cover": "/cards/xmas-03-chimney-santa/card.jpg",
-      "thumb": "/cards/xmas-03-chimney-santa/card.jpg",
-      "og": "/cards/xmas-03-chimney-santa/og.jpg",
-      "promo": "/cards/xmas-03-chimney-santa/p1.jpg",
-      "setPdf": "/cards/xmas-03-chimney-santa/set.pdf",
-      "downloadName": "xmas-03-chimney-santa-a4-4p.pdf",
-      "sizes": "카드 95×135mm · 카드 봉투 147×107mm · 편지지 140×200mm 9줄 · 편지 봉투 152×112mm",
-      "updated": "2026-11-27",
-      "pages": [
-        {
-          "n": 1,
-          "name": "카드",
-          "spec": "완성 95×135mm",
-          "story": "‘OH, WHAT A NIGHT’ 인사가 담긴 카드예요. 실선을 따라 자르고 점선 눈금 높이에서 반으로 접으면 95×135mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
-          "preview": "/cards/xmas-03-chimney-santa/p1.jpg",
-          "small": "/cards/xmas-03-chimney-santa/p1.jpg",
-          "print": "/cards/xmas-03-chimney-santa/p1-print.jpg",
-          "social": "/cards/xmas-03-chimney-santa/p1.jpg",
-          "download": "/cards/xmas-03-chimney-santa/set.pdf"
-        },
-        {
-          "n": 2,
-          "name": "카드 봉투",
-          "spec": "완성 147×107mm",
-          "story": "카드를 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
-          "preview": "/cards/xmas-03-chimney-santa/p2.jpg",
-          "small": "/cards/xmas-03-chimney-santa/p2.jpg",
-          "print": "/cards/xmas-03-chimney-santa/p2-print.jpg",
-          "social": "/cards/xmas-03-chimney-santa/p2.jpg",
-          "download": "/cards/xmas-03-chimney-santa/set.pdf"
-        },
-        {
-          "n": 3,
-          "name": "편지지",
-          "spec": "140×200mm · 9줄",
-          "story": "9줄 편지지예요(줄 간격 12.5mm). 양옆 좁은 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 4도로 접어 넣으면 딱 들어갑니다.",
-          "preview": "/cards/xmas-03-chimney-santa/p3.jpg",
-          "small": "/cards/xmas-03-chimney-santa/p3.jpg",
-          "print": "/cards/xmas-03-chimney-santa/p3-print.jpg",
-          "social": "/cards/xmas-03-chimney-santa/p3.jpg",
-          "download": "/cards/xmas-03-chimney-santa/set.pdf"
-        },
-        {
-          "n": 4,
-          "name": "편지 봉투",
-          "spec": "완성 152×112mm",
-          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고, 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
-          "preview": "/cards/xmas-03-chimney-santa/p4.jpg",
-          "small": "/cards/xmas-03-chimney-santa/p4.jpg",
-          "print": "/cards/xmas-03-chimney-santa/p4-print.jpg",
-          "social": "/cards/xmas-03-chimney-santa/p4.jpg",
-          "download": "/cards/xmas-03-chimney-santa/set.pdf"
         }
       ]
     },
