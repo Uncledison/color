@@ -486,6 +486,8 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 .coloring-card .card-img{aspect-ratio:3/4;background:var(--warm)}
 /* 카드·편지지 세트는 카드 실물 비율(190×135mm)로 보여준다 */
 .coloring-card.is-card .card-img{aspect-ratio:141/100;background:var(--warm-2)}
+/* 긴 제목이 단어 중간에서 끊기지 않게(한국어 줄바꿈) */
+.card-title{word-break:keep-all}
 .coloring-card .card-img svg{width:72%;height:auto}
 
 .badge-top{
@@ -1362,6 +1364,7 @@ svg.coloring .no-fill{fill:none}
           <li><a href="#" onclick="return selectMain('색칠도안')"><img class="foot-ico" src="/icons/color.webp" alt="" width="16" height="16">색칠도안</a></li>
           <li><a href="#" onclick="return selectMain('두뇌놀이')"><img class="foot-ico" src="/icons/brain.webp" alt="" width="16" height="16">두뇌놀이</a></li>
           <li><a href="#" onclick="return selectMain('스티커판')"><img class="foot-ico" src="/icons/sticker.webp" alt="" width="16" height="16">스티커판</a></li>
+          <li><a href="#" onclick="return selectMain('카드·편지지')"><img class="foot-ico" src="/icons/card.webp" alt="" width="16" height="16">카드·편지지</a></li>
         </ul>
       </div>
       <div>
