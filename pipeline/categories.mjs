@@ -34,6 +34,11 @@ export const MAIN_ICONS = {
   [MAIN.CARD]: '/icons/card.webp',
 };
 
+// 사이트에서 완전히 내린 항목 — 노션·정적 데이터 어느 쪽에 들어 있어도
+// build.mjs 가 읽은 뒤 걸러내고, 이미 만들어진 /p/<id> 페이지 파일도 지운다.
+// (2026-11-28) '접는 크리스마스 카드 만들기 — 산타와 트리' 삭제 요청
+export const HIDDEN_IDS = new Set(['card-christmas-fold-santa']);
+
 // 두뇌놀이 표준 하위분류
 export const BRAIN_SUBS = ['미로찾기', '선잇기', '점잇기'];
 // 스티커판 표준 하위분류

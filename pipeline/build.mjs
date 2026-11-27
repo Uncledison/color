@@ -23,7 +23,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as CL from './cloudinary.mjs';
-import { MAIN, MAIN_COPY, buildShareText, categoryLabel, normalizeItem } from './categories.mjs';
+import { MAIN, MAIN_COPY, HIDDEN_IDS, buildShareText, categoryLabel, normalizeItem } from './categories.mjs';
 import { buildSeo } from './seo.mjs';
 import { richPage, relatedFor, esc } from './page.mjs';
 import { INDEXNOW_KEY, keyFileName, pingIndexNow, shouldPingIndexNow } from './indexnow.mjs';
@@ -280,7 +280,14 @@ async function publishNewItemsToPinterest(items) {
 }
 
 async function main() {
-  const items = [...(await loadItems()), ...(await loadStaticCards())].map((it) => normalizeItem(it)).map(enrich);
+  const all = [...(await loadItems()), ...(await loadStaticCards())];
+  // 내리기로 한 도안(HIDDEN_IDS)은 어느 소스에 있든 여기서 빠진다 → data.json·홈·sitemap 모두 제외
+  const items = all
+    .filter((it) => !HIDDEN_IDS.has(it.id))
+    .map((it) => normalizeItem(it))
+    .map(enrich);
+  const dropped = all.length - items.length;
+  if (dropped > 0) console.log(`[build] 숨김 처리 ${dropped}건 (${[...HIDDEN_IDS].join(', ')})`);
 
   await publishNewItemsToPinterest(items);
 
@@ -326,6 +333,16 @@ async function main() {
   // OG 페이지 + 블로그/카페 복사용 페이지 (OG 페이지에는 SEO 메타·JSON-LD·내부 링크를 입힌다)
   await fs.mkdir(path.join(OUT, 'blog'), { recursive: true });
   await fs.mkdir(path.join(OUT, 'cafe'), { recursive: true });
+  // 내리기로 한 도안의 예전 결과물이 public/ 에 남아 있으면 지운다(빌드 폴더를 비우지 않고 다시 돌리는 경우 대비)
+  for (const id of HIDDEN_IDS) {
+    for (const sub of ['p', 'blog', 'cafe']) {
+      try {
+        await fs.unlink(path.join(OUT, sub, `${id}.html`));
+      } catch (e) {
+        if (e.code !== 'ENOENT') throw e;
+      }
+    }
+  }
   for (const it of items) {
     const seo = buildSeo(it, { site: SITE });
     await fs.writeFile(path.join(OUT, 'p', `${it.id}.html`), richPage(it, { seo, related: relatedFor(it, items), site: SITE }));

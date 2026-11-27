@@ -12,7 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { MAIN, normalizeItem, buildShareText } from './categories.mjs';
+import { MAIN, normalizeItem, buildShareText, HIDDEN_IDS } from './categories.mjs';
 import { buildSeo } from './seo.mjs';
 import { richPage } from './page.mjs';
 
@@ -24,12 +24,12 @@ const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'cards.json'), '
 const raw = DATA.items;
 const ids = raw.map((it) => it.id);
 
-test('카드·편지지 정적 데이터: 19종(4장 세트 14 · 1장 뒤집기 5), 모두 카드·편지지 대분류', () => {
-  assert.equal(raw.length, 19);
+test('카드·편지지 정적 데이터: 29종(4장 세트 19 · 1장 뒤집기 10), 모두 카드·편지지 대분류', () => {
+  assert.equal(raw.length, 29);
   const sets = raw.filter((it) => it.type === 'series');
   const flips = raw.filter((it) => it.type === 'single');
-  assert.equal(sets.length, 14);
-  assert.equal(flips.length, 5);
+  assert.equal(sets.length, 19);
+  assert.equal(flips.length, 10);
   for (const it of raw) {
     const norm = normalizeItem(it);
     assert.equal(norm.mainCategory, MAIN.CARD, it.id);
@@ -59,6 +59,12 @@ test('카드·편지지 정적 데이터: 19종(4장 세트 14 · 1장 뒤집기
     assert.match(it.title, /뒤집기 카드/);
   }
   assert.equal(new Set(ids).size, ids.length, 'id 중복');
+});
+
+test('사이트에서 내린 도안(접는 크리스마스 카드 만들기 — 산타와 트리)은 숨김 목록에만 있고 카드 데이터에는 없다', () => {
+  // build.mjs 가 Notion 데이터를 읽은 뒤 HIDDEN_IDS 로 걸러내므로 data.json·홈·sitemap·/p 에서 빠진다.
+  assert.ok(HIDDEN_IDS.has('card-christmas-fold-santa'));
+  for (const it of raw) assert.ok(!HIDDEN_IDS.has(it.id), `${it.id}: 숨김 목록의 id 가 카드 데이터에 남아 있다`);
 });
 
 test('카드·편지지 정적 데이터가 가리키는 파일이 저장소에 있다', () => {

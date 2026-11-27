@@ -1216,6 +1216,566 @@
           "download": "/cards/xmas-flip-05-stocking/set.pdf"
         }
       ]
+    },
+    {
+      "id": "xmas-16-snowman-family",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "눈사람 가족 눈싸움 크리스마스 카드 세트",
+      "desc": "파스텔 민트 하늘 아래 목도리를 두른 눈사람 가족이 눈싸움을 벌이는 3D 애니메이션풍 크리스마스 카드 세트예요.",
+      "tags": [
+        "크리스마스",
+        "눈사람",
+        "눈싸움",
+        "카드",
+        "편지지",
+        "봉투"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-16-snowman-family/card.jpg",
+      "thumb": "/cards/xmas-16-snowman-family/card.jpg",
+      "og": "/cards/xmas-16-snowman-family/og.jpg",
+      "promo": "/cards/xmas-16-snowman-family/p1.jpg",
+      "setPdf": "/cards/xmas-16-snowman-family/set.pdf",
+      "downloadName": "xmas-16-snowman-family-a4-4p.pdf",
+      "sizes": "카드 95×135mm · 카드 봉투 147×107mm · 편지지 140×200mm 9줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 95×135mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 점선 눈금 높이에서 반으로 접으면 95×135mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-16-snowman-family/p1.jpg",
+          "small": "/cards/xmas-16-snowman-family/p1.jpg",
+          "print": "/cards/xmas-16-snowman-family/p1-print.jpg",
+          "social": "/cards/xmas-16-snowman-family/p1.jpg",
+          "download": "/cards/xmas-16-snowman-family/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-16-snowman-family/p2.jpg",
+          "small": "/cards/xmas-16-snowman-family/p2.jpg",
+          "print": "/cards/xmas-16-snowman-family/p2-print.jpg",
+          "social": "/cards/xmas-16-snowman-family/p2.jpg",
+          "download": "/cards/xmas-16-snowman-family/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 9줄",
+          "story": "9줄 편지지예요(줄 간격 12.5mm). 양옆 좁은 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 4단으로 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-16-snowman-family/p3.jpg",
+          "small": "/cards/xmas-16-snowman-family/p3.jpg",
+          "print": "/cards/xmas-16-snowman-family/p3-print.jpg",
+          "social": "/cards/xmas-16-snowman-family/p3.jpg",
+          "download": "/cards/xmas-16-snowman-family/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고, 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-16-snowman-family/p4.jpg",
+          "small": "/cards/xmas-16-snowman-family/p4.jpg",
+          "print": "/cards/xmas-16-snowman-family/p4-print.jpg",
+          "social": "/cards/xmas-16-snowman-family/p4.jpg",
+          "download": "/cards/xmas-16-snowman-family/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-17-penguin-bear",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "펭귄 & 북극곰 트리 파티 크리스마스 카드 세트",
+      "desc": "아기 펭귄과 북극곰이 핑크빛 트리를 함께 꾸미는 3D 애니메이션풍 크리스마스 카드 세트예요.",
+      "tags": [
+        "크리스마스",
+        "펭귄",
+        "북극곰",
+        "트리",
+        "카드",
+        "편지지"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-17-penguin-bear/card.jpg",
+      "thumb": "/cards/xmas-17-penguin-bear/card.jpg",
+      "og": "/cards/xmas-17-penguin-bear/og.jpg",
+      "promo": "/cards/xmas-17-penguin-bear/p1.jpg",
+      "setPdf": "/cards/xmas-17-penguin-bear/set.pdf",
+      "downloadName": "xmas-17-penguin-bear-a4-4p.pdf",
+      "sizes": "카드 95×135mm · 카드 봉투 147×107mm · 편지지 140×200mm 9줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 95×135mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 점선 눈금 높이에서 반으로 접으면 95×135mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-17-penguin-bear/p1.jpg",
+          "small": "/cards/xmas-17-penguin-bear/p1.jpg",
+          "print": "/cards/xmas-17-penguin-bear/p1-print.jpg",
+          "social": "/cards/xmas-17-penguin-bear/p1.jpg",
+          "download": "/cards/xmas-17-penguin-bear/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-17-penguin-bear/p2.jpg",
+          "small": "/cards/xmas-17-penguin-bear/p2.jpg",
+          "print": "/cards/xmas-17-penguin-bear/p2-print.jpg",
+          "social": "/cards/xmas-17-penguin-bear/p2.jpg",
+          "download": "/cards/xmas-17-penguin-bear/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 9줄",
+          "story": "9줄 편지지예요(줄 간격 12.5mm). 양옆 좁은 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 4단으로 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-17-penguin-bear/p3.jpg",
+          "small": "/cards/xmas-17-penguin-bear/p3.jpg",
+          "print": "/cards/xmas-17-penguin-bear/p3-print.jpg",
+          "social": "/cards/xmas-17-penguin-bear/p3.jpg",
+          "download": "/cards/xmas-17-penguin-bear/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고, 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-17-penguin-bear/p4.jpg",
+          "small": "/cards/xmas-17-penguin-bear/p4.jpg",
+          "print": "/cards/xmas-17-penguin-bear/p4-print.jpg",
+          "social": "/cards/xmas-17-penguin-bear/p4.jpg",
+          "download": "/cards/xmas-17-penguin-bear/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-18-toy-train",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "장난감 기차 마을 크리스마스 카드 세트",
+      "desc": "선물과 테디베어를 싣고 눈 마을을 달리는 빨강·금색 장난감 기차를 담은 3D 애니메이션풍 카드 세트예요.",
+      "tags": [
+        "크리스마스",
+        "기차",
+        "장난감",
+        "선물",
+        "카드",
+        "편지지"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-18-toy-train/card.jpg",
+      "thumb": "/cards/xmas-18-toy-train/card.jpg",
+      "og": "/cards/xmas-18-toy-train/og.jpg",
+      "promo": "/cards/xmas-18-toy-train/p1.jpg",
+      "setPdf": "/cards/xmas-18-toy-train/set.pdf",
+      "downloadName": "xmas-18-toy-train-a4-4p.pdf",
+      "sizes": "카드 95×135mm · 카드 봉투 147×107mm · 편지지 140×200mm 9줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 95×135mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 점선 눈금 높이에서 반으로 접으면 95×135mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-18-toy-train/p1.jpg",
+          "small": "/cards/xmas-18-toy-train/p1.jpg",
+          "print": "/cards/xmas-18-toy-train/p1-print.jpg",
+          "social": "/cards/xmas-18-toy-train/p1.jpg",
+          "download": "/cards/xmas-18-toy-train/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-18-toy-train/p2.jpg",
+          "small": "/cards/xmas-18-toy-train/p2.jpg",
+          "print": "/cards/xmas-18-toy-train/p2-print.jpg",
+          "social": "/cards/xmas-18-toy-train/p2.jpg",
+          "download": "/cards/xmas-18-toy-train/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 9줄",
+          "story": "9줄 편지지예요(줄 간격 12.5mm). 양옆 좁은 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 4단으로 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-18-toy-train/p3.jpg",
+          "small": "/cards/xmas-18-toy-train/p3.jpg",
+          "print": "/cards/xmas-18-toy-train/p3-print.jpg",
+          "social": "/cards/xmas-18-toy-train/p3.jpg",
+          "download": "/cards/xmas-18-toy-train/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고, 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-18-toy-train/p4.jpg",
+          "small": "/cards/xmas-18-toy-train/p4.jpg",
+          "print": "/cards/xmas-18-toy-train/p4-print.jpg",
+          "social": "/cards/xmas-18-toy-train/p4.jpg",
+          "download": "/cards/xmas-18-toy-train/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-19-elf-factory",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "요정 엘프 선물 공장 크리스마스 카드 세트",
+      "desc": "에메랄드빛 공방에서 리본으로 선물을 포장하는 요정 엘프들의 3D 애니메이션풍 크리스마스 카드 세트예요.",
+      "tags": [
+        "크리스마스",
+        "엘프",
+        "요정",
+        "선물포장",
+        "카드",
+        "편지지"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-19-elf-factory/card.jpg",
+      "thumb": "/cards/xmas-19-elf-factory/card.jpg",
+      "og": "/cards/xmas-19-elf-factory/og.jpg",
+      "promo": "/cards/xmas-19-elf-factory/p1.jpg",
+      "setPdf": "/cards/xmas-19-elf-factory/set.pdf",
+      "downloadName": "xmas-19-elf-factory-a4-4p.pdf",
+      "sizes": "카드 95×135mm · 카드 봉투 147×107mm · 편지지 140×200mm 9줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 95×135mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 점선 눈금 높이에서 반으로 접으면 95×135mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-19-elf-factory/p1.jpg",
+          "small": "/cards/xmas-19-elf-factory/p1.jpg",
+          "print": "/cards/xmas-19-elf-factory/p1-print.jpg",
+          "social": "/cards/xmas-19-elf-factory/p1.jpg",
+          "download": "/cards/xmas-19-elf-factory/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-19-elf-factory/p2.jpg",
+          "small": "/cards/xmas-19-elf-factory/p2.jpg",
+          "print": "/cards/xmas-19-elf-factory/p2-print.jpg",
+          "social": "/cards/xmas-19-elf-factory/p2.jpg",
+          "download": "/cards/xmas-19-elf-factory/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 9줄",
+          "story": "9줄 편지지예요(줄 간격 12.5mm). 양옆 좁은 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 4단으로 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-19-elf-factory/p3.jpg",
+          "small": "/cards/xmas-19-elf-factory/p3.jpg",
+          "print": "/cards/xmas-19-elf-factory/p3-print.jpg",
+          "social": "/cards/xmas-19-elf-factory/p3.jpg",
+          "download": "/cards/xmas-19-elf-factory/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고, 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-19-elf-factory/p4.jpg",
+          "small": "/cards/xmas-19-elf-factory/p4.jpg",
+          "print": "/cards/xmas-19-elf-factory/p4-print.jpg",
+          "social": "/cards/xmas-19-elf-factory/p4.jpg",
+          "download": "/cards/xmas-19-elf-factory/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-20-cozy-cocoa",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "눈 내리는 오두막 핫초코 크리스마스 카드 세트",
+      "desc": "창밖엔 눈, 마시멜로 핫초코와 미니 트리·초가 반짝이는 겨울 오두막을 담은 3D 애니메이션풍 카드 세트예요.",
+      "tags": [
+        "크리스마스",
+        "핫초코",
+        "오두막",
+        "겨울",
+        "카드",
+        "편지지"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-20-cozy-cocoa/card.jpg",
+      "thumb": "/cards/xmas-20-cozy-cocoa/card.jpg",
+      "og": "/cards/xmas-20-cozy-cocoa/og.jpg",
+      "promo": "/cards/xmas-20-cozy-cocoa/p1.jpg",
+      "setPdf": "/cards/xmas-20-cozy-cocoa/set.pdf",
+      "downloadName": "xmas-20-cozy-cocoa-a4-4p.pdf",
+      "sizes": "카드 95×135mm · 카드 봉투 147×107mm · 편지지 140×200mm 9줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 95×135mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 점선 눈금 높이에서 반으로 접으면 95×135mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-20-cozy-cocoa/p1.jpg",
+          "small": "/cards/xmas-20-cozy-cocoa/p1.jpg",
+          "print": "/cards/xmas-20-cozy-cocoa/p1-print.jpg",
+          "social": "/cards/xmas-20-cozy-cocoa/p1.jpg",
+          "download": "/cards/xmas-20-cozy-cocoa/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-20-cozy-cocoa/p2.jpg",
+          "small": "/cards/xmas-20-cozy-cocoa/p2.jpg",
+          "print": "/cards/xmas-20-cozy-cocoa/p2-print.jpg",
+          "social": "/cards/xmas-20-cozy-cocoa/p2.jpg",
+          "download": "/cards/xmas-20-cozy-cocoa/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 9줄",
+          "story": "9줄 편지지예요(줄 간격 12.5mm). 양옆 좁은 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 4단으로 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-20-cozy-cocoa/p3.jpg",
+          "small": "/cards/xmas-20-cozy-cocoa/p3.jpg",
+          "print": "/cards/xmas-20-cozy-cocoa/p3-print.jpg",
+          "social": "/cards/xmas-20-cozy-cocoa/p3.jpg",
+          "download": "/cards/xmas-20-cozy-cocoa/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고, 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-20-cozy-cocoa/p4.jpg",
+          "small": "/cards/xmas-20-cozy-cocoa/p4.jpg",
+          "print": "/cards/xmas-20-cozy-cocoa/p4-print.jpg",
+          "social": "/cards/xmas-20-cozy-cocoa/p4.jpg",
+          "download": "/cards/xmas-20-cozy-cocoa/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-flip-06-penguin-sled",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "펭귄 눈썰매 뒤집기 카드",
+      "desc": "눈 언덕 위 썰매를 타고 출발하는 아기 펭귄이, 접으면 선물 더미에 퐁당 착지해 웃는 뒷면으로 바뀌는 뒤집기 카드예요.",
+      "tags": [
+        "크리스마스",
+        "펭귄",
+        "눈썰매",
+        "뒤집기",
+        "카드"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/xmas-flip-06-penguin-sled/card.jpg",
+      "thumb": "/cards/xmas-flip-06-penguin-sled/card.jpg",
+      "og": "/cards/xmas-flip-06-penguin-sled/og.jpg",
+      "promo": "/cards/xmas-flip-06-penguin-sled/p1.jpg",
+      "setPdf": "/cards/xmas-flip-06-penguin-sled/set.pdf",
+      "downloadName": "xmas-flip-06-penguin-sled-a4-1p.pdf",
+      "sizes": "A4 1장 · 완성 지름 116mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "뒤집기 카드",
+          "spec": "A4 1장 · 완성 지름 116mm",
+          "story": "실선을 따라 오린 뒤 띠 가운데 붉은 점선을 뒤로 접어 위쪽 원을 아래 원 뒤로 넘기면 앞면이 MERRY CHRISTMAS · 뒷면이 HAPPY NEW YEAR 카드가 됩니다. 위쪽 원은 접은 뒤 바르게 보이도록 미리 180° 돌려 인쇄했어요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 접었을 때 모양이 잘 섭니다.",
+          "preview": "/cards/xmas-flip-06-penguin-sled/p1.jpg",
+          "small": "/cards/xmas-flip-06-penguin-sled/p1.jpg",
+          "print": "/cards/xmas-flip-06-penguin-sled/p1-print.jpg",
+          "social": "/cards/xmas-flip-06-penguin-sled/p1.jpg",
+          "download": "/cards/xmas-flip-06-penguin-sled/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-flip-07-gingerbread",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "진저브레드 쿠키맨 뒤집기 카드",
+      "desc": "크리스마스 준비로 분주한 진저브레드 쿠키맨이, 접으면 디저트 접시 위에서 새해를 맞는 뒷면으로 바뀌는 뒤집기 카드예요.",
+      "tags": [
+        "크리스마스",
+        "진저브레드",
+        "쿠키",
+        "뒤집기",
+        "카드"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/xmas-flip-07-gingerbread/card.jpg",
+      "thumb": "/cards/xmas-flip-07-gingerbread/card.jpg",
+      "og": "/cards/xmas-flip-07-gingerbread/og.jpg",
+      "promo": "/cards/xmas-flip-07-gingerbread/p1.jpg",
+      "setPdf": "/cards/xmas-flip-07-gingerbread/set.pdf",
+      "downloadName": "xmas-flip-07-gingerbread-a4-1p.pdf",
+      "sizes": "A4 1장 · 완성 지름 116mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "뒤집기 카드",
+          "spec": "A4 1장 · 완성 지름 116mm",
+          "story": "실선을 따라 오린 뒤 띠 가운데 붉은 점선을 뒤로 접어 위쪽 원을 아래 원 뒤로 넘기면 앞면이 MERRY CHRISTMAS · 뒷면이 HAPPY NEW YEAR 카드가 됩니다. 위쪽 원은 접은 뒤 바르게 보이도록 미리 180° 돌려 인쇄했어요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 접었을 때 모양이 잘 섭니다.",
+          "preview": "/cards/xmas-flip-07-gingerbread/p1.jpg",
+          "small": "/cards/xmas-flip-07-gingerbread/p1.jpg",
+          "print": "/cards/xmas-flip-07-gingerbread/p1-print.jpg",
+          "social": "/cards/xmas-flip-07-gingerbread/p1.jpg",
+          "download": "/cards/xmas-flip-07-gingerbread/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-flip-08-cat-tree",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "미니 트리 & 아기 고양이 뒤집기 카드",
+      "desc": "트리 오너먼트를 호기심 가득 쳐다보는 아기 고양이가, 접으면 선물 상자 속에 쏙 들어간 뒷면으로 바뀌는 뒤집기 카드예요.",
+      "tags": [
+        "크리스마스",
+        "고양이",
+        "트리",
+        "뒤집기",
+        "카드"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/xmas-flip-08-cat-tree/card.jpg",
+      "thumb": "/cards/xmas-flip-08-cat-tree/card.jpg",
+      "og": "/cards/xmas-flip-08-cat-tree/og.jpg",
+      "promo": "/cards/xmas-flip-08-cat-tree/p1.jpg",
+      "setPdf": "/cards/xmas-flip-08-cat-tree/set.pdf",
+      "downloadName": "xmas-flip-08-cat-tree-a4-1p.pdf",
+      "sizes": "A4 1장 · 완성 지름 116mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "뒤집기 카드",
+          "spec": "A4 1장 · 완성 지름 116mm",
+          "story": "실선을 따라 오린 뒤 띠 가운데 붉은 점선을 뒤로 접어 위쪽 원을 아래 원 뒤로 넘기면 앞면이 MERRY CHRISTMAS · 뒷면이 HAPPY NEW YEAR 카드가 됩니다. 위쪽 원은 접은 뒤 바르게 보이도록 미리 180° 돌려 인쇄했어요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 접었을 때 모양이 잘 섭니다.",
+          "preview": "/cards/xmas-flip-08-cat-tree/p1.jpg",
+          "small": "/cards/xmas-flip-08-cat-tree/p1.jpg",
+          "print": "/cards/xmas-flip-08-cat-tree/p1-print.jpg",
+          "social": "/cards/xmas-flip-08-cat-tree/p1.jpg",
+          "download": "/cards/xmas-flip-08-cat-tree/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-flip-09-snowglobe",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "눈사람 오르골 스노우볼 뒤집기 카드",
+      "desc": "유리구슬 안에서 춤추는 눈사람이, 접으면 구슬 밖으로 점프해 새해 폭죽을 터뜨리는 뒷면으로 바뀌는 뒤집기 카드예요.",
+      "tags": [
+        "크리스마스",
+        "눈사람",
+        "스노우볼",
+        "뒤집기",
+        "카드"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/xmas-flip-09-snowglobe/card.jpg",
+      "thumb": "/cards/xmas-flip-09-snowglobe/card.jpg",
+      "og": "/cards/xmas-flip-09-snowglobe/og.jpg",
+      "promo": "/cards/xmas-flip-09-snowglobe/p1.jpg",
+      "setPdf": "/cards/xmas-flip-09-snowglobe/set.pdf",
+      "downloadName": "xmas-flip-09-snowglobe-a4-1p.pdf",
+      "sizes": "A4 1장 · 완성 지름 116mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "뒤집기 카드",
+          "spec": "A4 1장 · 완성 지름 116mm",
+          "story": "실선을 따라 오린 뒤 띠 가운데 붉은 점선을 뒤로 접어 위쪽 원을 아래 원 뒤로 넘기면 앞면이 MERRY CHRISTMAS · 뒷면이 HAPPY NEW YEAR 카드가 됩니다. 위쪽 원은 접은 뒤 바르게 보이도록 미리 180° 돌려 인쇄했어요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 접었을 때 모양이 잘 섭니다.",
+          "preview": "/cards/xmas-flip-09-snowglobe/p1.jpg",
+          "small": "/cards/xmas-flip-09-snowglobe/p1.jpg",
+          "print": "/cards/xmas-flip-09-snowglobe/p1-print.jpg",
+          "social": "/cards/xmas-flip-09-snowglobe/p1.jpg",
+          "download": "/cards/xmas-flip-09-snowglobe/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-flip-10-teddy-gift",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "테디베어 선물 상자 뒤집기 카드",
+      "desc": "큰 리본 선물 상자를 안고 있는 곰돌이가, 접으면 상자 뚜껑이 열리며 사탕·색종이가 팡 터지는 뒷면으로 바뀌는 뒤집기 카드예요.",
+      "tags": [
+        "크리스마스",
+        "테디베어",
+        "선물",
+        "뒤집기",
+        "카드"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/xmas-flip-10-teddy-gift/card.jpg",
+      "thumb": "/cards/xmas-flip-10-teddy-gift/card.jpg",
+      "og": "/cards/xmas-flip-10-teddy-gift/og.jpg",
+      "promo": "/cards/xmas-flip-10-teddy-gift/p1.jpg",
+      "setPdf": "/cards/xmas-flip-10-teddy-gift/set.pdf",
+      "downloadName": "xmas-flip-10-teddy-gift-a4-1p.pdf",
+      "sizes": "A4 1장 · 완성 지름 116mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "뒤집기 카드",
+          "spec": "A4 1장 · 완성 지름 116mm",
+          "story": "실선을 따라 오린 뒤 띠 가운데 붉은 점선을 뒤로 접어 위쪽 원을 아래 원 뒤로 넘기면 앞면이 MERRY CHRISTMAS · 뒷면이 HAPPY NEW YEAR 카드가 됩니다. 위쪽 원은 접은 뒤 바르게 보이도록 미리 180° 돌려 인쇄했어요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 접었을 때 모양이 잘 섭니다.",
+          "preview": "/cards/xmas-flip-10-teddy-gift/p1.jpg",
+          "small": "/cards/xmas-flip-10-teddy-gift/p1.jpg",
+          "print": "/cards/xmas-flip-10-teddy-gift/p1-print.jpg",
+          "social": "/cards/xmas-flip-10-teddy-gift/p1.jpg",
+          "download": "/cards/xmas-flip-10-teddy-gift/set.pdf"
+        }
+      ]
     }
   ]
 }
