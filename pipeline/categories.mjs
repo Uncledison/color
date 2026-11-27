@@ -21,7 +21,10 @@ export const MAIN = {
   CARD: '카드·편지지', // ← 2026-11-27 추가(크리스마스 카드·봉투·편지지 세트)
 };
 
-export const MAIN_ORDER = [MAIN.COLOR, MAIN.BRAIN, MAIN.LIFE, MAIN.CARD];
+// 사이트에 보이는 대분류 순서(탭·네비·히어로·푸터·필터 공통).
+// 2026-11-27: '카드·편지지'를 2번째로 — 색칠도안 → 카드·편지지 → 두뇌놀이 → 스티커판.
+// (index.html 의 MAINS 배열과 반드시 같은 순서를 유지한다 — categories.test.mjs 가 확인)
+export const MAIN_ORDER = [MAIN.COLOR, MAIN.CARD, MAIN.BRAIN, MAIN.LIFE];
 
 // 상단 네비·히어로·탭에서 쓰는 아이콘(투명 WebP). build.mjs가 public/icons/로 복사한다.
 export const MAIN_ICONS = {
