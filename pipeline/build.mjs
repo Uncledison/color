@@ -191,8 +191,18 @@ function promoCopyPage(it, { text, label }) {
 </body></html>`;
 }
 
-const blogPage = (it) => promoCopyPage(it, { text: it.blogText, label: '블로그' });
-const cafePage = (it) => promoCopyPage(it, { text: it.cafeText, label: '카페' });
+// 카드·편지지처럼 노션 글감(blogText/cafeText)이 없는 항목은 소개문으로 본문을 채운다.
+function promoFallbackText(it) {
+  if (!it.cardSet) return '';
+  const pages = (it.pages || []).map((pg) => `${pg.n}. ${pg.name}`).join(' · ');
+  return [
+    it.desc,
+    `한 부에 카드·카드 봉투·편지지·편지 봉투 네 장이 들어 있어요(${pages}). A4로 인쇄해 접고 붙이면 완성되고, 완성 크기는 ${it.sizes || ''} 입니다.`,
+  ].join('\n\n');
+}
+
+const blogPage = (it) => promoCopyPage(it, { text: it.blogText || promoFallbackText(it), label: '블로그' });
+const cafePage = (it) => promoCopyPage(it, { text: it.cafeText || promoFallbackText(it), label: '카페' });
 
 // 검색엔진 등록·크롤링용 sitemap.xml / robots.txt
 function sitemapXml(items) {
