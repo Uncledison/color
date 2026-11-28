@@ -45,6 +45,9 @@
   --r-xl:     20px;
   --shadow:   0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.07);
   --shadow-lg:0 8px 40px rgba(0,0,0,.12);
+  /* 모달 미리보기 높이 상한 — 첫 화면에 'A4 PDF 받기'까지 들어오도록 */
+  --a4-h:     min(46vh, 340px);
+  --art-h:    min(40vh, 310px);
 }
 
 /* ── RESET ── */
@@ -76,7 +79,7 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 /* real coloring images (data-driven) */
 .coloring-card .card-img,.series-cover,.series-thumb,.modal-artwork{overflow:hidden;position:relative}
 .card-img canvas,.series-cover canvas,.series-thumb canvas{width:100%;height:100%;object-fit:cover;display:block}
-.modal-artwork canvas{max-width:100%;max-height:36vh;width:auto;height:auto;display:block;background:#fff;border-radius:var(--r);}
+.modal-artwork canvas{max-width:100%;max-height:var(--art-h,36vh);width:auto;height:auto;display:block;background:#fff;border-radius:var(--r);}
 
 /* Ctrl+P 보호: 인쇄될 것이 없고 안내문만 남는다 */
 .print-only{display:none}
@@ -102,9 +105,10 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
   padding:6px 0 8px;color:var(--ink-3);
 }
 .a4-frame{
-  width:min(100%,calc(56vh * 210 / 297));
+  /* 세로 A4 미리보기 — 높이 상한을 두어 모달 첫 화면에 액션 바가 함께 들어오게 한다 */
+  width:min(100%,calc(var(--a4-h,44vh) * 210 / 297));
   aspect-ratio:210/297;
-  margin:8px auto 0;
+  margin:6px auto 0;
   background:#fff;border:1px solid var(--border);border-radius:6px;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 24px rgba(0,0,0,.08);
@@ -112,7 +116,7 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 .a4-frame canvas{width:100%;height:100%;object-fit:contain;display:block}
 /* 엽서는 A4 가로 한 장 — 모달도 가로 비율 그대로 */
 .a4-frame.landscape{
-  width:min(100%,calc(56vh * 297 / 210));
+  width:min(100%,calc(var(--a4-h,44vh) * 297 / 210));
   aspect-ratio:297/210;
 }
 
@@ -766,39 +770,41 @@ footer{
   background:rgba(20,16,12,.75);
   z-index:500;
   align-items:center;justify-content:center;
-  padding:20px;
+  padding:12px;
 }
 .modal-wrap.open{display:flex}
 .modal{
   background:var(--canvas);
   border-radius:var(--r-xl);
   max-width:600px;width:100%;
-  max-height:90vh;overflow-y:auto;
+  max-height:calc(100vh - 24px);
+  max-height:calc(100dvh - 24px);
+  overflow-y:auto;overscroll-behavior:contain;
   box-shadow:var(--shadow-lg);
   animation:fadeUp .3s cubic-bezier(.34,1.56,.64,1);
 }
 .modal-header{
-  padding:20px 24px 16px;
+  padding:13px 20px 11px;
   border-bottom:1px solid var(--border-2);
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
 }
-.modal-title{font-family:'Jua',sans-serif;font-size:20px;font-weight:700}
+.modal-title{font-family:'Jua',sans-serif;font-size:18px;font-weight:700;line-height:1.25;min-width:0}
 .modal-close{
-  width:34px;height:34px;background:var(--warm);
-  border-radius:50%;font-size:16px;
+  flex:none;width:32px;height:32px;background:var(--warm);
+  border-radius:50%;font-size:15px;
   display:flex;align-items:center;justify-content:center;
   color:var(--ink-2);transition:background .15s;
 }
 .modal-close:hover{background:var(--warm-2)}
-.modal-body{padding:24px}
+.modal-body{padding:14px 20px 16px}
 
 .modal-artwork{
   width:100%;
   background:var(--canvas);border-radius:var(--r-lg);
   display:flex;align-items:center;justify-content:center;
-  margin-bottom:16px;border:1px solid var(--border);
+  margin-bottom:10px;border:1px solid var(--border);
   overflow:hidden;position:relative;
-  padding:8px;
+  padding:6px;
   touch-action:pan-y;
 }
 .modal-artwork svg{width:72%;height:auto;opacity:.85}
@@ -813,17 +819,17 @@ footer{
 
 /* page nav — 이미지 위에 오버레이 */
 /* 세트 안내: 이미지 위 '1 / 4' + 점, 이미지 아래 장 이름 칩(카드·편지지) — 모달을 열자마자 몇 장짜리인지 보인다 */
-.page-strip{display:flex;align-items:center;gap:8px;margin-bottom:10px;min-height:24px}
+.page-strip{display:flex;align-items:center;gap:8px;margin-bottom:7px;min-height:20px}
 .page-strip[hidden]{display:none}
 .page-set{flex:none;font-size:11px;font-weight:700;color:var(--coral, #c8442a);background:#fff4e2;
   border:1px solid #f6d9ac;border-radius:100px;padding:3px 10px;letter-spacing:.02em;white-space:nowrap}
 .page-set[hidden]{display:none}
 .page-count{flex:none;font-size:12px;font-weight:700;color:var(--ink-2);background:var(--warm);
   border-radius:100px;padding:3px 10px;letter-spacing:.02em;font-variant-numeric:tabular-nums}
-.page-chips{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 14px}
+.page-chips{display:flex;flex-wrap:wrap;gap:5px;margin:-1px 0 8px}
 .page-chips:empty{display:none}
-.page-chip{flex:none;font-size:12px;font-weight:600;color:var(--ink-2);background:#fff;border:1px solid var(--border);
-  border-radius:100px;padding:5px 12px;white-space:nowrap;cursor:pointer;transition:all .15s;line-height:1.3}
+.page-chip{flex:none;font-size:11.5px;font-weight:600;color:var(--ink-2);background:#fff;border:1px solid var(--border);
+  border-radius:100px;padding:4px 10px;white-space:nowrap;cursor:pointer;transition:all .15s;line-height:1.3}
 .page-chip:hover{border-color:var(--ink)}
 .page-chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
 .page-chip.done{background:var(--warm);border-color:var(--warm-2);color:var(--ink-2)}
@@ -844,15 +850,18 @@ footer{
 .pdot.active{background:var(--coral);width:20px;border-radius:4px}
 .pdot.done{background:var(--warm-2)}
 .story-text{
-  font-size:14px;color:var(--ink-2);line-height:1.75;
-  text-align:center;padding:0 8px;font-style:italic;margin-bottom:16px;
+  font-size:13px;color:var(--ink-2);line-height:1.5;
+  text-align:center;padding:0 8px;margin-bottom:10px;
+  /* 모달 첫 화면을 비우지 않도록 핵심 1줄만 (전문은 title 툴팁으로 남긴다) */
+  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+  word-break:keep-all;
 }
 
 /* modal ad */
 .modal-ad{
-  border-radius:var(--r);min-height:60px;overflow:hidden;
+  border-radius:var(--r);min-height:50px;overflow:hidden;
   width:100%;text-align:center;
-  margin-bottom:14px;
+  margin-bottom:10px;
 }
 .modal-ad-desktop{display:inline-block}
 .modal-ad-mobile{display:none}
@@ -863,21 +872,41 @@ footer{
 
 .modal-dl-row{
   background:var(--canvas);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:14px 16px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  border-radius:var(--r-lg);padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
 }
-.modal-dl-info strong{font-size:15px;font-weight:700;display:block;margin-bottom:2px}
+.modal-dl-info strong{font-size:14px;font-weight:700;display:block}
 .modal-dl-info span{font-size:12px;color:var(--ink-3)}
 .dl-btns{display:flex;gap:8px;flex-wrap:wrap}
-@media(max-width:600px){
-  .modal-dl-row{flex-direction:column;text-align:center}
-  .dl-btns{justify-content:center;width:100%}
-}
 .btn-dl{
-  height:42px;padding:0 18px;
+  height:40px;padding:0 16px;
   border-radius:100px;font-size:13px;font-weight:700;
   display:flex;align-items:center;gap:6px;
   transition:background .2s,transform .1s;
+}
+@media(max-width:600px){
+  /* 모바일: 안내 1줄 + 버튼 3개를 한 줄에 — 161px → 약 80px */
+  .modal-wrap{padding:8px}
+  .modal{max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px)}
+  .modal-body{padding:12px 14px 14px}
+  .modal-dl-row{flex-direction:column;align-items:stretch;gap:6px;padding:9px 11px;text-align:center}
+  .modal-dl-info strong{font-size:12px;font-weight:600;color:var(--ink-3)}
+  .dl-btns{width:100%;justify-content:center;gap:6px}
+  .btn-dl{height:38px;padding:0 10px;font-size:12px;gap:4px;flex:1 1 0;justify-content:center;min-width:0;white-space:nowrap}
+}
+@media(max-width:600px){
+  .modal-artwork{padding:5px}
+  .a4-frame{margin-top:4px}
+  /* 모바일은 미리보기를 더 줄여 첫 화면에 액션 바까지 확실히 */
+  :root{--a4-h:min(32vh,300px);--art-h:min(28vh,240px)}
+}
+/* 화면이 아주 낮은 경우(가로로 눕힐 휴대폰·작은 노트북 창): 모달 본문만 스크롤되고
+   액션 바(링크 복사·인쇄하기·A4 PDF 받기)는 아래에 붙어 있어 항상 보인다 */
+@media(max-height:640px){
+  .modal{display:flex;flex-direction:column;overflow:hidden}
+  .modal-header{flex:none}
+  .modal-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+  .modal-dl-row{position:sticky;bottom:0;z-index:3;box-shadow:0 -6px 16px rgba(20,16,12,.08)}
 }
 .btn-dl:hover{transform:translateY(-1px)}
 .btn-dl.fill{background:var(--coral);color:#fff}
@@ -2031,7 +2060,10 @@ function updateModal(){
   if(storyEl){
     /* 카드·편지지 장은 완성 규격을 앞에 붙여 준다(카드 95×135mm …) — 접어 만든 뒤 크기를 바로 알 수 있게 */
     const spec=current.mainCategory==='카드·편지지'?String(pg.spec||'').trim():'';
-    storyEl.textContent=spec?(spec+' — '+(pg.story||'')):(pg.story||'');
+    const full=spec?(spec+' — '+(pg.story||'')):(pg.story||'');
+    /* 모달 첫 화면에는 핵심 1줄만 보이고, 전문은 title 툴팁으로 남긴다 */
+    storyEl.textContent=full;
+    storyEl.title=full;
   }
   const cardSet=current.mainCategory==='카드·편지지';
   document.getElementById('dlTitle').textContent=cardSet
