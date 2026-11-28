@@ -3636,6 +3636,81 @@
           "download": "/cards/xmas-34-papercut-kraft-ornament/set.pdf"
         }
       ]
+    },
+    {
+      "id": "xmas-35-papercut-navy-sleigh",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "페이퍼컷 네이비 산타 썰매 크리스마스 카드 세트",
+      "desc": "미드나잇 네이비 종이를 겹겹이 오려 금빛 달과 별, 썰매 타는 산타와 순록, 눈 덮인 산과 전나무를 담은 카드예요. 금빛 테두리와 짙은 네이비가 고급스러운 세트입니다.",
+      "tags": [
+        "크리스마스",
+        "카드",
+        "편지지",
+        "봉투",
+        "페이퍼컷",
+        "네이비",
+        "산타",
+        "썰매"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-35-papercut-navy-sleigh/card.jpg",
+      "thumb": "/cards/xmas-35-papercut-navy-sleigh/card.jpg",
+      "og": "/cards/xmas-35-papercut-navy-sleigh/og.jpg",
+      "promo": "/cards/xmas-35-papercut-navy-sleigh/p1.jpg",
+      "setPdf": "/cards/xmas-35-papercut-navy-sleigh/set.pdf",
+      "downloadName": "xmas-35-papercut-navy-sleigh-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28T21:54:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 그림에 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-35-papercut-navy-sleigh/p1.jpg",
+          "small": "/cards/xmas-35-papercut-navy-sleigh/p1.jpg",
+          "print": "/cards/xmas-35-papercut-navy-sleigh/p1-print.jpg",
+          "social": "/cards/xmas-35-papercut-navy-sleigh/p1.jpg",
+          "download": "/cards/xmas-35-papercut-navy-sleigh/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-35-papercut-navy-sleigh/p2.jpg",
+          "small": "/cards/xmas-35-papercut-navy-sleigh/p2.jpg",
+          "print": "/cards/xmas-35-papercut-navy-sleigh/p2-print.jpg",
+          "social": "/cards/xmas-35-papercut-navy-sleigh/p2.jpg",
+          "download": "/cards/xmas-35-papercut-navy-sleigh/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 카드 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-35-papercut-navy-sleigh/p3.jpg",
+          "small": "/cards/xmas-35-papercut-navy-sleigh/p3.jpg",
+          "print": "/cards/xmas-35-papercut-navy-sleigh/p3-print.jpg",
+          "social": "/cards/xmas-35-papercut-navy-sleigh/p3.jpg",
+          "download": "/cards/xmas-35-papercut-navy-sleigh/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-35-papercut-navy-sleigh/p4.jpg",
+          "small": "/cards/xmas-35-papercut-navy-sleigh/p4.jpg",
+          "print": "/cards/xmas-35-papercut-navy-sleigh/p4-print.jpg",
+          "social": "/cards/xmas-35-papercut-navy-sleigh/p4.jpg",
+          "download": "/cards/xmas-35-papercut-navy-sleigh/set.pdf"
+        }
+      ]
     }
   ]
 }
