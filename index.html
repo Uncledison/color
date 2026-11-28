@@ -125,7 +125,8 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 
 /* 카드·편지지 세트: A4 한 장 안에 카드가 가운데 작게 놓여 있어 그대로 두면 그림이 아주 작게 보인다.
    → 흰 여백을 잘라 낸 그림(canvas.crop)을 고정 높이 칸에 가득 채워 보여준다. 장마다 높이가 같아 넘겨도 모달이 출렁이지 않는다. */
-.card-frame{width:100%;height:var(--card-h);display:flex;align-items:center;justify-content:center}
+.card-frame{position:relative;width:100%;height:var(--card-h);display:flex;align-items:center;justify-content:center}
+.copies-note{position:absolute;left:50%;bottom:4px;transform:translateX(-50%);z-index:1;white-space:nowrap;font-size:11.5px;font-weight:700;color:var(--ink-2);background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:100px;padding:3px 11px}
 .modal-artwork .card-frame canvas{height:100%;width:auto;max-width:100%;max-height:none;object-fit:contain}
 
 /* ── KEYFRAMES ── */
@@ -1695,16 +1696,17 @@ function pvHTML(url,w,h,cls,label){
   if(!url)return '';
   return '<canvas class="pv '+(cls||'')+'" data-pv="'+pvIdx(url)+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+esc(label||'')+'"></canvas>';
 }
-/* 그림 둘레의 흰 여백을 잘라낼 영역 [x,y,w,h](원본 픽셀)을 구한다.
+/* 그림 둘레의 흰 여백을 잘라낼 영역 [x,y,w,h](원본 픽셀)을 구한다. reg=[x,y,w,h]를 주면 그 안에서만 찾는다.
    작은 글씨 줄(머리말·안내문)은 잉크 비율이 낮아 건너뛰고, 카드·봉투·편지지처럼 면적이 큰 부분만 따라간다.
-   바깥 주소 그림처럼 캔버스를 읽을 수 없거나 거의 전체가 내용이면 null(자르지 않음). */
-function contentBox(im){
+   바깥 주소 그림처럼 캔버스를 읽을 수 없거나 내용을 못 찾으면 null(자르지 않음). */
+function contentBox(im,reg){
   try{
-    const sw=350,sh=Math.max(1,Math.round(sw*im.height/im.width));
+    const [rx,ry,rw,rh]=reg||[0,0,im.width,im.height];
+    const sw=350,sh=Math.max(1,Math.round(sw*rh/rw));
     const t=document.createElement('canvas');t.width=sw;t.height=sh;
-    const c=t.getContext('2d');c.drawImage(im,0,0,sw,sh);
+    const c=t.getContext('2d');c.drawImage(im,rx,ry,rw,rh,0,0,sw,sh);
     const d=c.getImageData(0,0,sw,sh).data;
-    const k=im.width/sw,pad=Math.round(im.width*.02);
+    const k=rw/sw,pad=Math.round(rw*.02);
     /* 1차: 색이 채워진 카드·봉투 면을 따라간다 / 2차: 연한 선(봉투 펼침도 등)까지 느슨하게 */
     for(const [thr,rowF,colF] of [[240,.2,.15],[250,.05,.03]]){
       const ink=(x,y)=>{const i=(y*sw+x)*4;return Math.min(d[i],d[i+1],d[i+2])<thr};
@@ -1715,19 +1717,48 @@ function contentBox(im){
       for(let x=0;x<sw;x++){let n=0;for(let y=y0;y<=y1;y++)if(ink(x,y))n++;if(n/(y1-y0+1)>=colF){if(x0<0)x0=x;x1=x}}
       if(x0<0)continue;
       const x=Math.max(0,Math.round(x0*k)-pad),y=Math.max(0,Math.round(y0*k)-pad);
-      const w=Math.min(im.width,Math.round((x1+1)*k)+pad)-x,h=Math.min(im.height,Math.round((y1+1)*k)+pad)-y;
+      const w=Math.min(rw,Math.round((x1+1)*k)+pad)-x,h=Math.min(rh,Math.round((y1+1)*k)+pad)-y;
       /* 너무 작게(가늘게) 잡히면 연한 그림을 놓친 것 — 다음 기준으로, 끝까지 안 되면 자르지 않고 전체를 보여준다 */
-      if(w<im.width*.5||h<im.height*.3)continue;
-      return w*h>=im.width*im.height*.85?null:[x,y,w,h];
+      if(w<rw*.5||h<rh*.3)continue;
+      return [rx+x,ry+y,w,h];
     }
     return null;
   }catch(e){return null}
 }
+/* A4 세로 한 장에 '같은 카드가 위아래로 2장' 놓인 쪽(카드 세트 1번)인지 본다.
+   그림을 자기 자신과 위아래로 밀어 가며 겹쳐 보아, 한 주기(≈ 절반)에서 확 맞으면 같은 그림이 반복된 쪽이다.
+   (봉투 펼침도·편지지는 반복이 없어 맞지 않는다) */
+function isStackedTwice(im){
+  try{
+    const tw=175,th=Math.max(2,Math.round(tw*im.height/im.width));
+    const t=document.createElement('canvas');t.width=tw;t.height=th;
+    const c=t.getContext('2d');c.drawImage(im,0,0,tw,th);
+    const d=c.getImageData(0,0,tw,th).data;
+    const row=r=>{const a=new Float32Array(tw);for(let x=0;x<tw;x++){const i=(r*tw+x)*4;a[x]=(d[i]+d[i+1]+d[i+2])/3}return a};
+    const R=[];for(let r=0;r<th;r++)R.push(row(r));
+    const diffs=[];let min=1e9,at=0;
+    for(let s=Math.round(th*.4);s<=Math.round(th*.6);s++){
+      let sum=0,n=0;
+      for(let r=0;r+s<th;r++){const A=R[r],B=R[r+s];for(let x=0;x<tw;x++)sum+=Math.abs(A[x]-B[x]);n+=tw}
+      const m=sum/n;diffs.push(m);if(m<min){min=m;at=s}
+    }
+    const med=diffs.slice().sort((a,b)=>a-b)[diffs.length>>1];
+    /* 찾는 구간의 끝에서 맞은 것은 진짜 주기가 아니다 — 절반 근처(0.44~0.56)에서 맞을 때만 인정 */
+    return med>1&&min<med*.4&&at/th>.44&&at/th<.56?at/th:0;
+  }catch(e){return 0}
+}
 function paintPv(cv,im){
-  let sx=0,sy=0,sw=im.width,sh=im.height;
+  let sx=0,sy=0,sw=im.width,sh=im.height,copies=0;
   if(cv.classList.contains('crop')){
-    const b=contentBox(im);
-    if(b){[sx,sy,sw,sh]=b;cv.width=sw;cv.height=sh}
+    /* 같은 카드가 위아래로 2장이면 위쪽 한 장만 크게 보여주고 '2장 인쇄'는 문구로 알린다 */
+    const half=isStackedTwice(im)?[0,0,im.width,Math.round(im.height/2)]:null;
+    const b=contentBox(im,half);
+    if(b){[sx,sy,sw,sh]=b;cv.width=sw;cv.height=sh;if(half)copies=2}
+  }
+  const frame=cv.closest&&cv.closest('.card-frame');
+  if(frame){
+    const old=frame.querySelector('.copies-note');if(old)old.remove();
+    if(copies){const n=document.createElement('span');n.className='copies-note';n.textContent='A4 한 장에 같은 카드 '+copies+'장이 인쇄돼요';frame.appendChild(n)}
   }
   const w=cv.width,h=cv.height,ctx=cv.getContext('2d');
   if(!ctx)return;
