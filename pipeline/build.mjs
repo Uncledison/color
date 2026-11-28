@@ -319,6 +319,9 @@ async function main() {
   await fs.copyFile(path.join(ROOT, 'apple-touch-icon.png'), path.join(OUT, 'apple-touch-icon.png'));
   await fs.copyFile(path.join(ROOT, 'icon-192.png'), path.join(OUT, 'icon-192.png'));
   await fs.copyFile(path.join(ROOT, 'icon-512.png'), path.join(OUT, 'icon-512.png'));
+  // maskable 아이콘 — Android 런처가 원·스퀴클로 잘라도 크레파스·무지개가 안 잘리게 여백을 둔 판본
+  await fs.copyFile(path.join(ROOT, 'icon-192-maskable.png'), path.join(OUT, 'icon-192-maskable.png'));
+  await fs.copyFile(path.join(ROOT, 'icon-512-maskable.png'), path.join(OUT, 'icon-512-maskable.png'));
   await fs.copyFile(path.join(ROOT, 'site.webmanifest'), path.join(OUT, 'site.webmanifest'));
   await fs.copyFile(path.join(ROOT, 'sw.js'), path.join(OUT, 'sw.js'));
 
