@@ -1821,7 +1821,8 @@ function renderSeason(){
   const head=document.getElementById('seasonRailHead');
   if(head)head.style.display='flex';
   const rc=document.getElementById('seasonRailCount');
-  if(rc)rc.textContent=postcards.length?postcards.length+'종':'최신';
+  /* 레일에는 최신 10종만 보이므로 개수도 레일에 실제로 보이는 수를 적는다 (엽서 20종이어도 새 엽서는 10종) */
+  if(rc)rc.textContent=newest.length+'종';
 }
 
 async function loadCatalog(){
