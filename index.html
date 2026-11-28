@@ -46,9 +46,9 @@
   --r-xl:     20px;
   --shadow:   0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.07);
   --shadow-lg:0 8px 40px rgba(0,0,0,.12);
-  /* 모달 미리보기 높이 상한 — 첫 화면에 'A4 PDF 받기'까지 들어오도록 */
-  --a4-h:     min(46vh, 340px);
-  --art-h:    min(40vh, 310px);
+  /* 모달 미리보기 높이 상한 — PC에서 설명(2~3줄)까지 보여도 첫 화면에 광고·다운로드 버튼이 들어오도록 */
+  --a4-h:     min(40vh, 296px);
+  --art-h:    min(34vh, 260px);
 }
 
 /* ── RESET ── */
@@ -777,7 +777,7 @@ footer{
 .modal{
   background:var(--canvas);
   border-radius:var(--r-xl);
-  max-width:600px;width:100%;
+  max-width:648px;width:100%;
   max-height:calc(100vh - 24px);
   max-height:calc(100dvh - 24px);
   overflow-y:auto;overscroll-behavior:contain;
@@ -785,7 +785,7 @@ footer{
   animation:fadeUp .3s cubic-bezier(.34,1.56,.64,1);
 }
 .modal-header{
-  padding:13px 20px 11px;
+  padding:11px 20px 9px;
   border-bottom:1px solid var(--border-2);
   display:flex;align-items:center;justify-content:space-between;gap:12px;
 }
@@ -797,7 +797,7 @@ footer{
   color:var(--ink-2);transition:background .15s;
 }
 .modal-close:hover{background:var(--warm-2)}
-.modal-body{padding:14px 20px 16px}
+.modal-body{padding:12px 18px 14px}
 
 .modal-artwork{
   width:100%;
@@ -850,19 +850,18 @@ footer{
 .modal-artwork .nav-next{right:10px}
 .pdot.active{background:var(--coral);width:20px;border-radius:4px}
 .pdot.done{background:var(--warm-2)}
+/* 모달 한 줄/두 줄 설명 — PC에서는 전문을 그대로 보여주고, 모바일은 높이 확보를 위해 숨긴다 */
 .story-text{
-  font-size:13px;color:var(--ink-2);line-height:1.5;
-  text-align:center;padding:0 8px;margin-bottom:10px;
-  /* 모달 첫 화면을 비우지 않도록 핵심 1줄만 (전문은 title 툴팁으로 남긴다) */
-  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;
+  font-size:13.5px;color:var(--ink-2);line-height:1.55;
+  text-align:center;padding:0 8px;margin:4px 0 10px;
   word-break:keep-all;
 }
 
-/* modal ad */
+/* modal ad — 광고 자리는 위아래로 숨 쉴 여백을 두고 높이를 미리 확보한다(PC 468x60 · 모바일 320x50) */
 .modal-ad{
-  border-radius:var(--r);min-height:50px;overflow:hidden;
+  border-radius:var(--r);min-height:60px;overflow:hidden;
   width:100%;text-align:center;
-  margin-bottom:10px;
+  margin:0 0 14px;
 }
 .modal-ad-desktop{display:inline-block}
 .modal-ad-mobile{display:none}
@@ -873,8 +872,8 @@ footer{
 
 .modal-dl-row{
   background:var(--canvas);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:10px 14px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  border-radius:var(--r-lg);padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
 }
 .modal-dl-info strong{font-size:14px;font-weight:700;display:block}
 .modal-dl-info span{font-size:12px;color:var(--ink-3)}
@@ -890,10 +889,15 @@ footer{
   .modal-wrap{padding:8px}
   .modal{max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px)}
   .modal-body{padding:12px 14px 14px}
-  .modal-dl-row{flex-direction:column;align-items:stretch;gap:6px;padding:9px 11px;text-align:center}
+  .modal-ad{min-height:50px;margin:8px 0 16px}
+  /* 모바일은 설명을 숨기고 그만큼 광고·다운로드 버튼에 여유를 준다 */
+  .story-text{display:none}
+  .modal-dl-row{flex-direction:column;align-items:stretch;gap:7px;padding:10px 12px;text-align:center}
   .modal-dl-info strong{font-size:12px;font-weight:600;color:var(--ink-3)}
   .dl-btns{width:100%;justify-content:center;gap:6px}
-  .btn-dl{height:38px;padding:0 10px;font-size:12px;gap:4px;flex:1 1 0;justify-content:center;min-width:0;white-space:nowrap}
+  .btn-dl{height:38px;padding:0 8px;font-size:12px;gap:4px;flex:1 1 0;justify-content:center;min-width:0;white-space:nowrap}
+  /* 다운로드(주 버튼)가 좁은 화면에서 글자에 치이지 않게 조금 더 넓게 */
+  .modal-dl-row .btn-dl.fill{flex:1.45 1 0}
 }
 @media(max-width:600px){
   .modal-artwork{padding:5px}
@@ -2063,7 +2067,7 @@ function updateModal(){
     /* 카드·편지지 장은 완성 규격을 앞에 붙여 준다(카드 95×135mm …) — 접어 만든 뒤 크기를 바로 알 수 있게 */
     const spec=current.mainCategory==='카드·편지지'?String(pg.spec||'').trim():'';
     const full=spec?(spec+' — '+(pg.story||'')):(pg.story||'');
-    /* 모달 첫 화면에는 핵심 1줄만 보이고, 전문은 title 툴팁으로 남긴다 */
+    /* PC는 전문 표시(자동 높이), 모바일은 CSS로 숨김 */
     storyEl.textContent=full;
     storyEl.title=full;
   }
