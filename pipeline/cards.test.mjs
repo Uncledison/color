@@ -24,12 +24,12 @@ const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'cards.json'), '
 const raw = DATA.items;
 const ids = raw.map((it) => it.id);
 
-test('카드·편지지 정적 데이터: 49종(4장 세트 19 · 1장 뒤집기 10 · 엽서 20), 모두 카드·편지지 대분류', () => {
-  assert.equal(raw.length, 49);
+test('카드·편지지 정적 데이터: 54종(4장 세트 24 · 1장 뒤집기 10 · 엽서 20), 모두 카드·편지지 대분류', () => {
+  assert.equal(raw.length, 54);
   const sets = raw.filter((it) => it.type === 'series');
   const flips = raw.filter((it) => it.type === 'single' && !it.postcard);
   const postcards = raw.filter((it) => it.postcard);
-  assert.equal(sets.length, 19);
+  assert.equal(sets.length, 24);
   assert.equal(flips.length, 10);
   assert.equal(postcards.length, 20);
   for (const it of raw) {
