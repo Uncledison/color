@@ -2591,6 +2591,376 @@
           "download": "/cards/postcard-classic-05-stamps/set.pdf"
         }
       ]
+    },
+    {
+      "id": "xmas-21-botanical-tree",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "보태니컬 트리 크리스마스 카드 세트",
+      "desc": "솔잎과 유칼립투스, 오렌지 열매로 꾸민 수채화 크리스마스 트리 카드예요. 차분한 색감의 성인용 보태니컬 세트입니다.",
+      "tags": [
+        "크리스마스",
+        "보태니컬",
+        "수채화",
+        "성인용",
+        "카드",
+        "편지지",
+        "봉투"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-21-botanical-tree/card.jpg",
+      "thumb": "/cards/xmas-21-botanical-tree/card.jpg",
+      "og": "/cards/xmas-21-botanical-tree/og.jpg",
+      "promo": "/cards/xmas-21-botanical-tree/p1.jpg",
+      "setPdf": "/cards/xmas-21-botanical-tree/set.pdf",
+      "downloadName": "xmas-21-botanical-tree-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-21-botanical-tree/p1.jpg",
+          "small": "/cards/xmas-21-botanical-tree/p1.jpg",
+          "print": "/cards/xmas-21-botanical-tree/p1-print.jpg",
+          "social": "/cards/xmas-21-botanical-tree/p1.jpg",
+          "download": "/cards/xmas-21-botanical-tree/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-21-botanical-tree/p2.jpg",
+          "small": "/cards/xmas-21-botanical-tree/p2.jpg",
+          "print": "/cards/xmas-21-botanical-tree/p2-print.jpg",
+          "social": "/cards/xmas-21-botanical-tree/p2.jpg",
+          "download": "/cards/xmas-21-botanical-tree/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 보태니컬 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-21-botanical-tree/p3.jpg",
+          "small": "/cards/xmas-21-botanical-tree/p3.jpg",
+          "print": "/cards/xmas-21-botanical-tree/p3-print.jpg",
+          "social": "/cards/xmas-21-botanical-tree/p3.jpg",
+          "download": "/cards/xmas-21-botanical-tree/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-21-botanical-tree/p4.jpg",
+          "small": "/cards/xmas-21-botanical-tree/p4.jpg",
+          "print": "/cards/xmas-21-botanical-tree/p4-print.jpg",
+          "social": "/cards/xmas-21-botanical-tree/p4.jpg",
+          "download": "/cards/xmas-21-botanical-tree/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-22-botanical-snowglobe",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "보태니컬 스노우글로브 크리스마스 카드 세트",
+      "desc": "눈 내리는 오두막 스노우글로브를 홀리와 솔잎으로 감싼 수채화 카드예요. 성인도 부담 없이 쓰는 차분한 보태니컬 세트입니다.",
+      "tags": [
+        "크리스마스",
+        "보태니컬",
+        "수채화",
+        "성인용",
+        "카드",
+        "편지지",
+        "봉투"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-22-botanical-snowglobe/card.jpg",
+      "thumb": "/cards/xmas-22-botanical-snowglobe/card.jpg",
+      "og": "/cards/xmas-22-botanical-snowglobe/og.jpg",
+      "promo": "/cards/xmas-22-botanical-snowglobe/p1.jpg",
+      "setPdf": "/cards/xmas-22-botanical-snowglobe/set.pdf",
+      "downloadName": "xmas-22-botanical-snowglobe-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-22-botanical-snowglobe/p1.jpg",
+          "small": "/cards/xmas-22-botanical-snowglobe/p1.jpg",
+          "print": "/cards/xmas-22-botanical-snowglobe/p1-print.jpg",
+          "social": "/cards/xmas-22-botanical-snowglobe/p1.jpg",
+          "download": "/cards/xmas-22-botanical-snowglobe/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-22-botanical-snowglobe/p2.jpg",
+          "small": "/cards/xmas-22-botanical-snowglobe/p2.jpg",
+          "print": "/cards/xmas-22-botanical-snowglobe/p2-print.jpg",
+          "social": "/cards/xmas-22-botanical-snowglobe/p2.jpg",
+          "download": "/cards/xmas-22-botanical-snowglobe/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 보태니컬 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-22-botanical-snowglobe/p3.jpg",
+          "small": "/cards/xmas-22-botanical-snowglobe/p3.jpg",
+          "print": "/cards/xmas-22-botanical-snowglobe/p3-print.jpg",
+          "social": "/cards/xmas-22-botanical-snowglobe/p3.jpg",
+          "download": "/cards/xmas-22-botanical-snowglobe/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-22-botanical-snowglobe/p4.jpg",
+          "small": "/cards/xmas-22-botanical-snowglobe/p4.jpg",
+          "print": "/cards/xmas-22-botanical-snowglobe/p4-print.jpg",
+          "social": "/cards/xmas-22-botanical-snowglobe/p4.jpg",
+          "download": "/cards/xmas-22-botanical-snowglobe/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-23-botanical-snowman",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "보태니컬 눈사람 크리스마스 카드 세트",
+      "desc": "털모자와 머플러를 두른 눈사람을 솔가지 화환에 앉힌 수채화 카드예요. 포근한 겨울 분위기의 성인용 보태니컬 세트입니다.",
+      "tags": [
+        "크리스마스",
+        "보태니컬",
+        "수채화",
+        "성인용",
+        "카드",
+        "편지지",
+        "봉투"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-23-botanical-snowman/card.jpg",
+      "thumb": "/cards/xmas-23-botanical-snowman/card.jpg",
+      "og": "/cards/xmas-23-botanical-snowman/og.jpg",
+      "promo": "/cards/xmas-23-botanical-snowman/p1.jpg",
+      "setPdf": "/cards/xmas-23-botanical-snowman/set.pdf",
+      "downloadName": "xmas-23-botanical-snowman-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-23-botanical-snowman/p1.jpg",
+          "small": "/cards/xmas-23-botanical-snowman/p1.jpg",
+          "print": "/cards/xmas-23-botanical-snowman/p1-print.jpg",
+          "social": "/cards/xmas-23-botanical-snowman/p1.jpg",
+          "download": "/cards/xmas-23-botanical-snowman/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-23-botanical-snowman/p2.jpg",
+          "small": "/cards/xmas-23-botanical-snowman/p2.jpg",
+          "print": "/cards/xmas-23-botanical-snowman/p2-print.jpg",
+          "social": "/cards/xmas-23-botanical-snowman/p2.jpg",
+          "download": "/cards/xmas-23-botanical-snowman/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 보태니컬 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-23-botanical-snowman/p3.jpg",
+          "small": "/cards/xmas-23-botanical-snowman/p3.jpg",
+          "print": "/cards/xmas-23-botanical-snowman/p3-print.jpg",
+          "social": "/cards/xmas-23-botanical-snowman/p3.jpg",
+          "download": "/cards/xmas-23-botanical-snowman/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-23-botanical-snowman/p4.jpg",
+          "small": "/cards/xmas-23-botanical-snowman/p4.jpg",
+          "print": "/cards/xmas-23-botanical-snowman/p4-print.jpg",
+          "social": "/cards/xmas-23-botanical-snowman/p4.jpg",
+          "download": "/cards/xmas-23-botanical-snowman/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-24-botanical-candles",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "보태니컬 캔들 크리스마스 카드 세트",
+      "desc": "금빛 촛대 세 자루와 리본, 베리를 수채화로 그린 카드예요. 저녁 식탁에 어울리는 차분한 성인용 보태니컬 세트입니다.",
+      "tags": [
+        "크리스마스",
+        "보태니컬",
+        "수채화",
+        "성인용",
+        "카드",
+        "편지지",
+        "봉투"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-24-botanical-candles/card.jpg",
+      "thumb": "/cards/xmas-24-botanical-candles/card.jpg",
+      "og": "/cards/xmas-24-botanical-candles/og.jpg",
+      "promo": "/cards/xmas-24-botanical-candles/p1.jpg",
+      "setPdf": "/cards/xmas-24-botanical-candles/set.pdf",
+      "downloadName": "xmas-24-botanical-candles-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-24-botanical-candles/p1.jpg",
+          "small": "/cards/xmas-24-botanical-candles/p1.jpg",
+          "print": "/cards/xmas-24-botanical-candles/p1-print.jpg",
+          "social": "/cards/xmas-24-botanical-candles/p1.jpg",
+          "download": "/cards/xmas-24-botanical-candles/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-24-botanical-candles/p2.jpg",
+          "small": "/cards/xmas-24-botanical-candles/p2.jpg",
+          "print": "/cards/xmas-24-botanical-candles/p2-print.jpg",
+          "social": "/cards/xmas-24-botanical-candles/p2.jpg",
+          "download": "/cards/xmas-24-botanical-candles/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 보태니컬 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-24-botanical-candles/p3.jpg",
+          "small": "/cards/xmas-24-botanical-candles/p3.jpg",
+          "print": "/cards/xmas-24-botanical-candles/p3-print.jpg",
+          "social": "/cards/xmas-24-botanical-candles/p3.jpg",
+          "download": "/cards/xmas-24-botanical-candles/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-24-botanical-candles/p4.jpg",
+          "small": "/cards/xmas-24-botanical-candles/p4.jpg",
+          "print": "/cards/xmas-24-botanical-candles/p4-print.jpg",
+          "social": "/cards/xmas-24-botanical-candles/p4.jpg",
+          "download": "/cards/xmas-24-botanical-candles/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-25-botanical-stag",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "보태니컬 순록 크리스마스 카드 세트",
+      "desc": "가지에 홀리와 유칼립투스를 얹은 순록을 수채화로 그린 카드예요. 자연스러운 색감의 성인용 보태니컬 세트입니다.",
+      "tags": [
+        "크리스마스",
+        "보태니컬",
+        "수채화",
+        "성인용",
+        "카드",
+        "편지지",
+        "봉투"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-25-botanical-stag/card.jpg",
+      "thumb": "/cards/xmas-25-botanical-stag/card.jpg",
+      "og": "/cards/xmas-25-botanical-stag/og.jpg",
+      "promo": "/cards/xmas-25-botanical-stag/p1.jpg",
+      "setPdf": "/cards/xmas-25-botanical-stag/set.pdf",
+      "downloadName": "xmas-25-botanical-stag-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-25-botanical-stag/p1.jpg",
+          "small": "/cards/xmas-25-botanical-stag/p1.jpg",
+          "print": "/cards/xmas-25-botanical-stag/p1-print.jpg",
+          "social": "/cards/xmas-25-botanical-stag/p1.jpg",
+          "download": "/cards/xmas-25-botanical-stag/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-25-botanical-stag/p2.jpg",
+          "small": "/cards/xmas-25-botanical-stag/p2.jpg",
+          "print": "/cards/xmas-25-botanical-stag/p2-print.jpg",
+          "social": "/cards/xmas-25-botanical-stag/p2.jpg",
+          "download": "/cards/xmas-25-botanical-stag/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 보태니컬 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-25-botanical-stag/p3.jpg",
+          "small": "/cards/xmas-25-botanical-stag/p3.jpg",
+          "print": "/cards/xmas-25-botanical-stag/p3-print.jpg",
+          "social": "/cards/xmas-25-botanical-stag/p3.jpg",
+          "download": "/cards/xmas-25-botanical-stag/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-25-botanical-stag/p4.jpg",
+          "small": "/cards/xmas-25-botanical-stag/p4.jpg",
+          "print": "/cards/xmas-25-botanical-stag/p4-print.jpg",
+          "social": "/cards/xmas-25-botanical-stag/p4.jpg",
+          "download": "/cards/xmas-25-botanical-stag/set.pdf"
+        }
+      ]
     }
   ]
 }
