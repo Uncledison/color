@@ -89,8 +89,8 @@ export function buildSeoTitle(it) {
   }
 
   if (main === MAIN.CARD) {
-    // 카드·편지지 세트는 '크리스마스 카드 도안 / 편지지 도안' 검색어로 들어온다.
-    return fitTitle(t, ['| 크리스마스 카드 도안', 'A4 무료 인쇄']);
+    // 카드·편지지 세트는 '크리스마스 카드 도안 / 편지지 도안', 엽서는 '크리스마스 엽서 도안' 검색어로 들어온다.
+    return fitTitle(t, [`| ${it.postcard ? '크리스마스 엽서 도안' : '크리스마스 카드 도안'}`, 'A4 무료 인쇄']);
   }
 
   const count = it.type === 'series' && pages > 1 ? `${pages}장` : '';
@@ -119,9 +119,11 @@ export function buildSeoDescription(it) {
   }
 
   if (main === MAIN.CARD) {
-    const tail = it.type === 'single'
-      ? '실선을 따라 오리고 붉은 점선을 뒤로 접으면 앞면·뒷면이 바뀌는 무료 뒤집기 카드예요.'
-      : '카드·카드 봉투·편지지·편지 봉투를 A4 4장으로 바로 인쇄해 접고 붙이면 완성되는 무료 세트예요.';
+    const tail = it.postcard
+      ? 'A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 같은 엽서 2장이 되는 무료 엽서 도안이에요.'
+      : it.type === 'single'
+        ? '실선을 따라 오리고 붉은 점선을 뒤로 접으면 앞면·뒷면이 바뀌는 무료 뒤집기 카드예요.'
+        : '카드·카드 봉투·편지지·편지 봉투를 A4 4장으로 바로 인쇄해 접고 붙이면 완성되는 무료 세트예요.';
     return composeDescription(it.desc, tail);
   }
 
@@ -178,6 +180,19 @@ export function buildSeoKeywords(it) {
 
   if (main === MAIN.CARD) {
     const flip = it.type === 'single';
+    if (it.postcard) {
+      return unique([
+        ...base,
+        '크리스마스 엽서',
+        '크리스마스 엽서 도안',
+        '엽서 만들기',
+        '손편지 엽서',
+        '다이컷 엽서',
+        'A4 프린트',
+        '무료 엽서 도안',
+        ...tags,
+      ]);
+    }
     return unique([
       ...base,
       '크리스마스 카드 도안',
@@ -215,7 +230,9 @@ export function buildSeoAlt(it) {
       : main === MAIN.BRAIN
         ? `${cat || '두뇌놀이'} 활동지`
         : main === MAIN.CARD
-          ? '카드·편지지 도안'
+          ? it.postcard
+            ? '도안' // 제목이 이미 '…엽서'로 끝나므로 '엽서 도안'을 붙이면 같은 말이 두 번 나온다
+            : '카드·편지지 도안'
           : `${cat || '스티커판'} 도안`;
   return `${t} ${noun} — A4 무료 인쇄`;
 }

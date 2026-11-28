@@ -149,6 +149,25 @@ export function normalizeAudience(rawAudience, tags = [], mainCategory = MAIN.CO
   return '';
 }
 
+/**
+ * 최신순 정렬 — updated(날짜 'YYYY-MM-DD' 또는 ISO 시각) 내림차순.
+ * 같은 시각이면 원래 순서를 그대로 둔다(안정 정렬):
+ *  - 노션에서 이미 최신순으로 온 목록의 순서가 흔들리지 않는다.
+ *  - 새로 추가한 카드·엽서는 updated 에 제작 시각을 함께 적어(data/cards.json)
+ *    같은 날 올린 것들보다 위에 오게 한다.
+ * index.html 의 prepareData() 도 같은 규칙으로 한 번 더 정렬한다(구버전 캐시 대비).
+ */
+export function sortNewestFirst(list) {
+  const ts = (v) => {
+    const t = Date.parse(v || '');
+    return Number.isNaN(t) ? 0 : t;
+  };
+  return list
+    .map((it, i) => ({ it, i }))
+    .sort((a, b) => ts(b.it.updated) - ts(a.it.updated) || a.i - b.i)
+    .map((o) => o.it);
+}
+
 /** item 한 건에 mainCategory/audience를 채워 돌려준다(원본 불변). */
 export function normalizeItem(it) {
   const mainCategory = normalizeMain(it.mainCategory, it.category);

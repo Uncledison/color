@@ -1776,6 +1776,406 @@
           "download": "/cards/xmas-flip-10-teddy-gift/set.pdf"
         }
       ]
+    },
+    {
+      "id": "postcard-rect-01-village",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "숲속 마을 친구들 크리스마스 엽서",
+      "desc": "숲속 마을 친구들이 별빛 나무 아래 모여 크리스마스를 맞는 동화책풍 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "숲속마을",
+        "동물",
+        "트리"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-rect-01-village/cover.jpg",
+      "thumb": "/cards/postcard-rect-01-village/cover.jpg",
+      "og": "/cards/postcard-rect-01-village/og.jpg",
+      "promo": "/cards/postcard-rect-01-village/p1.jpg",
+      "setPdf": "/cards/postcard-rect-01-village/set.pdf",
+      "downloadName": "postcard-rect-01-village-a4-1p.pdf",
+      "sizes": "A4 1장 · 엽서 2장 (100×150mm)",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "엽서",
+          "spec": "A4 1장 · 엽서 2장 (100×150mm)",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 100×150mm 엽서 2장이 됩니다. 빨간 점선을 따라 오린 뒤 뒤쪽 빈 면에 메시지를 적어 보내세요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 색이 가장 잘 나옵니다.",
+          "preview": "/cards/postcard-rect-01-village/p1.jpg",
+          "small": "/cards/postcard-rect-01-village/p1.jpg",
+          "print": "/cards/postcard-rect-01-village/p1-print.jpg",
+          "social": "/cards/postcard-rect-01-village/p1.jpg",
+          "download": "/cards/postcard-rect-01-village/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-rect-02-santa-sleigh",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "산타 썰매 별빛 마을 크리스마스 엽서",
+      "desc": "별이 쏟아지는 밤하늘을 가로질러 선물을 나르는 산타 썰매와 반짝이는 마을을 담았어요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "산타",
+        "썰매",
+        "루돌프"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-rect-02-santa-sleigh/cover.jpg",
+      "thumb": "/cards/postcard-rect-02-santa-sleigh/cover.jpg",
+      "og": "/cards/postcard-rect-02-santa-sleigh/og.jpg",
+      "promo": "/cards/postcard-rect-02-santa-sleigh/p1.jpg",
+      "setPdf": "/cards/postcard-rect-02-santa-sleigh/set.pdf",
+      "downloadName": "postcard-rect-02-santa-sleigh-a4-1p.pdf",
+      "sizes": "A4 1장 · 엽서 2장 (100×150mm)",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "엽서",
+          "spec": "A4 1장 · 엽서 2장 (100×150mm)",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 100×150mm 엽서 2장이 됩니다. 빨간 점선을 따라 오린 뒤 뒤쪽 빈 면에 메시지를 적어 보내세요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 색이 가장 잘 나옵니다.",
+          "preview": "/cards/postcard-rect-02-santa-sleigh/p1.jpg",
+          "small": "/cards/postcard-rect-02-santa-sleigh/p1.jpg",
+          "print": "/cards/postcard-rect-02-santa-sleigh/p1-print.jpg",
+          "social": "/cards/postcard-rect-02-santa-sleigh/p1.jpg",
+          "download": "/cards/postcard-rect-02-santa-sleigh/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-rect-03-cozy-fireplace",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "벽난로 앞 잠든 친구들 크리스마스 엽서",
+      "desc": "장작이 타는 벽난로와 트리 앞에서 새끼 고양이와 강아지가 나란히 잠든 따뜻한 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "벽난로",
+        "고양이",
+        "강아지"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-rect-03-cozy-fireplace/cover.jpg",
+      "thumb": "/cards/postcard-rect-03-cozy-fireplace/cover.jpg",
+      "og": "/cards/postcard-rect-03-cozy-fireplace/og.jpg",
+      "promo": "/cards/postcard-rect-03-cozy-fireplace/p1.jpg",
+      "setPdf": "/cards/postcard-rect-03-cozy-fireplace/set.pdf",
+      "downloadName": "postcard-rect-03-cozy-fireplace-a4-1p.pdf",
+      "sizes": "A4 1장 · 엽서 2장 (100×150mm)",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "엽서",
+          "spec": "A4 1장 · 엽서 2장 (100×150mm)",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 100×150mm 엽서 2장이 됩니다. 빨간 점선을 따라 오린 뒤 뒤쪽 빈 면에 메시지를 적어 보내세요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 색이 가장 잘 나옵니다.",
+          "preview": "/cards/postcard-rect-03-cozy-fireplace/p1.jpg",
+          "small": "/cards/postcard-rect-03-cozy-fireplace/p1.jpg",
+          "print": "/cards/postcard-rect-03-cozy-fireplace/p1-print.jpg",
+          "social": "/cards/postcard-rect-03-cozy-fireplace/p1.jpg",
+          "download": "/cards/postcard-rect-03-cozy-fireplace/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-rect-04-snowy-bakery",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "눈 내리는 골목 빵집 크리스마스 엽서",
+      "desc": "눈 내리는 겨울 골목, 따뜻한 불빛이 새어 나오는 빨간 지붕 빵집을 그린 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "빵집",
+        "골목",
+        "겨울"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-rect-04-snowy-bakery/cover.jpg",
+      "thumb": "/cards/postcard-rect-04-snowy-bakery/cover.jpg",
+      "og": "/cards/postcard-rect-04-snowy-bakery/og.jpg",
+      "promo": "/cards/postcard-rect-04-snowy-bakery/p1.jpg",
+      "setPdf": "/cards/postcard-rect-04-snowy-bakery/set.pdf",
+      "downloadName": "postcard-rect-04-snowy-bakery-a4-1p.pdf",
+      "sizes": "A4 1장 · 엽서 2장 (100×150mm)",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "엽서",
+          "spec": "A4 1장 · 엽서 2장 (100×150mm)",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 100×150mm 엽서 2장이 됩니다. 빨간 점선을 따라 오린 뒤 뒤쪽 빈 면에 메시지를 적어 보내세요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 색이 가장 잘 나옵니다.",
+          "preview": "/cards/postcard-rect-04-snowy-bakery/p1.jpg",
+          "small": "/cards/postcard-rect-04-snowy-bakery/p1.jpg",
+          "print": "/cards/postcard-rect-04-snowy-bakery/p1-print.jpg",
+          "social": "/cards/postcard-rect-04-snowy-bakery/p1.jpg",
+          "download": "/cards/postcard-rect-04-snowy-bakery/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-rect-05-snowman-friends",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "눈사람 만드는 친구들 크리스마스 엽서",
+      "desc": "별빛 아래 아기 곰과 토끼, 작은 새들이 함께 눈사람을 만드는 포근한 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "눈사람",
+        "곰",
+        "토끼"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-rect-05-snowman-friends/cover.jpg",
+      "thumb": "/cards/postcard-rect-05-snowman-friends/cover.jpg",
+      "og": "/cards/postcard-rect-05-snowman-friends/og.jpg",
+      "promo": "/cards/postcard-rect-05-snowman-friends/p1.jpg",
+      "setPdf": "/cards/postcard-rect-05-snowman-friends/set.pdf",
+      "downloadName": "postcard-rect-05-snowman-friends-a4-1p.pdf",
+      "sizes": "A4 1장 · 엽서 2장 (100×150mm)",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "엽서",
+          "spec": "A4 1장 · 엽서 2장 (100×150mm)",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 100×150mm 엽서 2장이 됩니다. 빨간 점선을 따라 오린 뒤 뒤쪽 빈 면에 메시지를 적어 보내세요. 180g 도톰한 종이에 실제 크기(100%)로 인쇄하면 색이 가장 잘 나옵니다.",
+          "preview": "/cards/postcard-rect-05-snowman-friends/p1.jpg",
+          "small": "/cards/postcard-rect-05-snowman-friends/p1.jpg",
+          "print": "/cards/postcard-rect-05-snowman-friends/p1-print.jpg",
+          "social": "/cards/postcard-rect-05-snowman-friends/p1.jpg",
+          "download": "/cards/postcard-rect-05-snowman-friends/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-shape-01-tree",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "크리스마스 트리 모양 엽서",
+      "desc": "금별을 이고 방긋 웃는 크리스마스 트리 모양으로 오리는 다이컷 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "트리",
+        "다이컷",
+        "모양엽서"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-shape-01-tree/cover.jpg",
+      "thumb": "/cards/postcard-shape-01-tree/cover.jpg",
+      "og": "/cards/postcard-shape-01-tree/og.jpg",
+      "promo": "/cards/postcard-shape-01-tree/p1.jpg",
+      "setPdf": "/cards/postcard-shape-01-tree/set.pdf",
+      "downloadName": "postcard-shape-01-tree-a4-1p.pdf",
+      "sizes": "A4 1장 · 모양 엽서 2장",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "모양 엽서",
+          "spec": "A4 1장 · 모양 엽서 2장",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 같은 모양 엽서 2장이 됩니다. 그림 둘레의 연회색 점선을 따라 오리면 소품 모양 그대로의 엽서가 완성됩니다. 가위로 오릴 때 점선 바깥 여유를 조금 남기면 그림이 잘리지 않습니다.",
+          "preview": "/cards/postcard-shape-01-tree/p1.jpg",
+          "small": "/cards/postcard-shape-01-tree/p1.jpg",
+          "print": "/cards/postcard-shape-01-tree/p1-print.jpg",
+          "social": "/cards/postcard-shape-01-tree/p1.jpg",
+          "download": "/cards/postcard-shape-01-tree/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-shape-02-reindeer",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "루돌프 모양 엽서",
+      "desc": "빨간 코 루돌프가 선물 상자를 안고 웃는 모양으로 오리는 다이컷 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "루돌프",
+        "다이컷",
+        "모양엽서"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-shape-02-reindeer/cover.jpg",
+      "thumb": "/cards/postcard-shape-02-reindeer/cover.jpg",
+      "og": "/cards/postcard-shape-02-reindeer/og.jpg",
+      "promo": "/cards/postcard-shape-02-reindeer/p1.jpg",
+      "setPdf": "/cards/postcard-shape-02-reindeer/set.pdf",
+      "downloadName": "postcard-shape-02-reindeer-a4-1p.pdf",
+      "sizes": "A4 1장 · 모양 엽서 2장",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "모양 엽서",
+          "spec": "A4 1장 · 모양 엽서 2장",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 같은 모양 엽서 2장이 됩니다. 그림 둘레의 연회색 점선을 따라 오리면 소품 모양 그대로의 엽서가 완성됩니다. 가위로 오릴 때 점선 바깥 여유를 조금 남기면 그림이 잘리지 않습니다.",
+          "preview": "/cards/postcard-shape-02-reindeer/p1.jpg",
+          "small": "/cards/postcard-shape-02-reindeer/p1.jpg",
+          "print": "/cards/postcard-shape-02-reindeer/p1-print.jpg",
+          "social": "/cards/postcard-shape-02-reindeer/p1.jpg",
+          "download": "/cards/postcard-shape-02-reindeer/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-shape-03-snowman",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "눈사람 모양 엽서",
+      "desc": "빨간 털모자와 초록 목도리를 두른 눈사람 모양으로 오리는 다이컷 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "눈사람",
+        "다이컷",
+        "모양엽서"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-shape-03-snowman/cover.jpg",
+      "thumb": "/cards/postcard-shape-03-snowman/cover.jpg",
+      "og": "/cards/postcard-shape-03-snowman/og.jpg",
+      "promo": "/cards/postcard-shape-03-snowman/p1.jpg",
+      "setPdf": "/cards/postcard-shape-03-snowman/set.pdf",
+      "downloadName": "postcard-shape-03-snowman-a4-1p.pdf",
+      "sizes": "A4 1장 · 모양 엽서 2장",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "모양 엽서",
+          "spec": "A4 1장 · 모양 엽서 2장",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 같은 모양 엽서 2장이 됩니다. 그림 둘레의 연회색 점선을 따라 오리면 소품 모양 그대로의 엽서가 완성됩니다. 가위로 오릴 때 점선 바깥 여유를 조금 남기면 그림이 잘리지 않습니다.",
+          "preview": "/cards/postcard-shape-03-snowman/p1.jpg",
+          "small": "/cards/postcard-shape-03-snowman/p1.jpg",
+          "print": "/cards/postcard-shape-03-snowman/p1-print.jpg",
+          "social": "/cards/postcard-shape-03-snowman/p1.jpg",
+          "download": "/cards/postcard-shape-03-snowman/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-shape-04-santa",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "산타클로스 모양 엽서",
+      "desc": "선물 보따리를 메고 손을 흔드는 산타클로스 모양으로 오리는 다이컷 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "산타",
+        "다이컷",
+        "모양엽서"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-shape-04-santa/cover.jpg",
+      "thumb": "/cards/postcard-shape-04-santa/cover.jpg",
+      "og": "/cards/postcard-shape-04-santa/og.jpg",
+      "promo": "/cards/postcard-shape-04-santa/p1.jpg",
+      "setPdf": "/cards/postcard-shape-04-santa/set.pdf",
+      "downloadName": "postcard-shape-04-santa-a4-1p.pdf",
+      "sizes": "A4 1장 · 모양 엽서 2장",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "모양 엽서",
+          "spec": "A4 1장 · 모양 엽서 2장",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 같은 모양 엽서 2장이 됩니다. 그림 둘레의 연회색 점선을 따라 오리면 소품 모양 그대로의 엽서가 완성됩니다. 가위로 오릴 때 점선 바깥 여유를 조금 남기면 그림이 잘리지 않습니다.",
+          "preview": "/cards/postcard-shape-04-santa/p1.jpg",
+          "small": "/cards/postcard-shape-04-santa/p1.jpg",
+          "print": "/cards/postcard-shape-04-santa/p1-print.jpg",
+          "social": "/cards/postcard-shape-04-santa/p1.jpg",
+          "download": "/cards/postcard-shape-04-santa/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "postcard-shape-05-stocking",
+      "static": true,
+      "type": "single",
+      "cardSet": true,
+      "postcard": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "선물 양말 모양 엽서",
+      "desc": "곰인형과 사탕지팡이, 선물이 담긴 크리스마스 양말 모양으로 오리는 다이컷 엽서예요.",
+      "tags": [
+        "크리스마스",
+        "엽서",
+        "양말",
+        "다이컷",
+        "모양엽서"
+      ],
+      "pageCount": 1,
+      "cover": "/cards/postcard-shape-05-stocking/cover.jpg",
+      "thumb": "/cards/postcard-shape-05-stocking/cover.jpg",
+      "og": "/cards/postcard-shape-05-stocking/og.jpg",
+      "promo": "/cards/postcard-shape-05-stocking/p1.jpg",
+      "setPdf": "/cards/postcard-shape-05-stocking/set.pdf",
+      "downloadName": "postcard-shape-05-stocking-a4-1p.pdf",
+      "sizes": "A4 1장 · 모양 엽서 2장",
+      "updated": "2026-11-28T11:08:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "모양 엽서",
+          "spec": "A4 1장 · 모양 엽서 2장",
+          "story": "A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 같은 모양 엽서 2장이 됩니다. 그림 둘레의 연회색 점선을 따라 오리면 소품 모양 그대로의 엽서가 완성됩니다. 가위로 오릴 때 점선 바깥 여유를 조금 남기면 그림이 잘리지 않습니다.",
+          "preview": "/cards/postcard-shape-05-stocking/p1.jpg",
+          "small": "/cards/postcard-shape-05-stocking/p1.jpg",
+          "print": "/cards/postcard-shape-05-stocking/p1-print.jpg",
+          "social": "/cards/postcard-shape-05-stocking/p1.jpg",
+          "download": "/cards/postcard-shape-05-stocking/set.pdf"
+        }
+      ]
     }
   ]
 }

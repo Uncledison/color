@@ -12,7 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { MAIN, normalizeItem, buildShareText, HIDDEN_IDS } from './categories.mjs';
+import { MAIN, normalizeItem, buildShareText, HIDDEN_IDS, sortNewestFirst } from './categories.mjs';
 import { buildSeo } from './seo.mjs';
 import { richPage } from './page.mjs';
 
@@ -24,12 +24,14 @@ const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'cards.json'), '
 const raw = DATA.items;
 const ids = raw.map((it) => it.id);
 
-test('카드·편지지 정적 데이터: 29종(4장 세트 19 · 1장 뒤집기 10), 모두 카드·편지지 대분류', () => {
-  assert.equal(raw.length, 29);
+test('카드·편지지 정적 데이터: 39종(4장 세트 19 · 1장 뒤집기 10 · 엽서 10), 모두 카드·편지지 대분류', () => {
+  assert.equal(raw.length, 39);
   const sets = raw.filter((it) => it.type === 'series');
-  const flips = raw.filter((it) => it.type === 'single');
+  const flips = raw.filter((it) => it.type === 'single' && !it.postcard);
+  const postcards = raw.filter((it) => it.postcard);
   assert.equal(sets.length, 19);
   assert.equal(flips.length, 10);
+  assert.equal(postcards.length, 10);
   for (const it of raw) {
     const norm = normalizeItem(it);
     assert.equal(norm.mainCategory, MAIN.CARD, it.id);
@@ -58,7 +60,31 @@ test('카드·편지지 정적 데이터: 29종(4장 세트 19 · 1장 뒤집기
     assert.match(it.sizes, /116mm/);
     assert.match(it.title, /뒤집기 카드/);
   }
+  for (const it of postcards) {
+    const norm = normalizeItem(it);
+    assert.equal(it.id.startsWith('postcard-'), true, `${it.id}: 엽서 id 는 postcard-*`);
+    assert.equal(norm.type, 'single');
+    assert.equal(norm.pageCount, 1, it.id);
+    assert.equal(norm.pages.length, 1, it.id);
+    assert.match(it.sizes, /A4 1장/);
+    assert.match(it.sizes, /엽서 2장/);
+    assert.match(it.title, /엽서/);
+    assert.match(it.pages[0].spec, /엽서/);
+  }
   assert.equal(new Set(ids).size, ids.length, 'id 중복');
+});
+
+test('최신순 정렬: 새로 올린 엽서 10종이 카드·편지지 목록 맨 위에 온다', () => {
+  const sorted = sortNewestFirst(raw.map(normalizeItem));
+  assert.equal(sorted.length, raw.length);
+  const top10 = sorted.slice(0, 10);
+  assert.ok(top10.every((it) => it.postcard), '엽서 10종이 맨 위가 아니다: ' + top10.map((it) => it.id).join(', '));
+  assert.equal(top10[0].id, 'postcard-rect-01-village');
+  // 날짜(최신순)가 흐트러지지 않는다
+  const ts = sorted.map((it) => Date.parse(it.updated));
+  for (let i = 1; i < ts.length; i++) assert.ok(ts[i - 1] >= ts[i], `${sorted[i - 1].id} → ${sorted[i].id} 순서 오류`);
+  // 원본 배열은 건드리지 않는다
+  assert.equal(raw[0].id, 'xmas-01-hiphop-santa');
 });
 
 test('사이트에서 내린 도안(접는 크리스마스 카드 만들기 — 산타와 트리)은 숨김 목록에만 있고 카드 데이터에는 없다', () => {
@@ -219,4 +245,66 @@ test('/p 뒤집기 카드: SEO 설명이 1장 카드로 분기', () => {
   assert.match(seo.description, /뒤집기 카드/);
   assert.ok(!/4장/.test(seo.description), '1장 카드에 4장 설명이 남아 있다');
   assert.ok(seo.keywords.includes('뒤집기 카드'));
+});
+
+/* ── 엽서(postcard-*) — A4 가로 1장 = 엽서 2장 ─────────────────────── */
+const post0 = raw.find((it) => it.id === 'postcard-rect-01-village');
+const postShape0 = raw.find((it) => it.id === 'postcard-shape-01-tree');
+
+function postItem(src = post0) {
+  const it = normalizeItem(src);
+  return {
+    ...it,
+    cloud: 'dhfobwnfc',
+    categoryLabel: it.category,
+    url: `${SITE}/p/${it.id}`,
+    og: `${SITE}${it.og}`,
+    thumb: it.thumb,
+    promo: it.promo,
+    pages: it.pages.map((pg, i) => ({ ...pg, n: Number(pg.n) || i + 1 })),
+    shareText: buildShareText(it, SITE),
+  };
+}
+
+test('/p 엽서: A4 가로 1장 미리보기 + 1장 PDF 버튼, 뒤집기 카드 문구 없음', () => {
+  const it = postItem();
+  const html = render(it);
+  // 1장짜리는 장 그리드가 아니라 큰 미리보기 한 장 (가로 700×495 비율)
+  assert.equal((html.match(/<canvas class="pv" data-pv="\d+"/g) || []).length, 1);
+  assert.match(html, /width="520" height="368"/);
+  assert.ok(html.includes(it.pages[0].small), '엽서 미리보기 주소 누락');
+  assert.match(html, /askSetPdf\(\)/);
+  assert.match(html, /A4 PDF 1장 받기/);
+  assert.ok(html.includes('1장 · 엽서 2장'), '엽서 장수 안내 누락');
+  assert.ok(html.includes('A4 1장 · 엽서 2장 (100×150mm)'), '규격 안내 누락');
+  assert.match(html, /<b>A4 · 가로<\/b>/); // 인쇄는 A4 가로
+  assert.ok(!/뒤집기/.test(html), '엽서에 뒤집기 카드 문구가 남아 있다');
+  assert.ok(!/카드 봉투|편지 봉투/.test(html), '엽서에 4장 세트 문구가 남아 있다');
+  assert.ok(!/askDownload\(\d/.test(html), '엽서에 장별 저장 버튼이 남아 있다');
+  // 인쇄 iframe 은 A4 가로로 뽑아야 한다
+  assert.ok(html.includes('const A4LANDSCAPE=true;'), '엽서 인쇄 방향(가로) 플래그 누락');
+  const res = resOf(html);
+  assert.equal(res.length, 1);
+  assert.equal(res[0].set, it.setPdf);
+  assert.equal(res[0].setName, it.downloadName);
+  assert.equal(res[0].pages, 1);
+  assert.ok(!html.includes('href="' + it.setPdf + '"'), 'PDF 직접 링크 금지');
+});
+
+test('/p 엽서: 모양 엽서도 같은 규칙(가로 · 엽서 2장)', () => {
+  const html = render(postItem(postShape0));
+  assert.ok(html.includes('A4 1장 · 모양 엽서 2장'), '모양 엽서 규격 안내 누락');
+  assert.ok(html.includes('const A4LANDSCAPE=true;'));
+  assert.ok(!/뒤집기/.test(html));
+});
+
+test('/p 엽서: SEO 가 엽서 도안으로 분기', () => {
+  const it = postItem();
+  const seo = buildSeo(it, { site: SITE });
+  assert.match(seo.title, /엽서/);
+  assert.ok(seo.title.length <= 62, `제목 길이 초과: ${seo.title.length}`);
+  assert.ok(seo.description.length <= 155, `설명 길이 초과: ${seo.description.length}`);
+  assert.match(seo.description, /엽서/);
+  assert.ok(!/뒤집기/.test(seo.description), '엽서 설명에 뒤집기 문구가 남아 있다');
+  assert.ok(seo.keywords.includes('크리스마스 엽서 도안'));
 });

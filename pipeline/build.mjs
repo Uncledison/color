@@ -23,7 +23,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as CL from './cloudinary.mjs';
-import { MAIN, MAIN_COPY, HIDDEN_IDS, buildShareText, categoryLabel, normalizeItem } from './categories.mjs';
+import { MAIN, MAIN_COPY, HIDDEN_IDS, buildShareText, categoryLabel, normalizeItem, sortNewestFirst } from './categories.mjs';
 import { buildSeo } from './seo.mjs';
 import { richPage, relatedFor, esc } from './page.mjs';
 import { INDEXNOW_KEY, keyFileName, pingIndexNow, shouldPingIndexNow } from './indexnow.mjs';
@@ -282,10 +282,10 @@ async function publishNewItemsToPinterest(items) {
 async function main() {
   const all = [...(await loadItems()), ...(await loadStaticCards())];
   // 내리기로 한 도안(HIDDEN_IDS)은 어느 소스에 있든 여기서 빠진다 → data.json·홈·sitemap 모두 제외
-  const items = all
-    .filter((it) => !HIDDEN_IDS.has(it.id))
-    .map((it) => normalizeItem(it))
-    .map(enrich);
+  // 최신순 정렬: 홈의 카드 목록이 '오래된 카드 → 새 카드'가 아니라 '새 엽서·카드가 맨 위'로 오게 한다.
+  const items = sortNewestFirst(
+    all.filter((it) => !HIDDEN_IDS.has(it.id)).map((it) => normalizeItem(it))
+  ).map(enrich);
   const dropped = all.length - items.length;
   if (dropped > 0) console.log(`[build] 숨김 처리 ${dropped}건 (${[...HIDDEN_IDS].join(', ')})`);
 
