@@ -24,14 +24,14 @@ const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'cards.json'), '
 const raw = DATA.items;
 const ids = raw.map((it) => it.id);
 
-test('카드·편지지 정적 데이터: 39종(4장 세트 19 · 1장 뒤집기 10 · 엽서 10), 모두 카드·편지지 대분류', () => {
-  assert.equal(raw.length, 39);
+test('카드·편지지 정적 데이터: 49종(4장 세트 19 · 1장 뒤집기 10 · 엽서 20), 모두 카드·편지지 대분류', () => {
+  assert.equal(raw.length, 49);
   const sets = raw.filter((it) => it.type === 'series');
   const flips = raw.filter((it) => it.type === 'single' && !it.postcard);
   const postcards = raw.filter((it) => it.postcard);
   assert.equal(sets.length, 19);
   assert.equal(flips.length, 10);
-  assert.equal(postcards.length, 10);
+  assert.equal(postcards.length, 20);
   for (const it of raw) {
     const norm = normalizeItem(it);
     assert.equal(norm.mainCategory, MAIN.CARD, it.id);
@@ -74,12 +74,13 @@ test('카드·편지지 정적 데이터: 39종(4장 세트 19 · 1장 뒤집기
   assert.equal(new Set(ids).size, ids.length, 'id 중복');
 });
 
-test('최신순 정렬: 새로 올린 엽서 10종이 카드·편지지 목록 맨 위에 온다', () => {
+test('최신순 정렬: 새로 올린 성인용 엽서 10종이 카드·편지지 목록 맨 위에 온다', () => {
   const sorted = sortNewestFirst(raw.map(normalizeItem));
   assert.equal(sorted.length, raw.length);
   const top10 = sorted.slice(0, 10);
   assert.ok(top10.every((it) => it.postcard), '엽서 10종이 맨 위가 아니다: ' + top10.map((it) => it.id).join(', '));
-  assert.equal(top10[0].id, 'postcard-rect-01-village');
+  assert.equal(top10[0].id, 'postcard-diecut-01-tree');
+  assert.equal(top10[9].id, 'postcard-classic-05-stamps');
   // 날짜(최신순)가 흐트러지지 않는다
   const ts = sorted.map((it) => Date.parse(it.updated));
   for (let i = 1; i < ts.length; i++) assert.ok(ts[i - 1] >= ts[i], `${sorted[i - 1].id} → ${sorted[i].id} 순서 오류`);
