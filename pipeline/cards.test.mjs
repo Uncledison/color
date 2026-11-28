@@ -24,12 +24,12 @@ const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'cards.json'), '
 const raw = DATA.items;
 const ids = raw.map((it) => it.id);
 
-test('카드·편지지 정적 데이터: 63종(4장 세트 33 · 1장 뒤집기 10 · 엽서 20), 모두 카드·편지지 대분류', () => {
-  assert.equal(raw.length, 63);
+test('카드·편지지 정적 데이터: 64종(4장 세트 34 · 1장 뒤집기 10 · 엽서 20), 모두 카드·편지지 대분류', () => {
+  assert.equal(raw.length, 64);
   const sets = raw.filter((it) => it.type === 'series');
   const flips = raw.filter((it) => it.type === 'single' && !it.postcard);
   const postcards = raw.filter((it) => it.postcard);
-  assert.equal(sets.length, 33);
+  assert.equal(sets.length, 34);
   assert.equal(flips.length, 10);
   assert.equal(postcards.length, 20);
   for (const it of raw) {
@@ -74,17 +74,18 @@ test('카드·편지지 정적 데이터: 63종(4장 세트 33 · 1장 뒤집기
   assert.equal(new Set(ids).size, ids.length, 'id 중복');
 });
 
-test('최신순 정렬: 새로 올린 카드 세트 9종이 맨 위, 그다음 성인용 엽서 10종이 온다', () => {
+test('최신순 정렬: 새로 올린 네이비 산타 썰매가 맨 위, 그다음 카드 세트 9종·성인용 엽서 10종이 온다', () => {
   const sorted = sortNewestFirst(raw.map(normalizeItem));
   assert.equal(sorted.length, raw.length);
-  const top9 = sorted.slice(0, 9);
-  assert.deepEqual(top9.map((it) => it.id), [
+  const top10 = sorted.slice(0, 10);
+  assert.deepEqual(top10.map((it) => it.id), [
+    'xmas-35-papercut-navy-sleigh',
     'xmas-26-white-joy', 'xmas-27-white-pine-tree', 'xmas-28-white-arch-ornaments',
     'xmas-29-bigface-santa', 'xmas-30-bigface-snowman', 'xmas-31-bigface-rudolph',
     'xmas-32-papercut-green-forest', 'xmas-33-papercut-red-village',
     'xmas-34-papercut-kraft-ornament',
   ]);
-  const next10 = sorted.slice(9, 19);
+  const next10 = sorted.slice(10, 20);
   assert.ok(next10.every((it) => it.postcard), '엽서 10종이 카드 세트 다음이 아니다: ' + next10.map((it) => it.id).join(', '));
   assert.equal(next10[0].id, 'postcard-diecut-01-tree');
   assert.equal(next10[9].id, 'postcard-classic-05-stamps');
