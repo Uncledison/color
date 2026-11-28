@@ -122,7 +122,7 @@ export function buildSeoDescription(it) {
     const tail = it.postcard
       ? 'A4 가로 한 장을 인쇄해 가운데 점선을 따라 자르면 같은 엽서 2장이 되는 무료 엽서 도안이에요.'
       : it.type === 'single'
-        ? '실선을 따라 오리고 붉은 점선을 뒤로 접으면 앞면·뒷면이 바뀌는 무료 뒤집기 카드예요.'
+        ? '실선을 따라 오리고 붉은 점선을 뒤로 접으면 앞면·뒷면이 바뀌는 무료 플립카드예요.'
         : '카드·카드 봉투·편지지·편지 봉투를 A4 4장으로 바로 인쇄해 접고 붙이면 완성되는 무료 세트예요.';
     return composeDescription(it.desc, tail);
   }
@@ -197,7 +197,8 @@ export function buildSeoKeywords(it) {
       ...base,
       '크리스마스 카드 도안',
       '크리스마스 카드 만들기',
-      flip ? '뒤집기 카드' : '크리스마스 편지지',
+      flip ? '플립카드' : '크리스마스 편지지',
+      flip ? '뒤집기 카드' : '',
       flip ? '카드 도안' : '편지지 도안',
       flip ? '' : '카드 봉투 도안',
       flip ? '' : '편지 봉투 도안',

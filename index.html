@@ -504,6 +504,8 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 }
 .chip:hover{background:var(--warm)}
 .chip.active{background:var(--coral);border-color:var(--coral);color:#fff}
+.chip .cnt{font-size:11px;font-weight:700;opacity:.55;margin-left:2px}
+.chip.active .cnt{opacity:.8}
 .chip-label{font-size:11.5px;font-weight:700;color:var(--ink-3);letter-spacing:.6px;margin-right:3px}
 .gallery-count{font-size:13px;font-weight:600;color:var(--ink-3);white-space:nowrap;padding-bottom:2px}
 
@@ -1122,6 +1124,7 @@ svg.coloring .no-fill{fill:none}
           <div class="gallery-count" id="galleryCount"></div>
         </div>
 
+        <div class="filter-row" id="fmtRow" style="display:none"></div>
         <div class="filter-row" id="filterRow"></div>
         <div class="filter-row" id="audRow" style="display:none"></div>
 
@@ -1788,10 +1791,14 @@ const MAIN_SUB={
   '색칠도안':'전래동화 · 전통 · 계절 · 자연 — 한 장부터 8~10장 시리즈까지',
   '두뇌놀이':'미로찾기 · 선잇기 · 점잇기 — 유아용부터 어르신 인지용까지',
   '스티커판':'칭찬스티커판 · 체크표 — 프린트해서 붙이는 칭찬·습관 스티커판',
-  '카드·편지지':'크리스마스 엽서 · 카드 세트 · 봉투 · 편지지 · 뒤집기 카드 — A4로 인쇄해 바로 쓰는 무료 도안'
+  '카드·편지지':'크리스마스 엽서 · 카드 세트 · 봉투 · 편지지 · 플립카드 — A4로 인쇄해 바로 쓰는 무료 도안'
 };
 let DATA=[], byId={}, current=null, currentPage=0;
-let TAB='색칠도안', SUB='전체', AUD='전체';
+let TAB='색칠도안', SUB='전체', AUD='전체', FMT='전체';
+/* 카드·편지지 '형식' 순서 — 직사각 엽서 / 컷엽서(캐릭터 모양대로 오림) / 카드 세트 / 플립카드 (테마는 크리스마스 같은 category) */
+const FORMATS=['직사각 엽서','컷엽서','카드 세트','플립카드'];
+const isCutPostcard=it=>/^postcard-(shape|diecut)-/.test(it.id||'')||/모양 엽서/.test(it.sizes||'');
+const formatOf=it=>it.mainCategory!=='카드·편지지'?'':it.postcard?(isCutPostcard(it)?'컷엽서':'직사각 엽서'):it.type==='series'?'카드 세트':'플립카드';
 /* 공유·모달 주소에 쓰는 정식 사이트 주소(data.json의 site, 없으면 현재 도메인) */
 let SITE_URL=location.origin;
 
@@ -1824,7 +1831,7 @@ function prepareData(items){
   return (items||[]).map(it=>{
     const mainCategory=inferMain(it.mainCategory,it.category);
     const audience=inferAud({...it,mainCategory});
-    return {...it,mainCategory,audience,categoryLabel:[it.category,audience].filter(Boolean).join(' · ')};
+    return {...it,mainCategory,audience,format:formatOf({...it,mainCategory}),categoryLabel:[it.category,audience].filter(Boolean).join(' · ')};
   })
   /* 최신순 — 새로 올린 엽서·카드가 목록 탭 맨 위로 (pipeline/categories.mjs sortNewestFirst 와 같은 규칙) */
   .map((it,i)=>({it,i}))
@@ -1856,7 +1863,7 @@ function renderSeason(){
   if(cnt&&postcards.length){
     const sets=cards.filter(it=>it.type==='series').length;
     const flips=cards.filter(it=>!it.postcard&&it.type==='single').length;
-    cnt.textContent='엽서 '+postcards.length+'종'+(sets?' · 카드 세트 '+sets+'종':'')+(flips?' · 뒤집기 카드 '+flips+'종':'');
+    cnt.textContent='엽서 '+postcards.length+'종'+(sets?' · 카드 세트 '+sets+'종':'')+(flips?' · 플립카드 '+flips+'종':'');
   }
 
   rail.innerHTML=newest.map(it=>
@@ -1880,7 +1887,7 @@ async function loadCatalog(){
   }catch(e){DATA=[]}
   byId=Object.fromEntries(DATA.map(it=>[it.id,it]));
   const h=decodeURIComponent(location.hash.slice(1));
-  if(h&&byId[h]){TAB=byId[h].mainCategory;SUB='전체';AUD='전체'}
+  if(h&&byId[h]){TAB=byId[h].mainCategory;SUB='전체';AUD='전체';FMT='전체'}
   renderSeason();
   renderCatalog();
   if(h&&byId[h]) openModal(h);
@@ -1908,7 +1915,19 @@ function renderFilters(){
   if(!row)return;
   const items=DATA.filter(it=>it.mainCategory===TAB);
   const subs=[...new Set(items.map(it=>it.category).filter(Boolean))];
-  let html='<span class="chip-label">종류</span>'
+  /* 카드·편지지: 1줄 '형식'(엽서·카드 세트·플립카드, 개수 표시) + 2줄 '테마'(크리스마스 …) */
+  const frow=document.getElementById('fmtRow');
+  const isCard=TAB==='카드·편지지';
+  if(frow){
+    if(isCard){
+      const fmts=FORMATS.filter(f=>items.some(it=>it.format===f));
+      frow.style.display='flex';
+      frow.innerHTML='<span class="chip-label">형식</span>'
+        +'<button class="chip'+(FMT==='전체'?' active':'')+'" onclick="setFmt(\'전체\')">전체</button>'
+        +fmts.map(f=>'<button class="chip'+(FMT===f?' active':'')+'" onclick="setFmt(\''+f+'\')">'+f+' <span class="cnt">'+items.filter(it=>it.format===f).length+'</span></button>').join('');
+    }else{frow.style.display='none';frow.innerHTML=''}
+  }
+  let html='<span class="chip-label">'+(isCard?'테마':'종류')+'</span>'
     +'<button class="chip'+(SUB==='전체'?' active':'')+'" onclick="setSub(\'전체\')">전체</button>';
   html+=subs.map(s=>'<button class="chip'+(SUB===s?' active':'')+'" onclick="setSub(\''+esc(s)+'\')">'+esc(s)+'</button>').join('');
   row.innerHTML=html;
@@ -1927,10 +1946,11 @@ function renderFilters(){
   }
 }
 function setSub(s){SUB=s;renderCatalog()}
+function setFmt(f){FMT=f;renderCatalog()}
 function setAud(a){AUD=a;renderCatalog()}
 function selectMain(main){
   TAB=MAINS.indexOf(main)>=0?main:'색칠도안';
-  SUB='전체';AUD='전체';
+  SUB='전체';AUD='전체';FMT='전체';
   renderCatalog();
   const g=document.getElementById('gallery');
   if(g)window.scrollTo({top:Math.max(0,g.offsetTop-110),behavior:'smooth'});
@@ -1970,6 +1990,7 @@ const INFEED_AD_HTML='<div class="ad-infeed"><ins class="adsbygoogle" style="dis
 function visibleItems(){
   return DATA.filter(it=>it.mainCategory===TAB
     &&(SUB==='전체'||it.category===SUB)
+    &&(FMT==='전체'||it.format===FMT)
     &&(AUD==='전체'||it.audience===AUD));
 }
 
@@ -1981,7 +2002,7 @@ function renderCatalog(){
   const titleEl=document.getElementById('galleryTitle');
   const subEl=document.getElementById('gallerySub');
   const cntEl=document.getElementById('galleryCount');
-  if(titleEl)titleEl.innerHTML='<img class="sec-ico" src="'+MAIN_ICON[TAB]+'" alt="" width="26" height="26">'+esc(TAB)+(SUB!=='전체'?' · '+esc(SUB):'');
+  if(titleEl)titleEl.innerHTML='<img class="sec-ico" src="'+MAIN_ICON[TAB]+'" alt="" width="26" height="26">'+esc(TAB)+(FMT!=='전체'?' · '+esc(FMT):'')+(SUB!=='전체'?' · '+esc(SUB):'');
   if(subEl)subEl.textContent=MAIN_SUB[TAB]||'';
   if(cntEl)cntEl.textContent=list.length+'개';
 
@@ -2038,7 +2059,7 @@ function selectSearchResult(id){
   document.getElementById('searchResults').classList.remove('open');
   document.getElementById('searchInput').value='';
   const it=byId[id];
-  if(it&&it.mainCategory!==TAB){TAB=it.mainCategory;SUB='전체';AUD='전체';renderCatalog()}
+  if(it&&it.mainCategory!==TAB){TAB=it.mainCategory;SUB='전체';AUD='전체';FMT='전체';renderCatalog()}
   openModal(id);
 }
 document.addEventListener('click',(e)=>{

@@ -58,7 +58,7 @@ test('카드·편지지 정적 데이터: 49종(4장 세트 19 · 1장 뒤집기
     assert.equal(norm.pages.length, 1, it.id);
     assert.match(it.sizes, /A4 1장/);
     assert.match(it.sizes, /116mm/);
-    assert.match(it.title, /뒤집기 카드/);
+    assert.match(it.title, /플립카드/);
   }
   for (const it of postcards) {
     const norm = normalizeItem(it);
@@ -200,7 +200,7 @@ test('공유 문구: 카드·편지지 문구로 분기', () => {
   assert.ok(text.includes(`${SITE}/p/${it.id}`));
 });
 
-/* ── 1장 뒤집기 카드(xmas-flip-*) ─────────────────────────────────── */
+/* ── 1장 플립카드(xmas-flip-*) ─────────────────────────────────── */
 const flip0 = raw.find((it) => it.id === 'xmas-flip-01-snowman');
 
 function flipItem(src = flip0) {
@@ -218,7 +218,7 @@ function flipItem(src = flip0) {
   };
 }
 
-test('/p 뒤집기 카드: A4 1장 미리보기 + 1장 PDF 버튼', () => {
+test('/p 플립카드: A4 1장 미리보기 + 1장 PDF 버튼', () => {
   const it = flipItem();
   const html = render(it);
   // 1장짜리는 장 그리드가 아니라 큰 미리보기 한 장
@@ -227,8 +227,8 @@ test('/p 뒤집기 카드: A4 1장 미리보기 + 1장 PDF 버튼', () => {
   assert.match(html, /askSetPdf\(\)/);
   assert.match(html, /A4 PDF 1장 받기/);
   assert.ok(html.includes('A4 1장 · 완성 지름 116mm'), '규격 안내 누락');
-  assert.ok(!/askDownload\(\d/.test(html), '뒤집기 카드에 장별 저장 버튼이 남아 있다');
-  assert.ok(!/카드 봉투|편지 봉투/.test(html), '뒤집기 카드에 4장 세트 문구가 남아 있다');
+  assert.ok(!/askDownload\(\d/.test(html), '플립카드에 장별 저장 버튼이 남아 있다');
+  assert.ok(!/카드 봉투|편지 봉투/.test(html), '플립카드에 4장 세트 문구가 남아 있다');
   const res = resOf(html);
   assert.equal(res.length, 1);
   assert.equal(res[0].set, it.setPdf);
@@ -237,15 +237,16 @@ test('/p 뒤집기 카드: A4 1장 미리보기 + 1장 PDF 버튼', () => {
   assert.ok(!html.includes('href="' + it.setPdf + '"'), 'PDF 직접 링크 금지');
 });
 
-test('/p 뒤집기 카드: SEO 설명이 1장 카드로 분기', () => {
+test('/p 플립카드: SEO 설명이 1장 카드로 분기', () => {
   const it = flipItem();
   const seo = buildSeo(it, { site: SITE });
-  assert.match(seo.title, /뒤집기 카드/);
+  assert.match(seo.title, /플립카드/);
   assert.ok(seo.title.length <= 62, `제목 길이 초과: ${seo.title.length}`);
   assert.ok(seo.description.length <= 155, `설명 길이 초과: ${seo.description.length}`);
-  assert.match(seo.description, /뒤집기 카드/);
+  assert.match(seo.description, /플립카드/);
   assert.ok(!/4장/.test(seo.description), '1장 카드에 4장 설명이 남아 있다');
-  assert.ok(seo.keywords.includes('뒤집기 카드'));
+  assert.ok(seo.keywords.includes('플립카드'));
+  assert.ok(seo.keywords.includes('뒤집기 카드'), '옛 이름 검색어도 유지');
 });
 
 /* ── 엽서(postcard-*) — A4 가로 1장 = 엽서 2장 ─────────────────────── */
@@ -267,7 +268,7 @@ function postItem(src = post0) {
   };
 }
 
-test('/p 엽서: A4 가로 1장 미리보기 + 1장 PDF 버튼, 뒤집기 카드 문구 없음', () => {
+test('/p 엽서: A4 가로 1장 미리보기 + 1장 PDF 버튼, 플립카드 문구 없음', () => {
   const it = postItem();
   const html = render(it);
   // 1장짜리는 장 그리드가 아니라 큰 미리보기 한 장 (가로 700×495 비율)
@@ -279,7 +280,7 @@ test('/p 엽서: A4 가로 1장 미리보기 + 1장 PDF 버튼, 뒤집기 카드
   assert.ok(html.includes('1장 · 엽서 2장'), '엽서 장수 안내 누락');
   assert.ok(html.includes('A4 1장 · 엽서 2장 (100×150mm)'), '규격 안내 누락');
   assert.match(html, /<b>A4 · 가로<\/b>/); // 인쇄는 A4 가로
-  assert.ok(!/뒤집기/.test(html), '엽서에 뒤집기 카드 문구가 남아 있다');
+  assert.ok(!/뒤집기|플립/.test(html), '엽서에 플립카드 문구가 남아 있다');
   assert.ok(!/카드 봉투|편지 봉투/.test(html), '엽서에 4장 세트 문구가 남아 있다');
   assert.ok(!/askDownload\(\d/.test(html), '엽서에 장별 저장 버튼이 남아 있다');
   // 인쇄 iframe 은 A4 가로로 뽑아야 한다
@@ -296,7 +297,7 @@ test('/p 엽서: 모양 엽서도 같은 규칙(가로 · 엽서 2장)', () => {
   const html = render(postItem(postShape0));
   assert.ok(html.includes('A4 1장 · 모양 엽서 2장'), '모양 엽서 규격 안내 누락');
   assert.ok(html.includes('const A4LANDSCAPE=true;'));
-  assert.ok(!/뒤집기/.test(html));
+  assert.ok(!/뒤집기|플립/.test(html));
 });
 
 test('/p 엽서: SEO 가 엽서 도안으로 분기', () => {
@@ -306,6 +307,6 @@ test('/p 엽서: SEO 가 엽서 도안으로 분기', () => {
   assert.ok(seo.title.length <= 62, `제목 길이 초과: ${seo.title.length}`);
   assert.ok(seo.description.length <= 155, `설명 길이 초과: ${seo.description.length}`);
   assert.match(seo.description, /엽서/);
-  assert.ok(!/뒤집기/.test(seo.description), '엽서 설명에 뒤집기 문구가 남아 있다');
+  assert.ok(!/뒤집기|플립/.test(seo.description), '엽서 설명에 뒤집기 문구가 남아 있다');
   assert.ok(seo.keywords.includes('크리스마스 엽서 도안'));
 });
