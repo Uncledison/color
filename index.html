@@ -49,6 +49,8 @@
   /* 모달 미리보기 높이 상한 — PC에서 설명(2~3줄)까지 보여도 첫 화면에 광고·다운로드 버튼이 들어오도록 */
   --a4-h:     min(40vh, 296px);
   --art-h:    min(34vh, 260px);
+  /* 카드 세트 미리보기 높이 — 흰 여백을 잘라낸 그림이라 같은 높이여도 카드가 훨씬 크게 보인다 */
+  --card-h:   min(42vh, 340px);
 }
 
 /* ── RESET ── */
@@ -120,6 +122,11 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
   width:min(100%,calc(var(--a4-h,44vh) * 297 / 210));
   aspect-ratio:297/210;
 }
+
+/* 카드·편지지 세트: A4 한 장 안에 카드가 가운데 작게 놓여 있어 그대로 두면 그림이 아주 작게 보인다.
+   → 흰 여백을 잘라 낸 그림(canvas.crop)을 고정 높이 칸에 가득 채워 보여준다. 장마다 높이가 같아 넘겨도 모달이 출렁이지 않는다. */
+.card-frame{width:100%;height:var(--card-h);display:flex;align-items:center;justify-content:center}
+.modal-artwork .card-frame canvas{height:100%;width:auto;max-width:100%;max-height:none;object-fit:contain}
 
 /* ── KEYFRAMES ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
@@ -422,11 +429,13 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 .season-more{font-size:12.5px;font-weight:700;color:var(--ink);border-bottom:1px solid var(--border);padding-bottom:2px}
 .season-more:hover{color:var(--coral);border-color:var(--coral)}
 .season-rail{
-  display:flex;gap:12px;overflow-x:auto;padding:8px 2px 6px;
+  display:flex;align-items:flex-start;gap:12px;overflow-x:auto;padding:8px 2px 6px;
   scrollbar-width:none;-webkit-overflow-scrolling:touch;
 }
 .season-rail::-webkit-scrollbar{display:none}
-.season-item{flex:0 0 112px;text-align:left}
+/* <button>은 안의 내용을 세로 가운데로 놓는다 — 제목이 한 줄인 칸의 썸네일만 아래로 내려가 들쑥날쑥했다.
+   위에서부터 쌓고(flex column), 제목 칸은 항상 두 줄 높이로 잡아 썸네일 윗선·높이를 모두 맞춘다 */
+.season-item{flex:0 0 112px;text-align:left;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch}
 .season-item .shot{
   display:block;position:relative;aspect-ratio:2/3;border-radius:10px;overflow:hidden;
   border:1px solid var(--border);background:#fff;
@@ -439,7 +448,7 @@ canvas.pv{pointer-events:none;-webkit-user-drag:none;user-select:none}
 }
 .season-item b{
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-  margin-top:7px;font-size:12.5px;font-weight:600;line-height:1.35;color:var(--ink);
+  margin-top:7px;font-size:12.5px;font-weight:600;line-height:1.35;min-height:calc(1.35em * 2);color:var(--ink);
 }
 @media(max-width:900px){
   .season-card{grid-template-columns:minmax(0,1fr);padding:26px 22px;gap:22px}
@@ -903,7 +912,7 @@ footer{
   .modal-artwork{padding:5px}
   .a4-frame{margin-top:4px}
   /* 모바일은 미리보기를 더 줄여 첫 화면에 액션 바까지 확실히 */
-  :root{--a4-h:min(32vh,300px);--art-h:min(28vh,240px)}
+  :root{--a4-h:min(32vh,300px);--art-h:min(28vh,240px);--card-h:min(40vh,300px)}
 }
 /* 화면이 아주 낮은 경우(가로로 눕힐 휴대폰·작은 노트북 창): 모달 본문만 스크롤되고
    액션 바(링크 복사·인쇄하기·A4 PDF 받기)는 아래에 붙어 있어 항상 보인다 */
@@ -1669,12 +1678,45 @@ function pvHTML(url,w,h,cls,label){
   if(!url)return '';
   return '<canvas class="pv '+(cls||'')+'" data-pv="'+pvIdx(url)+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+esc(label||'')+'"></canvas>';
 }
+/* 그림 둘레의 흰 여백을 잘라낼 영역 [x,y,w,h](원본 픽셀)을 구한다.
+   작은 글씨 줄(머리말·안내문)은 잉크 비율이 낮아 건너뛰고, 카드·봉투·편지지처럼 면적이 큰 부분만 따라간다.
+   바깥 주소 그림처럼 캔버스를 읽을 수 없거나 거의 전체가 내용이면 null(자르지 않음). */
+function contentBox(im){
+  try{
+    const sw=350,sh=Math.max(1,Math.round(sw*im.height/im.width));
+    const t=document.createElement('canvas');t.width=sw;t.height=sh;
+    const c=t.getContext('2d');c.drawImage(im,0,0,sw,sh);
+    const d=c.getImageData(0,0,sw,sh).data;
+    const k=im.width/sw,pad=Math.round(im.width*.02);
+    /* 1차: 색이 채워진 카드·봉투 면을 따라간다 / 2차: 연한 선(봉투 펼침도 등)까지 느슨하게 */
+    for(const [thr,rowF,colF] of [[240,.2,.15],[250,.05,.03]]){
+      const ink=(x,y)=>{const i=(y*sw+x)*4;return Math.min(d[i],d[i+1],d[i+2])<thr};
+      let y0=-1,y1=-1;
+      for(let y=0;y<sh;y++){let n=0;for(let x=0;x<sw;x++)if(ink(x,y))n++;if(n/sw>=rowF){if(y0<0)y0=y;y1=y}}
+      if(y0<0)continue;
+      let x0=-1,x1=-1;
+      for(let x=0;x<sw;x++){let n=0;for(let y=y0;y<=y1;y++)if(ink(x,y))n++;if(n/(y1-y0+1)>=colF){if(x0<0)x0=x;x1=x}}
+      if(x0<0)continue;
+      const x=Math.max(0,Math.round(x0*k)-pad),y=Math.max(0,Math.round(y0*k)-pad);
+      const w=Math.min(im.width,Math.round((x1+1)*k)+pad)-x,h=Math.min(im.height,Math.round((y1+1)*k)+pad)-y;
+      /* 너무 작게(가늘게) 잡히면 연한 그림을 놓친 것 — 다음 기준으로, 끝까지 안 되면 자르지 않고 전체를 보여준다 */
+      if(w<im.width*.5||h<im.height*.3)continue;
+      return w*h>=im.width*im.height*.85?null:[x,y,w,h];
+    }
+    return null;
+  }catch(e){return null}
+}
 function paintPv(cv,im){
+  let sx=0,sy=0,sw=im.width,sh=im.height;
+  if(cv.classList.contains('crop')){
+    const b=contentBox(im);
+    if(b){[sx,sy,sw,sh]=b;cv.width=sw;cv.height=sh}
+  }
   const w=cv.width,h=cv.height,ctx=cv.getContext('2d');
   if(!ctx)return;
   ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);
-  const s=Math.min(w/im.width,h/im.height),iw=im.width*s,ih=im.height*s;
-  ctx.drawImage(im,(w-iw)/2,(h-ih)/2,iw,ih);
+  const s=Math.min(w/sw,h/sh),iw=sw*s,ih=sh*s;
+  ctx.drawImage(im,sx,sy,sw,sh,(w-iw)/2,(h-ih)/2,iw,ih);
   ctx.save();ctx.globalAlpha=.12;ctx.fillStyle='#3d2b1f';
   ctx.font='bold '+Math.round(w/24)+'px -apple-system,system-ui,sans-serif';
   ctx.translate(w/2,h/2);ctx.rotate(-Math.PI/6);
@@ -2058,7 +2100,9 @@ function updateModal(){
   // '단일' 워크시트는 A4 한 장 비율 그대로 크게 보여준다 (엽서는 A4 가로)
   document.getElementById('modalSvg').innerHTML=single
     ?'<div class="a4-frame'+(current.postcard?' landscape':'')+'">'+pvHTML(pg.small||pg.preview,620,current.postcard?438:877,'',current.title)+'</div>'
-    :pvHTML(pg.small||pg.preview,620,877,'',current.title);
+    :current.cardSet
+      ?'<div class="card-frame">'+pvHTML(pg.small||pg.preview,620,877,'crop',current.title)+'</div>'
+      :pvHTML(pg.small||pg.preview,620,877,'',current.title);
   /* 모달 그림은 바로 보여야 하므로 관찰자를 기다리지 않고 즉시 그린다 */
   const mc=document.querySelector('#modalSvg canvas.pv');
   if(mc)drawPv(mc);
