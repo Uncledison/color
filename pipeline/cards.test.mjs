@@ -24,12 +24,12 @@ const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'cards.json'), '
 const raw = DATA.items;
 const ids = raw.map((it) => it.id);
 
-test('카드·편지지 정적 데이터: 68종(4장 세트 38 · 1장 뒤집기 10 · 엽서 20), 모두 카드·편지지 대분류', () => {
-  assert.equal(raw.length, 68);
+test('카드·편지지 정적 데이터: 78종(4장 세트 48 · 1장 뒤집기 10 · 엽서 20), 모두 카드·편지지 대분류', () => {
+  assert.equal(raw.length, 78);
   const sets = raw.filter((it) => it.type === 'series');
   const flips = raw.filter((it) => it.type === 'single' && !it.postcard);
   const postcards = raw.filter((it) => it.postcard);
-  assert.equal(sets.length, 38);
+  assert.equal(sets.length, 48);
   assert.equal(flips.length, 10);
   assert.equal(postcards.length, 20);
   for (const it of raw) {
@@ -72,24 +72,47 @@ test('카드·편지지 정적 데이터: 68종(4장 세트 38 · 1장 뒤집기
     assert.match(it.pages[0].spec, /엽서/);
   }
   assert.equal(new Set(ids).size, ids.length, 'id 중복');
+  // 성탄 성가족 10종(xmas-40~49)이 모두 4장 세트로 들어 있다
+  assert.deepEqual(
+    raw.filter((it) => it.id.includes('-nativity-')).map((it) => it.id).sort(),
+    [
+      'xmas-40-nativity-annunciation', 'xmas-41-nativity-bethlehem-journey',
+      'xmas-42-nativity-star', 'xmas-43-nativity-mary-jesus',
+      'xmas-44-nativity-holy-family', 'xmas-45-nativity-angel-choir',
+      'xmas-46-nativity-shepherds', 'xmas-47-nativity-wise-men',
+      'xmas-48-nativity-silent-night', 'xmas-49-nativity-olive-wreath',
+    ]
+  );
+  for (const it of raw.filter((x) => x.id.includes('-nativity-'))) {
+    assert.equal(it.type, 'series', it.id);
+    assert.equal(it.pageCount, 4, it.id);
+    assert.equal(it.pages.length, 4, it.id);
+  }
 });
 
-test('최신순 정렬: 새로 올린 페이퍼컷 4종이 맨 위, 그다음 네이비 산타 썰매·카드 세트 9종·성인용 엽서 10종이 온다', () => {
+test('최신순 정렬: 새로 올린 성탄 성가족 10종이 맨 위, 그다음 페이퍼컷 4종·네이비 산타 썰매·카드 세트 9종·성인용 엽서 10종이 온다', () => {
   const sorted = sortNewestFirst(raw.map(normalizeItem));
   assert.equal(sorted.length, raw.length);
-  assert.deepEqual(sorted.slice(0, 4).map((it) => it.id), [
+  assert.deepEqual(sorted.slice(0, 10).map((it) => it.id), [
+    'xmas-49-nativity-olive-wreath', 'xmas-48-nativity-silent-night',
+    'xmas-47-nativity-wise-men', 'xmas-46-nativity-shepherds',
+    'xmas-45-nativity-angel-choir', 'xmas-44-nativity-holy-family',
+    'xmas-43-nativity-mary-jesus', 'xmas-42-nativity-star',
+    'xmas-41-nativity-bethlehem-journey', 'xmas-40-nativity-annunciation',
+  ]);
+  assert.deepEqual(sorted.slice(10, 14).map((it) => it.id), [
     'xmas-39-papercut-iceblue-train', 'xmas-38-papercut-burgundy-fireplace',
     'xmas-37-papercut-ivory-candle', 'xmas-36-papercut-snowglobe-gifts',
   ]);
-  const top10 = sorted.slice(0, 14);
-  assert.deepEqual(top10.slice(4).map((it) => it.id), [
+  const top10 = sorted.slice(0, 24);
+  assert.deepEqual(top10.slice(14).map((it) => it.id), [
     'xmas-35-papercut-navy-sleigh',
     'xmas-26-white-joy', 'xmas-27-white-pine-tree', 'xmas-28-white-arch-ornaments',
     'xmas-29-bigface-santa', 'xmas-30-bigface-snowman', 'xmas-31-bigface-rudolph',
     'xmas-32-papercut-green-forest', 'xmas-33-papercut-red-village',
     'xmas-34-papercut-kraft-ornament',
   ]);
-  const next10 = sorted.slice(14, 24);
+  const next10 = sorted.slice(24, 34);
   assert.ok(next10.every((it) => it.postcard), '엽서 10종이 카드 세트 다음이 아니다: ' + next10.map((it) => it.id).join(', '));
   assert.equal(next10[0].id, 'postcard-diecut-01-tree');
   assert.equal(next10[9].id, 'postcard-classic-05-stamps');
