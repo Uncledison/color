@@ -3711,6 +3711,306 @@
           "download": "/cards/xmas-35-papercut-navy-sleigh/set.pdf"
         }
       ]
+    },
+    {
+      "id": "xmas-36-papercut-snowglobe-gifts",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "페이퍼컷 스노우볼 트리 크리스마스 카드 세트",
+      "desc": "세이지 그린 종이를 겹겹이 오려 만든 스노우볼 안에 금빛 전나무와 선물 상자가 놓여 있어요. 눈송이가 흩날리는 원형 창과 크림색 ‘Merry Christmas’ 레터링이 차분한 겨울 분위기를 냅니다.",
+      "tags": [
+        "크리스마스",
+        "카드",
+        "편지지",
+        "봉투",
+        "페이퍼컷",
+        "스노우볼",
+        "트리",
+        "세이지"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-36-papercut-snowglobe-gifts/card.jpg",
+      "thumb": "/cards/xmas-36-papercut-snowglobe-gifts/card.jpg",
+      "og": "/cards/xmas-36-papercut-snowglobe-gifts/og.jpg",
+      "promo": "/cards/xmas-36-papercut-snowglobe-gifts/p1.jpg",
+      "setPdf": "/cards/xmas-36-papercut-snowglobe-gifts/set.pdf",
+      "downloadName": "xmas-36-papercut-snowglobe-gifts-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28T22:20:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 그림에 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-36-papercut-snowglobe-gifts/p1.jpg",
+          "small": "/cards/xmas-36-papercut-snowglobe-gifts/p1.jpg",
+          "print": "/cards/xmas-36-papercut-snowglobe-gifts/p1-print.jpg",
+          "social": "/cards/xmas-36-papercut-snowglobe-gifts/p1.jpg",
+          "download": "/cards/xmas-36-papercut-snowglobe-gifts/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-36-papercut-snowglobe-gifts/p2.jpg",
+          "small": "/cards/xmas-36-papercut-snowglobe-gifts/p2.jpg",
+          "print": "/cards/xmas-36-papercut-snowglobe-gifts/p2-print.jpg",
+          "social": "/cards/xmas-36-papercut-snowglobe-gifts/p2.jpg",
+          "download": "/cards/xmas-36-papercut-snowglobe-gifts/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 카드 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-36-papercut-snowglobe-gifts/p3.jpg",
+          "small": "/cards/xmas-36-papercut-snowglobe-gifts/p3.jpg",
+          "print": "/cards/xmas-36-papercut-snowglobe-gifts/p3-print.jpg",
+          "social": "/cards/xmas-36-papercut-snowglobe-gifts/p3.jpg",
+          "download": "/cards/xmas-36-papercut-snowglobe-gifts/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-36-papercut-snowglobe-gifts/p4.jpg",
+          "small": "/cards/xmas-36-papercut-snowglobe-gifts/p4.jpg",
+          "print": "/cards/xmas-36-papercut-snowglobe-gifts/p4-print.jpg",
+          "social": "/cards/xmas-36-papercut-snowglobe-gifts/p4.jpg",
+          "download": "/cards/xmas-36-papercut-snowglobe-gifts/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-37-papercut-ivory-candle",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "페이퍼컷 아이보리 촛불 창 크리스마스 카드 세트",
+      "desc": "아이보리 종이에 고딕 아치 창을 오려 촛불을 담은 카드예요. 금빛 종소리와 리본, 홀리 열매, 흰 포인세티아가 아치를 감싸고 아래 금박 패널에 ‘MERRY CHRISTMAS’가 새겨져 있습니다.",
+      "tags": [
+        "크리스마스",
+        "카드",
+        "편지지",
+        "봉투",
+        "페이퍼컷",
+        "아이보리",
+        "촛불",
+        "아치"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-37-papercut-ivory-candle/card.jpg",
+      "thumb": "/cards/xmas-37-papercut-ivory-candle/card.jpg",
+      "og": "/cards/xmas-37-papercut-ivory-candle/og.jpg",
+      "promo": "/cards/xmas-37-papercut-ivory-candle/p1.jpg",
+      "setPdf": "/cards/xmas-37-papercut-ivory-candle/set.pdf",
+      "downloadName": "xmas-37-papercut-ivory-candle-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28T22:21:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 그림에 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-37-papercut-ivory-candle/p1.jpg",
+          "small": "/cards/xmas-37-papercut-ivory-candle/p1.jpg",
+          "print": "/cards/xmas-37-papercut-ivory-candle/p1-print.jpg",
+          "social": "/cards/xmas-37-papercut-ivory-candle/p1.jpg",
+          "download": "/cards/xmas-37-papercut-ivory-candle/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-37-papercut-ivory-candle/p2.jpg",
+          "small": "/cards/xmas-37-papercut-ivory-candle/p2.jpg",
+          "print": "/cards/xmas-37-papercut-ivory-candle/p2-print.jpg",
+          "social": "/cards/xmas-37-papercut-ivory-candle/p2.jpg",
+          "download": "/cards/xmas-37-papercut-ivory-candle/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 카드 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-37-papercut-ivory-candle/p3.jpg",
+          "small": "/cards/xmas-37-papercut-ivory-candle/p3.jpg",
+          "print": "/cards/xmas-37-papercut-ivory-candle/p3-print.jpg",
+          "social": "/cards/xmas-37-papercut-ivory-candle/p3.jpg",
+          "download": "/cards/xmas-37-papercut-ivory-candle/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-37-papercut-ivory-candle/p4.jpg",
+          "small": "/cards/xmas-37-papercut-ivory-candle/p4.jpg",
+          "print": "/cards/xmas-37-papercut-ivory-candle/p4-print.jpg",
+          "social": "/cards/xmas-37-papercut-ivory-candle/p4.jpg",
+          "download": "/cards/xmas-37-papercut-ivory-candle/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-38-papercut-burgundy-fireplace",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "페이퍼컷 버건디 벽난로 크리스마스 카드 세트",
+      "desc": "버건디 종이를 오려 벽난로와 네 겹의 양말, 장작불을 담았어요. 크림색 페이퍼컷 테두리와 포인세티아, 전나무 가지가 어우러져 따뜻하고 클래식한 카드가 됩니다.",
+      "tags": [
+        "크리스마스",
+        "카드",
+        "편지지",
+        "봉투",
+        "페이퍼컷",
+        "버건디",
+        "벽난로",
+        "양말"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-38-papercut-burgundy-fireplace/card.jpg",
+      "thumb": "/cards/xmas-38-papercut-burgundy-fireplace/card.jpg",
+      "og": "/cards/xmas-38-papercut-burgundy-fireplace/og.jpg",
+      "promo": "/cards/xmas-38-papercut-burgundy-fireplace/p1.jpg",
+      "setPdf": "/cards/xmas-38-papercut-burgundy-fireplace/set.pdf",
+      "downloadName": "xmas-38-papercut-burgundy-fireplace-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28T22:22:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 그림에 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-38-papercut-burgundy-fireplace/p1.jpg",
+          "small": "/cards/xmas-38-papercut-burgundy-fireplace/p1.jpg",
+          "print": "/cards/xmas-38-papercut-burgundy-fireplace/p1-print.jpg",
+          "social": "/cards/xmas-38-papercut-burgundy-fireplace/p1.jpg",
+          "download": "/cards/xmas-38-papercut-burgundy-fireplace/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-38-papercut-burgundy-fireplace/p2.jpg",
+          "small": "/cards/xmas-38-papercut-burgundy-fireplace/p2.jpg",
+          "print": "/cards/xmas-38-papercut-burgundy-fireplace/p2-print.jpg",
+          "social": "/cards/xmas-38-papercut-burgundy-fireplace/p2.jpg",
+          "download": "/cards/xmas-38-papercut-burgundy-fireplace/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 카드 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-38-papercut-burgundy-fireplace/p3.jpg",
+          "small": "/cards/xmas-38-papercut-burgundy-fireplace/p3.jpg",
+          "print": "/cards/xmas-38-papercut-burgundy-fireplace/p3-print.jpg",
+          "social": "/cards/xmas-38-papercut-burgundy-fireplace/p3.jpg",
+          "download": "/cards/xmas-38-papercut-burgundy-fireplace/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-38-papercut-burgundy-fireplace/p4.jpg",
+          "small": "/cards/xmas-38-papercut-burgundy-fireplace/p4.jpg",
+          "print": "/cards/xmas-38-papercut-burgundy-fireplace/p4-print.jpg",
+          "social": "/cards/xmas-38-papercut-burgundy-fireplace/p4.jpg",
+          "download": "/cards/xmas-38-papercut-burgundy-fireplace/set.pdf"
+        }
+      ]
+    },
+    {
+      "id": "xmas-39-papercut-iceblue-train",
+      "static": true,
+      "type": "series",
+      "cardSet": true,
+      "mainCategory": "카드·편지지",
+      "category": "크리스마스",
+      "title": "페이퍼컷 아이스블루 기차 크리스마스 카드 세트",
+      "desc": "아이스블루 종이로 오린 설산과 눈 덮인 전나무 사이로 선물 수레를 끄는 파란 증기기차가 지나갑니다. 별이 빛나는 밤하늘과 돌다리 아래 계곡까지 겹겹이 쌓은 페이퍼컷 카드예요.",
+      "tags": [
+        "크리스마스",
+        "카드",
+        "편지지",
+        "봉투",
+        "페이퍼컷",
+        "아이스블루",
+        "기차",
+        "설산"
+      ],
+      "pageCount": 4,
+      "cover": "/cards/xmas-39-papercut-iceblue-train/card.jpg",
+      "thumb": "/cards/xmas-39-papercut-iceblue-train/card.jpg",
+      "og": "/cards/xmas-39-papercut-iceblue-train/og.jpg",
+      "promo": "/cards/xmas-39-papercut-iceblue-train/p1.jpg",
+      "setPdf": "/cards/xmas-39-papercut-iceblue-train/set.pdf",
+      "downloadName": "xmas-39-papercut-iceblue-train-a4-4p.pdf",
+      "sizes": "카드 94×132mm · 카드 봉투 147×107mm · 편지지 140×200mm 10줄 · 편지 봉투 152×112mm",
+      "updated": "2026-11-28T22:23:00",
+      "pages": [
+        {
+          "n": 1,
+          "name": "카드",
+          "spec": "완성 94×132mm",
+          "story": "‘Merry Christmas’ 인사가 그림에 담긴 카드예요. 실선을 따라 자르고 가운데 점선에서 반으로 접으면 94×132mm 카드가 됩니다. 안쪽 빈 면에 메시지를 써 주세요.",
+          "preview": "/cards/xmas-39-papercut-iceblue-train/p1.jpg",
+          "small": "/cards/xmas-39-papercut-iceblue-train/p1.jpg",
+          "print": "/cards/xmas-39-papercut-iceblue-train/p1-print.jpg",
+          "social": "/cards/xmas-39-papercut-iceblue-train/p1.jpg",
+          "download": "/cards/xmas-39-papercut-iceblue-train/set.pdf"
+        },
+        {
+          "n": 2,
+          "name": "카드 봉투",
+          "spec": "완성 147×107mm",
+          "story": "카드를 가로로 넣는 봉투예요. 점선을 따라 접어 양 날개 안쪽에 풀칠한 뒤 아래 날개를 올려 붙이고 뒷장으로 덮으면 완성 147×107mm가 됩니다.",
+          "preview": "/cards/xmas-39-papercut-iceblue-train/p2.jpg",
+          "small": "/cards/xmas-39-papercut-iceblue-train/p2.jpg",
+          "print": "/cards/xmas-39-papercut-iceblue-train/p2-print.jpg",
+          "social": "/cards/xmas-39-papercut-iceblue-train/p2.jpg",
+          "download": "/cards/xmas-39-papercut-iceblue-train/set.pdf"
+        },
+        {
+          "n": 3,
+          "name": "편지지",
+          "spec": "140×200mm · 10줄",
+          "story": "머리에 작은 카드 그림이 놓인 10줄 편지지예요(줄 간격 12.6mm). 양옆 눈금 높이에서 반으로 접으면 140×100mm, 편지 봉투에 접어 넣으면 딱 들어갑니다.",
+          "preview": "/cards/xmas-39-papercut-iceblue-train/p3.jpg",
+          "small": "/cards/xmas-39-papercut-iceblue-train/p3.jpg",
+          "print": "/cards/xmas-39-papercut-iceblue-train/p3-print.jpg",
+          "social": "/cards/xmas-39-papercut-iceblue-train/p3.jpg",
+          "download": "/cards/xmas-39-papercut-iceblue-train/set.pdf"
+        },
+        {
+          "n": 4,
+          "name": "편지 봉투",
+          "spec": "완성 152×112mm",
+          "story": "편지지를 넣는 봉투예요. 접는 방식은 카드 봉투와 같고 완성 크기는 152×112mm입니다. 우표 자리와 받는 사람 칸이 있어요.",
+          "preview": "/cards/xmas-39-papercut-iceblue-train/p4.jpg",
+          "small": "/cards/xmas-39-papercut-iceblue-train/p4.jpg",
+          "print": "/cards/xmas-39-papercut-iceblue-train/p4-print.jpg",
+          "social": "/cards/xmas-39-papercut-iceblue-train/p4.jpg",
+          "download": "/cards/xmas-39-papercut-iceblue-train/set.pdf"
+        }
+      ]
     }
   ]
 }
